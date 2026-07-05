@@ -1,5 +1,5 @@
 .env
 node_modules/
-sample_Data.json
+sample_data.json
 images/
 uploads/
