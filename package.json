@@ -1,0 +1,29 @@
+{
+  "name": "catalogue",
+  "version": "1.0.0",
+  "description": "It's an product catalogue website of shah digital comany",
+  "homepage": "https://github.com/Vinit2113/sd_catalogue#readme",
+  "bugs": {
+    "url": "https://github.com/Vinit2113/sd_catalogue/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vinit2113/sd_catalogue.git"
+  },
+  "license": "ISC",
+  "author": "Vinit Shah",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "frontend": "npm run dev --prefix frontend",
+    "backend": "npm run dev --prefix backend",
+    "dev": "concurrently -n FRONTEND,BACKEND -c blue,green \"npm run frontend\" \"npm run backend\""
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.0"
+  },
+  "dependencies": {
+    "backend": "file:backend"
+  }
+}
