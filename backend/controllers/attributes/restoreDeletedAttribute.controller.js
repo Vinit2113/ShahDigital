@@ -7,7 +7,7 @@ const restoreAttributeById = async (req, res) => {
     if (!attributeId) {
       throwError("Attribute id is required", 400);
     }
-    const attribute = dbConn("it_ecomm.attributes")
+    const attribute = dbConn("shahDigital.attributes")
       .where({ attribute_id: attributeId })
       .andWhereNot({ attribute_is_active: 1 })
       .first();
@@ -15,7 +15,7 @@ const restoreAttributeById = async (req, res) => {
       throwError("Attribute not foudn or is still active", 404);
     }
 
-    await dbConn("it_ecomm.attributes")
+    await dbConn("shahDigital.attributes")
       .where({ attribute_id: attributeId })
       .update({
         attribute_is_active: 1,

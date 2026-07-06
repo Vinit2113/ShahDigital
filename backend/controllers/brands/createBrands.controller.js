@@ -19,7 +19,7 @@ const createBrands = async (req, res) => {
     const normalizedBrandName = trimmedName.toLowerCase();
 
     //   2. CHECK IF BRAND ALREADY EXISTS !
-    const existingBrand = await dbConn("it_ecomm.brands")
+    const existingBrand = await dbConn("shahDigital.brands")
       .where({
         deleted_at: null,
       })
@@ -34,7 +34,7 @@ const createBrands = async (req, res) => {
     const brandImagePath = req.file.filename;
 
     //   4. INSERT BRAND
-    const newBrand = await dbConn("it_ecomm.brands").insert({
+    const newBrand = await dbConn("shahDigital.brands").insert({
       brand_name: normalizedBrandName, // for search/logic
       brand_display_name: trimmedName, // for UI display
       brand_description: brand_description?.trim() || null,
@@ -49,7 +49,7 @@ const createBrands = async (req, res) => {
     // console.log(brandId);
 
     //   6. FETCH INSERTED ROW
-    const getNewBrand = await dbConn("it_ecomm.brands")
+    const getNewBrand = await dbConn("shahDigital.brands")
       .where({ brand_id: brandId })
       .first();
 

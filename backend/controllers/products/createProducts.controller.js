@@ -70,7 +70,7 @@ const createProducts = async (req, res) => {
     }
 
     //   5. CHECK IF CATEGORY AND BRANDS EXISTS OR NOT
-    const existsCategory = await dbConn("it_ecomm.categories")
+    const existsCategory = await dbConn("shahDigital.categories")
       .where({
         cat_id: categoryId,
       })
@@ -79,7 +79,7 @@ const createProducts = async (req, res) => {
       throwError("Category not found", 404);
     }
 
-    const existsBrands = await dbConn("it_ecomm.brands")
+    const existsBrands = await dbConn("shahDigital.brands")
       .where({
         brand_id: brandId,
       })
@@ -90,7 +90,7 @@ const createProducts = async (req, res) => {
     }
 
     //   6. CHECK BEFORE STORING IF THE PRODUCT IS EXISTS OR NOT !
-    const existingProduct = await dbConn("it_ecomm.products")
+    const existingProduct = await dbConn("shahDigital.products")
       .where({
         product_name: normalizeProductName,
         brand_id: brandId,
@@ -104,7 +104,7 @@ const createProducts = async (req, res) => {
     }
 
     //   7. IF FOUND STORE THE ID OF THAT CATEGORY AND BRAND WITH THE PRODUCT DETIALS IN DATABASE
-    const [productId] = await dbConn("it_ecomm.products").insert({
+    const [productId] = await dbConn("shahDigital.products").insert({
       cat_id: categoryId,
       brand_id: brandId,
       product_name: normalizeProductName,
@@ -118,7 +118,7 @@ const createProducts = async (req, res) => {
     });
 
     //   RETURNING DATA
-    const product = await dbConn("it_ecomm.products")
+    const product = await dbConn("shahDigital.products")
       .where({ product_id: productId })
       .first();
 

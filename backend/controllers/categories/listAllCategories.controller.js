@@ -2,7 +2,7 @@ const dbConn = require("../../db/knex");
 
 const listCategories = async (req, res) => {
   try {
-    const categories = await dbConn("it_ecomm.categories")
+    const categories = await dbConn("shahDigital.categories")
       .select("cat_id", "cat_display_name", "cat_description", "cat_is_active")
       .where({ deleted_at: null })
       .orderBy("cat_id", "desc");

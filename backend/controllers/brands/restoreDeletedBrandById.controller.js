@@ -10,7 +10,7 @@ const restoreDeletedBrandById = async (req, res) => {
     }
 
     //   CHECK IF BRAND IS EXISTS AND IS DELETED
-    const brand = dbConn("it_ecomm.brands")
+    const brand = dbConn("shahDigital.brands")
       .where({
         brand_id: brandId,
       })
@@ -21,7 +21,7 @@ const restoreDeletedBrandById = async (req, res) => {
       throwError("Brand not found or still active", 404);
     }
     //   RESTORE INACTIVE BRANDS
-    await dbConn("it_ecomm.brands").where({ brand_id: brandId }).update({
+    await dbConn("shahDigital.brands").where({ brand_id: brandId }).update({
       deleted_at: null,
       brand_is_active: true,
       updated_at: dbConn.fn.now(),

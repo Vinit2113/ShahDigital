@@ -9,7 +9,7 @@ const listMappedCatAt = async (req, res) => {
       throwError("Category id is required ", 400);
     }
 
-    const category = await dbConn("it_ecomm.categories")
+    const category = await dbConn("shahDigital.categories")
       .where({
         cat_id: catId,
         deleted_at: null,
@@ -20,7 +20,7 @@ const listMappedCatAt = async (req, res) => {
       throwError("Category not foun", 404);
     }
 
-    //   SELECT ca.cat_id, ca.attribute_id, a.attribute_id, a.attribute_display_name, a.attribute_name FROM it_ecomm.cat_attribute as ca LEFT JOIN it_ecomm.attributes as a WHERE ca.attribute_id = a.attribute_id LEFT JOIN ca.
+    //   SELECT ca.cat_id, ca.attribute_id, a.attribute_id, a.attribute_display_name, a.attribute_name FROM shahDigital.cat_attribute as ca LEFT JOIN shahDigital.attributes as a WHERE ca.attribute_id = a.attribute_id LEFT JOIN ca.
 
     /**
      * SELECT
@@ -28,15 +28,15 @@ const listMappedCatAt = async (req, res) => {
      * c.cat_display_name,
      * a.attribute_id,
      * a.attribute_display_name
-     * FROM it_ecomm.cat_attribute as ca
-     * INNER JOIN it_ecomm.categories as c ON c.cat_id = ca.cat_id
-     * INNER JOIN it_ecomm.attributes as a ON a.attribute_id = ca.attribute_id
+     * FROM shahDigital.cat_attribute as ca
+     * INNER JOIN shahDigital.categories as c ON c.cat_id = ca.cat_id
+     * INNER JOIN shahDigital.attributes as a ON a.attribute_id = ca.attribute_id
      * WHERE ca.cat_id AND a.attribute_is_active = 1
      */
 
-    const attributes = await dbConn("it_ecomm.cat_attribute as ca")
-      .join("it_ecomm.attributes as a", "ca.attribute_id", "a.attribute_id")
-      .join("it_ecomm.categories as c", "ca.cat_id", "c.cat_id")
+    const attributes = await dbConn("shahDigital.cat_attribute as ca")
+      .join("shahDigital.attributes as a", "ca.attribute_id", "a.attribute_id")
+      .join("shahDigital.categories as c", "ca.cat_id", "c.cat_id")
       .select(
         "c.cat_id",
         "c.cat_name",

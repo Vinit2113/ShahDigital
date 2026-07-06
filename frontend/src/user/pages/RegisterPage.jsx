@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router";
 
+// IMPLEMENTN PROTECTED ROUTES
+// 413 entity too large
+
 const RegisterPage = () => {
   const navigate = useNavigate();
 

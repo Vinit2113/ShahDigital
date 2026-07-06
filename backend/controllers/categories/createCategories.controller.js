@@ -14,7 +14,7 @@ const createCategory = async (req, res) => {
     const normalizedName = trimmedName.toLowerCase();
 
     // 2. CHECK DUPLICATE USING NORMALIZED VALUE
-    const existingCategory = await dbConn("it_ecomm.categories")
+    const existingCategory = await dbConn("shahDigital.categories")
       .where({ deleted_at: null })
       .andWhereRaw("LOWER(cat_name) = ?", [normalizedName])
       .first();
@@ -24,7 +24,7 @@ const createCategory = async (req, res) => {
     }
 
     // 3. INSERT CATEGORY
-    const [newCategory] = await dbConn("it_ecomm.categories")
+    const [newCategory] = await dbConn("shahDigital.categories")
       .insert({
         cat_name: normalizedName, // for logic/search
         cat_display_name: trimmedName, // for display

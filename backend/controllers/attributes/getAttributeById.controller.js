@@ -5,7 +5,7 @@ const getAttributeByIdForAdmin = async (req, res) => {
     const attributeId = req.params.attribute_id;
     console.log("Here", attributeId);
 
-    const attribute = await dbConn("it_ecomm.attributes")
+    const attribute = await dbConn("shahDigital.attributes")
       .select(
         "attribute_id",
         "attribute_name",

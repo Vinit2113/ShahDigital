@@ -16,7 +16,7 @@ const deleteUser = async (req, res) => {
     }
 
     // Check if user exists and not already deleted
-    const user = await dbConn("it_ecomm.customers")
+    const user = await dbConn("shahDigital.customers")
       .where({ id: userId })
       .whereNull("deleted_at")
       .first();
@@ -26,7 +26,7 @@ const deleteUser = async (req, res) => {
     }
 
     // Soft delete: update fields instead of deleting row
-    await dbConn("it_ecomm.customers").where({ id: userId }).update({
+    await dbConn("shahDigital.customers").where({ id: userId }).update({
       deleted_at: dbConn.fn.now(),
       status: "inactive",
       updated_at: dbConn.fn.now(),

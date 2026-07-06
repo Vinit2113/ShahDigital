@@ -7,7 +7,7 @@ const resendOtp = async (req, res) => {
     const { email } = req.body;
     const normalizeEmail = email.trim().toLowerCase();
 
-    const user = await dbConn("it_ecomm.customers")
+    const user = await dbConn("shahDigital.customers")
       .where({ email: normalizeEmail })
       .first();
 
@@ -21,7 +21,7 @@ const resendOtp = async (req, res) => {
 
     const otp = generateOTP();
     const otpHash = hashOTP(otp);
-    await dbConn("it_ecomm.customers")
+    await dbConn("shahDigital.customers")
       .where({ id: user.id })
       .update({
         otp_hash: otpHash,
@@ -37,4 +37,3 @@ const resendOtp = async (req, res) => {
 };
 
 module.exports = resendOtp;
-

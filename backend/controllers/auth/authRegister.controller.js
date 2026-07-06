@@ -4,6 +4,7 @@ const { generateToken } = require("../../utils/jwt");
 const throwError = require("../../utils/WebError");
 const { generateOTP, hashOTP } = require("../../utils/otp");
 const { sendOTPMail } = require("../../utils/mailer");
+const e = require("express");
 const register = async (req, res) => {
   try {
     // ASK USER FOR FIELD
@@ -29,8 +30,8 @@ const register = async (req, res) => {
       let userId;
       // trx: manages all database queries inside a transaction so they can be committed or rolled back together
 
-      // customer: it's an knex query builder object for the it_ecomm.customers which is created using transaction connection trx
-      const customer = trx("it_ecomm.customers");
+      // customer: it's an knex query builder object for the shahDigital.customers which is created using transaction connection trx
+      const customer = trx("shahDigital.customers");
 
       // IT CHECK IF USER WITH SAME EMAIL OR USER EXISTS OR NOT !
 
@@ -44,14 +45,13 @@ const register = async (req, res) => {
 
       // IF USERS EXISTS CHECK STATUS IF NO USER FOUND WITH ANY STATUS INSERT NEW
       if (existingUser) {
-        // IF USER ACTIVE SHOW ALREADY EXISTS
-        if (existingUser.status === "active" && !existingUser.deleted_at) {
-          return throwError("User already exists ", 409);
-        }
-
         // ELSE - IF USER BLOCKED SHOW USER BLOCKED
         if (existingUser.status === "blocked") {
           return throwError("User is blocked", 403);
+        }
+        // IF USER ACTIVE SHOW ALREADY EXISTS
+        if (existingUser.status === "active" && !existingUser.deleted_at) {
+          return throwError("User already exists ", 409);
         }
 
         // IF USER IS INACTIVE : User is not deleted from DB, but treated as deleted/disabled.
@@ -68,11 +68,6 @@ const register = async (req, res) => {
         });
         userId = existingUser.id;
       }
-
-      // IF USER EXISTS AND SOFT-DELETED
-      if (existingUser.deleted_at) {
-      }
-
       // IF NO USER FOUND WITH EXISTING STATUS INSERT NEW
       else {
         const [insertId] = await customer.insert({
@@ -140,7 +135,9 @@ const register = async (req, res) => {
     });
   } catch (error) {
     console.log("REGISTER ERROR", error);
-    return res.status(error.status || 500).json({
+    console.log("Here", error.statusCode);
+
+    return res.status(error.statusCode || 500).json({
       message: error.message || "INTERNAL SERVER ERROR",
     });
   }

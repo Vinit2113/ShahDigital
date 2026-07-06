@@ -14,12 +14,12 @@ const userBlock = async (req, res) => {
     }
 
     // FIND THE USER BY ID
-    const getUser = await dbConn("it_ecomm.customers")
+    const getUser = await dbConn("shahDigital.customers")
       .select("name", "username", "email", "status", "is_verified")
       .where({ id: userid })
       .whereNull("deleted_at")
       .first();
- 
+
     if (!getUser) {
       return throwError("User not found", 404);
     }
@@ -32,7 +32,7 @@ const userBlock = async (req, res) => {
       return throwError("User is Inactive", 401);
     }
 
-    await dbConn("it_ecomm.customers")
+    await dbConn("shahDigital.customers")
       .where({ id: userid })
       .andWhere({ status: "active" })
       .whereNull("deleted_at")

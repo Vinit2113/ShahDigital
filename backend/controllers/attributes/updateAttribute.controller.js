@@ -14,7 +14,7 @@ const updateAttributeById = async (req, res) => {
       throwError("Error at least one filed", 400);
     }
 
-    const existingAttribute = await dbConn("it_ecomm.attributes")
+    const existingAttribute = await dbConn("shahDigital.attributes")
       .where({
         attribute_id: attributeId,
         attribute_is_active: 1,
@@ -33,7 +33,7 @@ const updateAttributeById = async (req, res) => {
       const trimmedAttributeName = attribute_name.trim();
       const normalizedAttributeName = trimmedAttributeName.toLowerCase();
 
-      const duplicate = await dbConn("it_ecomm.attributes")
+      const duplicate = await dbConn("shahDigital.attributes")
         .where({ attribute_is_active: 1 })
         .andWhereRaw("LOWER(attribute_name) = ?", [normalizedAttributeName])
         .andWhereNot({ attribute_id: attributeId })
@@ -50,7 +50,7 @@ const updateAttributeById = async (req, res) => {
       updatedData.attribute_description = attribute_description.trim();
     }
 
-    await dbConn("it_ecomm.attributes")
+    await dbConn("shahDigital.attributes")
       .where({
         attribute_id: attributeId,
         attribute_is_active: 1,

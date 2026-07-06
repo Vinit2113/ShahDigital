@@ -12,7 +12,7 @@ const createAttribute = async (req, res) => {
     const trimmedAttributeName = attribute_name.trim();
     const normalizedAttributeName = trimmedAttributeName.toLowerCase();
 
-    const existingAttribute = await dbConn("it_ecomm.attributes")
+    const existingAttribute = await dbConn("shahDigital.attributes")
       .where({
         attribute_is_active: 1,
       })
@@ -23,7 +23,7 @@ const createAttribute = async (req, res) => {
       throwError("Attribute already exists", 409);
     }
 
-    const [newAttribute] = await dbConn("it_ecomm.attributes").insert({
+    const [newAttribute] = await dbConn("shahDigital.attributes").insert({
       attribute_name: normalizedAttributeName,
       attribute_display_name: trimmedAttributeName,
       attribute_description: attribute_description?.trim() || null,

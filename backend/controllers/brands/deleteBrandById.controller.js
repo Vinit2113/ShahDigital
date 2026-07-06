@@ -7,7 +7,7 @@ const deleteBrandById = async (req, res) => {
     if (!brandId) [throwError("Brand Id is required", 400)];
 
     // CHECK IF BRAND EXISTS OR NOT
-    const brand = await dbConn("it_ecomm.brands")
+    const brand = await dbConn("shahDigital.brands")
       .where({ brand_id: brandId })
       .andWhere({ deleted_at: null })
       .first();
@@ -15,7 +15,7 @@ const deleteBrandById = async (req, res) => {
       throwError("Brand not foudn or already exists", 404);
     }
     //   SOFT-DELETE
-    await dbConn("it_ecomm.brands").where({ brand_id: brandId }).update({
+    await dbConn("shahDigital.brands").where({ brand_id: brandId }).update({
       deleted_at: new Date(),
       brand_is_active: false,
     });

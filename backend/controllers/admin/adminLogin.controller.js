@@ -18,7 +18,7 @@ const loginAdmin = async (req, res) => {
     const normalizePassword = password.trim();
 
     // Find User by Email
-    const user = await dbConn("it_ecomm.customers")
+    const user = await dbConn("shahDigital.customers")
       .where({ email: normalizeEmail })
       .first();
 

@@ -8,7 +8,7 @@ const cat_by_id = async (req, res) => {
     // console.log(cat_id);
 
     //   2. GET THE CATEGORY BASED ON THE ID
-    const category = await dbConn("it_ecomm.categories")
+    const category = await dbConn("shahDigital.categories")
       .select("cat_id", "cat_display_name", "cat_description", "cat_is_active")
       .where({ cat_id: cat_id, deleted_at: null })
       .first();

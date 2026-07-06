@@ -18,7 +18,7 @@ const updateCatById = async (req, res) => {
     }
 
     // 1. CHECK IF CATEGORY EXISTS
-    const existingCategory = await dbConn("it_ecomm.categories")
+    const existingCategory = await dbConn("shahDigital.categories")
       .where({
         cat_id: catId,
         deleted_at: null,
@@ -38,7 +38,7 @@ const updateCatById = async (req, res) => {
       const trimmedCatName = cat_name.trim();
       const normalizedCatName = trimmedCatName.toLowerCase();
 
-      const duplicate = await dbConn("it_ecomm.categories")
+      const duplicate = await dbConn("shahDigital.categories")
         .where({ deleted_at: null })
         .andWhereRaw("LOWER(cat_name) = ?", [normalizedCatName])
         .andWhereNot({ cat_id: catId })
@@ -58,7 +58,7 @@ const updateCatById = async (req, res) => {
     }
 
     // 4. UPDATE CATEGORY
-    await dbConn("it_ecomm.categories")
+    await dbConn("shahDigital.categories")
       .where({
         cat_id: catId,
         deleted_at: null,

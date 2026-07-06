@@ -16,7 +16,7 @@ const resetPassword = async (req, res) => {
 
     const hashedToken = hashOTP(token);
 
-    const user = await dbConn("it_ecomm.customers")
+    const user = await dbConn("shahDigital.customers")
       .where({
         email: normalizeEmail,
         reset_token: hashedToken,
@@ -43,7 +43,7 @@ const resetPassword = async (req, res) => {
     );
 
     // UPDATE PASSWORD AND CLEAR TOKEN
-    await dbConn("it_ecomm.customers").where({ id: user.id }).update({
+    await dbConn("shahDigital.customers").where({ id: user.id }).update({
       password: hashedPassword,
       reset_token: null,
       reset_token_expiry: null,

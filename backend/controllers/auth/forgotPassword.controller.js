@@ -12,7 +12,7 @@ const forgotPassword = async (req, res) => {
 
     const normalizeEmail = email.trim().toLowerCase();
 
-    const user = await dbConn("it_ecomm.customers")
+    const user = await dbConn("shahDigital.customers")
       .where({ email: normalizeEmail })
       .first();
 
@@ -26,7 +26,7 @@ const forgotPassword = async (req, res) => {
     const resetToken = crypto.randomBytes(32).toString("hex");
     const tokenExpiry = new Date(Date.now() + 1000 * 60 * 15); // 15 min
 
-    await dbConn("it_ecomm.customers").where({ id: user.id }).update({
+    await dbConn("shahDigital.customers").where({ id: user.id }).update({
       reset_token: resetToken,
       reset_token_expiry: tokenExpiry,
     });

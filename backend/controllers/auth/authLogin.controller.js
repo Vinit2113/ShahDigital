@@ -26,7 +26,7 @@ const authLogin = async (req, res) => {
           c.status,
           c.is_verified,
           r.name AS role
-        FROM it_ecomm.customers c
+        FROM shahDigital.customers c
         LEFT JOIN user_role ur 
           ON c.id = ur.user_id
         LEFT JOIN roles r 
@@ -36,7 +36,7 @@ const authLogin = async (req, res) => {
         WHERE c.email = ?
         LIMIT 1;
     */
-    const existingUser = await dbConn("it_ecomm.customers as c")
+    const existingUser = await dbConn("shahDigital.customers as c")
       .leftJoin("user_role as ur", "c.id", "ur.user_id")
       .leftJoin("roles as r", "ur.role_id", "r.role_id")
       .select(

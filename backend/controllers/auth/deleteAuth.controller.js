@@ -7,7 +7,7 @@ const deleteAuth = async (req, res) => {
     console.log(userId);
 
     //   CHECK IF USER EXISTS
-    const user = await dbConn("it_ecomm.customers")
+    const user = await dbConn("shahDigital.customers")
       .select("name", "username", "email", "is_verified", "deleted_at")
       .where({
         id: userId,
@@ -26,7 +26,7 @@ const deleteAuth = async (req, res) => {
     }
 
     //   IF USER EIXSTS AND IS NOT DELETED THEN PROCEED TO SOFT-DELETE
-    await dbConn("it_ecomm.customers").where({ id: userId }).update({
+    await dbConn("shahDigital.customers").where({ id: userId }).update({
       deleted_at: new Date(),
     });
 

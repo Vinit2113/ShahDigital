@@ -8,7 +8,7 @@ const deleteAttributeById = async (req, res) => {
       throwError("Attribute Id is required", 400);
     }
 
-    const attribute = await dbConn("it_ecomm.attributes")
+    const attribute = await dbConn("shahDigital.attributes")
       .where({ attribute_id: attributeId })
       .andWhere({ attribute_is_active: true })
       .first();
@@ -17,7 +17,7 @@ const deleteAttributeById = async (req, res) => {
       throwError("Attribute not found or already exists", 404);
     }
 
-    await dbConn("it_ecomm.attributes")
+    await dbConn("shahDigital.attributes")
       .where({ attribute_id: attributeId })
       .update({
         attribute_is_active: false,

@@ -34,7 +34,7 @@ const verifyToken = async (req, res, next) => {
     }
 
     // Fetch user from DB
-    const user = await dbConn("it_ecomm.customers")
+    const user = await dbConn("shahDigital.customers")
       .select("id", "status", "is_verified", "deleted_at")
       .where({ id: decoded.id })
       .first();

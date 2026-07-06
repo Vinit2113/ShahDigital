@@ -13,7 +13,7 @@ const updateUser = async (req, res) => {
       return throwError("Please provide at least one filed to update");
     }
 
-    const customer = dbConn("it_ecomm.customers");
+    const customer = dbConn("shahDigital.customers");
 
     // CHECK IF USER EXISTS OR NOT
     const existingUser = await customer.clone().where({ id: userId }).first();

@@ -4,12 +4,13 @@ const throwError = require("../../utils/WebError");
 const addAttributeToCategory = async (req, res) => {
   try {
     const { catId, attributeId } = req.body;
+    
     if (!catId || !attributeId) {
       throwError("Category Id and Attribute Id are requried ", 400);
     }
 
     //   1. CHECK IF CATEGORY EXISTS WITH THE SAME ID OR NOT !
-    const existsCat = await dbConn("it_ecomm.categories")
+    const existsCat = await dbConn("shahDigital.categories")
       .where({ cat_id: catId, deleted_at: null })
       .first();
     if (!existsCat) {
@@ -17,7 +18,7 @@ const addAttributeToCategory = async (req, res) => {
     }
 
     //   2. CHECK IF ATTRIBUTE EXISTS OR NOT !
-    const existsAttribute = await dbConn("it_ecomm.attributes")
+    const existsAttribute = await dbConn("shahDigital.attributes")
       .where({
         attribute_id: attributeId,
         attribute_is_active: 1,
@@ -29,7 +30,7 @@ const addAttributeToCategory = async (req, res) => {
     }
 
     //   3. CHECK DUPLICATE MAPPING
-    const existsCatAttribute = await dbConn("it_ecomm.cat_attribute")
+    const existsCatAttribute = await dbConn("shahDigital.cat_attribute")
       .where({ cat_id: catId, attribute_id: attributeId })
       .first();
     if (existsCatAttribute) {
@@ -37,7 +38,7 @@ const addAttributeToCategory = async (req, res) => {
     }
 
     //   4. INSERT MAPPING
-    await dbConn("it_ecomm.cat_attribute").insert({
+    await dbConn("shahDigital.cat_attribute").insert({
       cat_id: catId,
       attribute_id: attributeId,
     });

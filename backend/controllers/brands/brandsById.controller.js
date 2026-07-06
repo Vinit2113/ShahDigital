@@ -5,7 +5,7 @@ const brandById = async (req, res) => {
   try {
     const brandId = req.params.brand_id;
 
-    const brands = await dbConn("it_ecomm.brands")
+    const brands = await dbConn("shahDigital.brands")
       .select(
         "brand_id",
         "brand_display_name",

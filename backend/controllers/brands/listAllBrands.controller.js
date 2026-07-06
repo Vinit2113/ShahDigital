@@ -2,7 +2,7 @@ const dbConn = require("../../db/knex");
 
 const listBrands = async (req, res) => {
   try {
-    const brands = await dbConn("it_ecomm.brands")
+    const brands = await dbConn("shahDigital.brands")
       .select("brand_display_name", "brand_image", "brand_description")
       .where({ deleted_at: null })
       .andWhere({ brand_is_active: true });

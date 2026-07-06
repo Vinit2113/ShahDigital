@@ -9,7 +9,7 @@ const updateBrandById = async (req, res) => {
     const { brand_name, brand_description, brand_is_active } = req.body;
 
     //   1. CHECK IF BRAND EXISTS
-    const existingBrands = await dbConn("it_ecomm.brands")
+    const existingBrands = await dbConn("shahDigital.brands")
       .where({
         brand_id: brandId,
         deleted_at: null,
@@ -31,7 +31,7 @@ const updateBrandById = async (req, res) => {
       const normalizedBrandName = trimmedBrandName.toLowerCase();
 
       // CHECK DUPLICATE NAME
-      const duplicateBrand = await dbConn("it_ecomm.brands")
+      const duplicateBrand = await dbConn("shahDigital.brands")
         .whereNull("deleted_at")
         .whereNot("brand_id", brandId)
         .andWhereRaw("LOWER(brand_name) = ?", [normalizedBrandName])
@@ -76,14 +76,14 @@ const updateBrandById = async (req, res) => {
     }
 
     //   7. UPDATE DATA IN DATABASE
-    await dbConn("it_ecomm.brands")
+    await dbConn("shahDigital.brands")
       .where({
         brand_id: brandId,
       })
       .update(updatedData);
 
     //   8. FETCH UPDATED DATA
-    const updatedBrand = await dbConn("it_ecomm.brands")
+    const updatedBrand = await dbConn("shahDigital.brands")
       .where({
         brand_id: brandId,
       })

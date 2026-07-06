@@ -13,7 +13,7 @@ const startVerification = async (req, res) => {
 
     const normalizeEmail = email.trim().toLowerCase();
 
-    const user = await dbConn("it_ecomm.customers")
+    const user = await dbConn("shahDigital.customers")
       .where({ email: normalizeEmail })
       .first();
 
@@ -32,7 +32,7 @@ const startVerification = async (req, res) => {
     const expiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
     // Update user with OTP
-    await dbConn("it_ecomm.customers").where({ id: user.id }).update({
+    await dbConn("shahDigital.customers").where({ id: user.id }).update({
       otp_hash: otpHash,
       otp_expires_at: expiry,
       updated_at: dbConn.fn.now(),

@@ -2,7 +2,7 @@ const dbConn = require("../../db/knex");
 
 const listAttributes = async (req, res) => {
   try {
-    const attributes = await dbConn("it_ecomm.attributes")
+    const attributes = await dbConn("shahDigital.attributes")
       .select("attribute_id", "attribute_display_name", "attribute_is_active")
       .where({ attribute_is_active: true });
 
