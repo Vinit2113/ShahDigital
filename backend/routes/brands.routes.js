@@ -1,5 +1,4 @@
 const express = require("express");
-const upload = require("../middleware/uploads");
 const createBrands = require("../controllers/brands/createBrands.controller");
 const verifyToken = require("../utils/verifyToken");
 const onlyAdmins = require("../middleware/requireAdmin.middleware");
@@ -8,6 +7,7 @@ const brandById = require("../controllers/brands/brandsById.controller");
 const updateBrandById = require("../controllers/brands/updateBrandById.controller");
 const deleteBrandById = require("../controllers/brands/deleteBrandById.controller");
 const restoreDeletedBrandById = require("../controllers/brands/restoreDeletedBrandById.controller");
+const { brandStorage } = require("../middleware/uploads");
 
 const router = express.Router();
 
@@ -16,7 +16,7 @@ router.post(
   "/create-brand",
   verifyToken,
   onlyAdmins,
-  upload.single("brand_image"),
+  brandStorage.single("brand_image"),
   createBrands,
 );
 
@@ -29,7 +29,7 @@ router.post(
   "/update/:brand_id",
   verifyToken,
   onlyAdmins,
-  upload.single("brand_image"),
+  brandStorage.single("brand_image"),
   updateBrandById,
 );
 

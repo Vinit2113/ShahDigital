@@ -8,6 +8,7 @@ exports.up = async function (knex) {
     return knex.schema.createTable("attributes", (table) => {
       table.increments("attribute_id").primary();
       table.string("attribute_name").notNullable();
+      table.string("attribute_display_name");
       table.string("attribute_description");
       table.boolean("attribute_is_active").notNullable().defaultTo(true);
       table.timestamps(true, true);

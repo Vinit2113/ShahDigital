@@ -1,12 +1,12 @@
 {
   "categories": [
-    { "cat_id": 1, "name": "Laptop", "description": "Portable computers", "is_active": 1 },
-    { "cat_id": 2, "name": "Storage", "description": "SSD, HDD, Pendrive", "is_active": 1 },
-    { "cat_id": 3, "name": "Printers", "description": "Printing devices", "is_active": 1 },
-    { "cat_id": 4, "name": "CCTV", "description": "Security cameras", "is_active": 1 },
-    { "cat_id": 5, "name": "Desktop", "description": "Desktop systems", "is_active": 1 },
-    { "cat_id": 6, "name": "RAM", "description": "Memory modules", "is_active": 1 },
-    { "cat_id": 7, "name": "Graphics Card", "description": "GPU devices", "is_active": 1 }
+    { "cat_id": 1, "cat_name": "Laptop", "cat_description": "Portable computers", "is_active": 1 },
+    { "cat_id": 2, "cat_name": "Storage", "cat_description": "SSD, HDD, Pendrive", "is_active": 1 },
+    { "cat_id": 3, "cat_name": "Printers", "cat_description": "Printing devices", "is_active": 1 },
+    { "cat_id": 4, "cat_name": "CCTV", "cat_description": "Security cameras", "is_active": 1 },
+    { "cat_id": 5, "cat_name": "Desktop", "cat_description": "Desktop systems", "is_active": 1 },
+    { "cat_id": 6, "cat_name": "RAM", "cat_description": "Memory modules", "is_active": 1 },
+    { "cat_id": 7, "cat_name": "Graphics Card", "cat_description": "GPU devices", "is_active": 1 }
   ],
 
   "brands": [
@@ -20,7 +20,7 @@
     { "brand_id": 8, "name": "NVIDIA", "brand_logo_img": "nvidia.png", "is_active": 1 }
   ],
 
-  "attributes": [
+  "attributes": [ 
     { "attribute_id": 1, "attribute_name": "Processor", "is_active": 1 },
     { "attribute_id": 2, "attribute_name": "RAM" , "is_active": 1},
     { "attribute_id": 3, "attribute_name": "Storage Type", "is_active": 1 },
@@ -127,7 +127,9 @@
 
   "product_attributes": [
     { "product_id": 1, "attribute_id": 1, "attribute_value": "Intel i5 12th Gen" },
+    
     { "product_id": 1, "attribute_id": 2, "attribute_value": "8GB" },
+    
     { "product_id": 1, "attribute_id": 3, "attribute_value": "SSD" },
     { "product_id": 1, "attribute_id": 4, "attribute_value": "512GB" },
 

@@ -15,7 +15,15 @@ exports.up = async function (knex) {
       table.string("username", 50).unique().notNullable();
       table.string("email").unique().notNullable();
       table.string("password", 255).notNullable();
+      table.boolean("is_verified").defaultTo(false);
+      table
+        .enu("status", ["active", "inactive", "blocked"], {
+          useNative: true,
+          enumName: "customer_status",
+        })
+        .defaultTo("active");
       table.timestamps(true, true);
+      table.timestamp("deleted_at").nullable().index();
     });
   }
 };

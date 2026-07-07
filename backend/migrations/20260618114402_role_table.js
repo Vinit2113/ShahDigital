@@ -9,6 +9,7 @@ exports.up = async function (knex) {
     return knex.schema.createTable("roles", (table) => {
       table.increments("role_id").primary();
       table.string("name").unique().notNullable();
+      table.timestamp("deleted_at").nullable().index();
     });
   }
 };
