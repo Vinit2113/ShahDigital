@@ -7,8 +7,6 @@ const listBrands = async (req, res) => {
       .where({ deleted_at: null })
       .andWhere({ brand_is_active: true });
 
-    console.log("Here is brands: ", brands);
-
     return res.status(200).json({
       message: "Brands fetched successfully",
       count: brands.length,

@@ -1,6 +1,6 @@
 const throwError = (message, statusCode = 500) => {
-  console.log("=-------------",statusCode);
-  
+  console.log("=-------------", statusCode);
+
   const err = new Error(message);
   err.statusCode = statusCode;
   throw err;

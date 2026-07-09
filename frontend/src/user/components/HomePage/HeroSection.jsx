@@ -1,19 +1,19 @@
 import { useEffect } from "react";
 import { Link } from "react-router";
-import { fetchHeroSec } from "../CataloguePage/CatalogueAPI";
+// import { fetchHeroSec } from "../CataloguePage/CatalogueAPI";
 
 const HeroSection = () => {
-  useEffect(() => {
-    const loadHero = async () => {
-      try {
-        const resData = await fetchHeroSec();
-        console.log("Hero Section: ", resData);
-      } catch (error) {
-        console.log("Error: ", error);
-      }
-    };
-    loadHero();
-  }, []);
+  // useEffect(() => {
+  //   const loadHero = async () => {
+  //     try {
+  //       const resData = await fetchHeroSec();
+  //       console.log("Hero Section: ", resData);
+  //     } catch (error) {
+  //       console.log("Error: ", error);
+  //     }
+  //   };
+  //   loadHero();
+  // }, []);
 
   return (
     <section className="relative overflow-hidden bg-linear-to-br from-blue-50 via-white to-blue-100">
@@ -21,7 +21,7 @@ const HeroSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-12">
           {/* LEFT CONTENT */}
           <div className="text-center lg:text-left">
-            <span className="inline-block px-4 py-2 rounded-full bg-blue-100 text-blue-700 font-medium mb-6">
+            <span className="inline-block px-4 py-2 rounded-full bg-black-100 text-blue-700 font-medium mb-6">
               Trusted Product Catalogue
             </span>
 

@@ -41,7 +41,7 @@ const insertProductMedia = async (req, res) => {
       mediaData.push({
         product_id: productId,
         media_type: "image",
-        media_url: image.filename,
+        media_url: `/uploads/products/images/${image.filename}`,
         alt_text: req.body.alt_text || null,
         display_order: order++,
       });
@@ -52,7 +52,7 @@ const insertProductMedia = async (req, res) => {
       mediaData.push({
         product_id: productId,
         media_type: "video",
-        media_url: videos[0].filename,
+        media_url: `/uploads/products/videos/${videos[0].filename}`,
         alt_text: req.body.alt_text || null,
         display_order: order++,
       });

@@ -6,6 +6,7 @@ const listProductsAdmin = require("../controllers/products/listAllProducts.contr
 const updateProduct = require("../controllers/products/updateProducts.controller");
 const deleteProduct = require("../controllers/products/softDeleteProducts.controller");
 const restoreProduct = require("../controllers/products/restoreDeletedProducts.controller");
+const catalogueList = require("../controllers/products/catalogueList.controller");
 const router = express.Router();
 
 // CREATE
@@ -38,5 +39,8 @@ router.post(
   onlyAdmins,
   restoreProduct,
 );
+
+// PRODUCT CATALOGUE LIST CODE !
+router.post("/catalogue/list", catalogueList  );
 
 module.exports = router;

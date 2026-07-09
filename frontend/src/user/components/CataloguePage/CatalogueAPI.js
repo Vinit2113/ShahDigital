@@ -2,11 +2,8 @@ import axios from "axios";
 
 const baseURL = import.meta.env.VITE_BACKEND_URL;
 
-export const fetchCatalogue = async (page, limit = 20, signal, search = "") => {
-  const res = await axios.get(`${baseURL}catalogue/list`, {
-    params: { page, limit, search: search || undefined },
-    signal,
-  });
+export const fetchCatalogue = async () => {
+  const res = await axios.post(`${baseURL}products/catalogue/list`, {});
 
   return res.data;
 };

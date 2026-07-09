@@ -1,7 +1,6 @@
 const dbConn = require("../../db/knex");
 const throwError = require("../../utils/WebError");
 
-
 const createProductAttribute = async (req, res) => {
   try {
     const { product_id, attribute_id, attribute_value } = req.body;

@@ -83,17 +83,20 @@ const CatalogueFilter = () => {
   useEffect(() => {
     const fetchFilters = async () => {
       const toastId = toast.loading("Loading filters...");
- 
+
       try {
         setLoading(true);
 
         const [brandRes, catRes] = await Promise.all([
-          axios.get("http://localhost:14892/brand/list"),
-          axios.get("http://localhost:14892/cat/list"),
+          axios.post("http://localhost:3197/brands/list-All"),
+          axios.post("http://localhost:3197/category/cat-list"),
         ]);
 
-        setBrands(brandRes.data.Brands?.map((i) => i.brand_name) || []);
-        setCategories(catRes.data.categories?.map((i) => i.cat_name) || []);
+
+        setBrands(brandRes.data.brands?.map((i) => i.brand_display_name) || []);
+        setCategories(
+          catRes.data.categories?.map((i) => i.cat_display_name) || [],
+        );
 
         toast.success("Filters loaded", { id: toastId });
       } catch (error) {
