@@ -3,19 +3,21 @@ const throwError = require("../../utils/WebError");
 
 const insertProductMedia = async (req, res) => {
   const trx = await dbConn.transaction();
+
   try {
     const productId = Number(req.params.product_id);
-    const productFile = req.files;
 
     if (isNaN(productId)) {
       throwError("Product Id must be a number", 400);
     }
 
-    if (!productFile || productFile.length === 0) {
-      throwError("Atleast single image required", 400);
+    const files = req.files;
+
+    if (!files || Object.keys(files).length === 0) {
+      throwError("At least one image or video is required", 400);
     }
 
-    //   CHECK IF PRODUCT EXISTS ON THIS ID
+    // CHECK PRODUCT EXISTS
     const existsProduct = await dbConn("shahDigital.products")
       .where({
         product_id: productId,
@@ -25,44 +27,59 @@ const insertProductMedia = async (req, res) => {
       .first();
 
     if (!existsProduct) {
-      throwError("Prodcut not found", 404);
+      throwError("Product not found", 404);
     }
 
-    const images = req.files?.product_image || [];
-    const videos = req.files?.product_video || [];
-
-    if (images.length === 0 && videos.length === 0) {
-      throwError("At least one image or video is required", 400);
-    }
     const mediaData = [];
     let order = 1;
-    //   STORE IMAGE
-    images.forEach((image) => {
+
+    // MERGE ALL UPLOADED FILES
+    const uploadedFiles = [
+      ...(files.product_image || []),
+      ...(files.product_video || []),
+    ];
+
+    uploadedFiles.forEach((file) => {
+      let mediaType;
+
+      // IMAGE CHECK
+      if (
+        file.fieldname === "product_image" ||
+        file.mimetype.startsWith("image/")
+      ) {
+        mediaType = "image";
+      }
+
+      // VIDEO CHECK
+      else if (
+        file.fieldname === "product_video" ||
+        file.mimetype.startsWith("video/")
+      ) {
+        mediaType = "video";
+      } else {
+        throwError("Invalid media type", 400);
+      }
+
+      let mediaPath;
+
+      if (mediaType === "image") {
+        mediaPath = `/uploads/products/images/${file.filename}`;
+      } else {
+        mediaPath = `/uploads/products/videos/${file.filename}`;
+      }
+
       mediaData.push({
         product_id: productId,
-        media_type: "image",
-        media_url: `/uploads/products/images/${image.filename}`,
+        media_type: mediaType,
+        media_url: mediaPath,
         alt_text: req.body.alt_text || null,
         display_order: order++,
       });
     });
 
-    //   STORE VIDEO
-    if (videos.length > 0) {
-      mediaData.push({
-        product_id: productId,
-        media_type: "video",
-        media_url: `/uploads/products/videos/${videos[0].filename}`,
-        alt_text: req.body.alt_text || null,
-        display_order: order++,
-      });
-    }
-
-    //   INSERT INTO DATABASE
     await trx("shahDigital.product_media").insert(mediaData);
-    await trx.commit();
 
-    //   IF EXSITS STORE THE ID CONNECTED TO THAT PRODUCTS IN THIS PRODUCT MEDIA
+    await trx.commit();
 
     return res.status(200).json({
       success: true,
@@ -70,10 +87,13 @@ const insertProductMedia = async (req, res) => {
       data: mediaData,
     });
   } catch (error) {
+    await trx.rollback();
+
     console.log(error);
-    return res
-      .status(error.statusCode || 500)
-      .json({ message: error.message || "INTERNAL SERVER ERROR" });
+
+    return res.status(error.statusCode || 500).json({
+      message: error.message || "INTERNAL SERVER ERROR",
+    });
   }
 };
 

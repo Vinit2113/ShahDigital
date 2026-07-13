@@ -9,4 +9,4 @@ const onlyAdmins = async (req, res, next) => {
   }
 };
 
-module.exports = onlyAdmins
+module.exports = onlyAdmins;

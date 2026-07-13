@@ -9,11 +9,13 @@ const userBlock = require("../controllers/admin/blockUser.controller");
 const {
   deleteUser,
 } = require("../controllers/admin/deleteUserByAdmin.controller");
+const logouAdmin = require("../controllers/admin/adminLogout.controller");
 const router = express.Router();
 
 // AUTH
 router.post("/admin-auth-register", registerAdmin);
 router.post("/admin-auth-login", loginAdmin);
+router.post("/admin-auth-logout", logouAdmin);
 
 // LIST ALL USER'S PROFILE
 router.get("/admin-list-users", verifyToken, listAllProfile);

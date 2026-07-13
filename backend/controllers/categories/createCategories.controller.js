@@ -24,16 +24,14 @@ const createCategory = async (req, res) => {
     }
 
     // 3. INSERT CATEGORY
-    const [newCategory] = await dbConn("shahDigital.categories")
-      .insert({
-        cat_name: normalizedName, // for logic/search
-        cat_display_name: trimmedName, // for display
-        cat_description: cat_description?.trim() || null,
-        cat_is_active: true,
-        created_at: new Date(),
-        updated_at: new Date(),
-      })
-      .returning(["cat_id", "cat_name", "cat_description", "cat_is_active"]);
+    const [newCategory] = await dbConn("shahDigital.categories").insert({
+      cat_name: normalizedName, // for logic/search
+      cat_display_name: trimmedName, // for display
+      cat_description: cat_description?.trim() || null,
+      cat_is_active: true,
+      created_at: new Date(),
+      updated_at: new Date(),
+    });
 
     return res.status(201).json({
       message: "Category created successfully",

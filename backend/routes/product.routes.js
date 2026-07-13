@@ -2,11 +2,13 @@ const express = require("express");
 const createProducts = require("../controllers/products/createProducts.controller");
 const verifyToken = require("../utils/verifyToken");
 const onlyAdmins = require("../middleware/requireAdmin.middleware");
-const listProductsAdmin = require("../controllers/products/listAllProducts.controller");
+const listProductsAdmin = require("../controllers/products/listAllProductsAdmin.controller");
 const updateProduct = require("../controllers/products/updateProducts.controller");
 const deleteProduct = require("../controllers/products/softDeleteProducts.controller");
 const restoreProduct = require("../controllers/products/restoreDeletedProducts.controller");
 const catalogueList = require("../controllers/products/catalogueList.controller");
+const listProducts = require("../controllers/products/allProducts.controller");
+const getProductById = require("../controllers/products/getProductById.controller");
 const router = express.Router();
 
 // CREATE
@@ -18,6 +20,9 @@ router.post(
 );
 
 router.post("/admin-list", verifyToken, onlyAdmins, listProductsAdmin);
+
+router.post("/list", listProducts);
+router.post("/detail/:product_id", getProductById);
 
 router.post(
   "/update-product-:product_id",

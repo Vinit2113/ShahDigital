@@ -30,7 +30,7 @@ const registerAdmin = async (req, res) => {
     const saltRound = parseInt(process.env.SALTROUND) || 10;
     const hashPassword = await bcrypt.hash(normalizePassword, saltRound);
 
-    const adminId = await dbConn.transaction(async (trx) => {
+    const admin = await dbConn.transaction(async (trx) => {
       const customer = trx("shahDigital.customers");
 
       // CHECK IF USER EXISTS OR NOT !
@@ -64,16 +64,18 @@ const registerAdmin = async (req, res) => {
         user_id: userId,
         role_id: role.role_id,
       });
-      return userId;
+      return {
+        id: userId,
+        role: role.name,
+      };
     });
 
-    console.log(adminId);
 
     // GENERATE JWT TOKEN
     const token = generateToken({
-      id: adminId,
+      id: admin.id,
       email: normalizeEmail,
-      role: adminId.roleName,
+      role: admin.role,
     });
 
     // SENDING TOKEN TO FRONTEND USING COOKIE
@@ -86,8 +88,12 @@ const registerAdmin = async (req, res) => {
 
     return res.status(201).json({
       message: "Admin registered successfully",
-      adminId,
-      username,
+      admin: {
+        id: admin.id,
+        name: normalizeName,
+        email: normalizeEmail,
+        username,
+      },
     });
   } catch (error) {
     console.log("Admin register error: ", error);

@@ -1,7 +1,11 @@
 import React from "react";
 import logo from "../../assets/Logo_shahdigital_no_bg.png";
+import adminNavbarHook from "../hooks/adminNavbarHooks";
+import { useNavigate } from "react-router";
 
 const AdminNavbar = () => {
+  const admin = adminNavbarHook();
+  const navigate = useNavigate();
   return (
     <header className="fixed top-0 left-0 right-0 z-50 h-16 bg-white border-b border-gray-200">
       <div className="h-full px-4 sm:px-8 flex items-center justify-between">
@@ -50,14 +54,21 @@ const AdminNavbar = () => {
             <span className="absolute top-1.5 right-1.5 h-2 w-2 bg-red-500 rounded-full ring-2 ring-white"></span>
           </button>
 
-          <div className="flex items-center gap-3 px-2 py-1.5 rounded-md hover:bg-gray-100 transition cursor-pointer">
+          <div
+            onClick={() => navigate("/admin/profile")}
+            className="flex items-center gap-3 px-2 py-1.5 rounded-md hover:bg-gray-100 transition cursor-pointer"
+          >
             <div className="h-9 w-9 rounded-md bg-gray-900 text-white flex items-center justify-center font-semibold">
-              A
+              {admin?.name?.charAt(0) || "A"}
             </div>
 
             <div className="hidden sm:block leading-tight">
-              <p className="text-sm font-semibold text-gray-900">Admin</p>
-              <p className="text-[11px] text-gray-500">Super User</p>
+              <p className="text-sm font-semibold text-gray-900">
+                {admin?.name || "Admin"}
+              </p>
+              <p className="text-[11px] text-gray-500">
+                {admin?.role || "Admin"}
+              </p>
             </div>
           </div>
         </div>

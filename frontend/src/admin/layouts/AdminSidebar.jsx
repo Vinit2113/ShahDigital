@@ -16,6 +16,7 @@ import {
   Layers,
   Tag,
 } from "lucide-react";
+import adminLogoutHook from "../hooks/userAdminLogoutHooks";
 
 /* -----------------------------
    Menu Builder (CRUD-focused)
@@ -56,7 +57,7 @@ const buildMenu = (data) => [
     children: [
       {
         title: "All Categories",
-        path: "/admin/categories",
+        path: "/admin/categories/list",
         count: data?.categories?.length,
       },
       {
@@ -157,6 +158,8 @@ const buildMenu = (data) => [
 ------------------------------*/
 const AdminSidebar = ({ data }) => {
   const menuItems = buildMenu(data);
+
+  const { logout, loading } = adminLogoutHook();
 
   const [openMenu, setOpenMenu] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -289,9 +292,13 @@ const AdminSidebar = ({ data }) => {
 
           {/* LOGOUT */}
           <div className="mt-auto pt-4 border-t">
-            <button className="flex items-center gap-3 w-full px-4 py-3 rounded-lg hover:bg-red-50 text-red-500 transition active:scale-[0.98]">
+            <button
+              onClick={logout}
+              disabled={loading}
+              className="flex items-center gap-3 w-full px-4 py-3 rounded-lg hover:bg-red-50 text-red-500 transition active:scale-[0.98] cursor-pointer"
+            >
               <LogOut size={20} />
-              Logout
+              {loading ? "Logging out..." : "Logout"}
             </button>
           </div>
         </div>

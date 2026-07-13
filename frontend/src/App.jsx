@@ -4,11 +4,18 @@ import UnderConstruction from "./user/pages/UnderConstruction";
 import CataloguePage from "./user/pages/CataloguePage";
 import Navbar from "./user/layouts/Navbar";
 import Footer from "./user/layouts/Footer";
-import AdminLayout from "./admin/pages/AdminLayout";
 import RegisterPage from "./user/pages/RegisterPage";
 import LoginPage from "./user/pages/LoginPage";
 import RegisterAdmin from "./admin/pages/RegisterAdmin";
 import { Toaster } from "react-hot-toast";
+
+import AdminDashboard from "./admin/pages/AdminDashboard";
+import AdminNavbar from "./admin/layouts/AdminNavbar";
+import AdminSidebar from "./admin/layouts/AdminSidebar";
+import LoginAdmin from "./admin/pages/LoginAdmin";
+import AdminProfile from "./admin/components/admins/AdminProfile";
+import AddCategory from "./admin/components/CategoryAdmin/AddCategory";
+import ListCategory from "./admin/components/CategoryAdmin/ListCategory";
 
 // Layout wrapper
 const UserLayout = () => (
@@ -16,6 +23,17 @@ const UserLayout = () => (
     <Navbar />
     <Outlet />
     <Footer />
+  </div>
+);
+
+const AdminLayout = () => (
+  <div className="min-h-screen bg-gray-50">
+    <AdminNavbar />
+    <AdminSidebar />
+
+    <main className="ml-64 mt-16 min-h-[calc(100vh-64px)] p-6">
+      <Outlet />
+    </main>
   </div>
 );
 
@@ -39,8 +57,18 @@ const App = () => {
         </Route>
 
         {/* ADMIN ROUTES */}
-        <Route path="/admin" element={<AdminLayout />} />
+
         <Route path="/admin/register" element={<RegisterAdmin />} />
+        <Route path="/admin/login" element={<LoginAdmin />} />
+
+        <Route element={<AdminLayout />}>
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/profile" element={<AdminProfile />} />
+
+          {/* CATEGORY ROUTES */}
+          <Route path="/admin/categories/new" element={<AddCategory />} />
+          <Route path="/admin/categories/list" element={<ListCategory />} />
+        </Route>
       </Routes>
       <Toaster position="top-center" reverseOrder={false} />
     </BrowserRouter>

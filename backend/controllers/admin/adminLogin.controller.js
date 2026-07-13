@@ -59,10 +59,14 @@ const loginAdmin = async (req, res) => {
       email: user.email,
       role: roleName,
     });
+    res.cookie("access_token", token, {
+      httpOnly: true, // Prevents JS access (protects against XSS)
+      sameSite: "strict", // CSRF protection
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    });
 
     return res.status(200).json({
       message: "Login successful",
-      token,
       user: {
         id: user.id,
         name: user.name,

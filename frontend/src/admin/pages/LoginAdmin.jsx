@@ -1,19 +1,19 @@
 import React from "react";
 import {
-  UserPlus,
   Mail,
   Lock,
-  User,
   ShieldCheck,
   Eye,
   EyeOff,
+  LogIn,
+  UserPlus,
 } from "lucide-react";
 
 import logo from "../../assets/Logo_shahdigital_no_bg.png";
 import { useNavigate } from "react-router";
-import adminRegisterHook from "../hooks/adminRegisterHooks";
+import adminLoginHook from "../hooks/adminLoginHooks";
 
-const RegisterAdmin = () => {
+const LoginAdmin = () => {
   const {
     formData,
     handleChange,
@@ -21,7 +21,7 @@ const RegisterAdmin = () => {
     loading,
     showPassword,
     setShowPassword,
-  } = adminRegisterHook();
+  } = adminLoginHook();
 
   const navigate = useNavigate();
 
@@ -44,14 +44,12 @@ const RegisterAdmin = () => {
           </p>
 
           <h1 className="text-2xl font-bold leading-tight mt-2">
-            Build, Manage & Grow Your Digital Business
+            Welcome Back To Your Digital Control Center
           </h1>
 
           <p className="text-xs text-gray-300 leading-6 mt-3">
-            Shah Digital provides modern digital solutions designed to simplify
-            business operations. Our secure admin systems help teams manage
-            their platforms efficiently with powerful tools and reliable
-            security.
+            Access your admin dashboard securely and manage your digital
+            operations with powerful tools built for modern businesses.
           </p>
 
           <div className="mt-5 space-y-3">
@@ -61,24 +59,10 @@ const RegisterAdmin = () => {
               </div>
 
               <div>
-                <h3 className="text-sm font-medium">Secure Platform</h3>
+                <h3 className="text-sm font-medium">Secure Login</h3>
 
                 <p className="text-xs text-gray-400 mt-1">
-                  Protected authentication and admin access control.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex gap-3">
-              <div className="h-8 w-8 rounded-lg bg-white/10 flex items-center justify-center">
-                <UserPlus size={18} />
-              </div>
-
-              <div>
-                <h3 className="text-sm font-medium">Easy Management</h3>
-
-                <p className="text-xs text-gray-400 mt-1">
-                  Simple dashboard experience for administrators.
+                  Protected authentication system.
                 </p>
               </div>
             </div>
@@ -89,10 +73,24 @@ const RegisterAdmin = () => {
               </div>
 
               <div>
-                <h3 className="text-sm font-medium">Data Protection</h3>
+                <h3 className="text-sm font-medium">Data Security</h3>
 
                 <p className="text-xs text-gray-400 mt-1">
-                  Security-focused system architecture.
+                  Your admin access stays protected.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <div className="h-8 w-8 rounded-lg bg-white/10 flex items-center justify-center">
+                <LogIn size={18} />
+              </div>
+
+              <div>
+                <h3 className="text-sm font-medium">Fast Access</h3>
+
+                <p className="text-xs text-gray-400 mt-1">
+                  Quickly access your dashboard.
                 </p>
               </div>
             </div>
@@ -105,7 +103,7 @@ const RegisterAdmin = () => {
           </div>
         </div>
 
-        {/* ================= RIGHT REGISTER SECTION ================= */}
+        {/* ================= LOGIN SECTION ================= */}
 
         <div className="p-5 flex items-center">
           <div className="w-full max-w-md mx-auto">
@@ -117,42 +115,18 @@ const RegisterAdmin = () => {
               </p>
 
               <h1 className="text-2xl font-bold text-gray-900 mt-1">
-                Create Admin Account
+                Admin Login
               </h1>
 
               <p className="text-sm text-gray-500 mt-2">
-                Register a new administrator for your dashboard
+                Sign in to access your dashboard
               </p>
             </div>
 
-            {/* REGISTER CARD */}
+            {/* LOGIN CARD */}
 
             <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-4">
               <form onSubmit={handleSubmit} className="space-y-3">
-                {/* NAME */}
-
-                <div>
-                  <label className="text-sm font-medium text-gray-700">
-                    Full Name
-                  </label>
-
-                  <div className="relative mt-2">
-                    <User
-                      size={18}
-                      className="absolute left-3 top-3 text-gray-400"
-                    />
-
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      placeholder="Admin Name"
-                      className="w-full pl-10 pr-3 py-3 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-gray-900 transition"
-                    />
-                  </div>
-                </div>
-
                 {/* EMAIL */}
 
                 <div>
@@ -209,51 +183,23 @@ const RegisterAdmin = () => {
                   </div>
                 </div>
 
-                {/* CONFIRM PASSWORD */}
+                {/* REMEMBER */}
 
-                <div>
-                  <label className="text-sm font-medium text-gray-700">
-                    Confirm Password
-                  </label>
-
-                  <div className="relative mt-2">
-                    <ShieldCheck
-                      size={18}
-                      className="absolute left-3 top-3 text-gray-400"
-                    />
-
+                <div className="flex items-center justify-between">
+                  <label className="flex items-center gap-2 text-sm text-gray-600">
                     <input
-                      type="password"
-                      name="confirmPassword"
-                      value={formData.confirmPassword}
-                      onChange={handleChange}
-                      placeholder="Confirm password"
-                      className="w-full pl-10 pr-3 py-3 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-gray-900 transition"
+                      type="checkbox"
+                      className="h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
                     />
-                  </div>
-                </div>
-
-                {/* AGREEMENT */}
-
-                <div className="flex items-start gap-3">
-                  <input
-                    type="checkbox"
-                    name="agreement"
-                    checked={formData.agreement}
-                    onChange={handleChange}
-                    className="mt-1 h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
-                  />
-
-                  <label className="text-sm text-gray-600">
-                    I agree to the{" "}
-                    <span className="font-medium text-gray-900 hover:underline cursor-pointer">
-                      Terms & Conditions
-                    </span>{" "}
-                    and{" "}
-                    <span className="font-medium text-gray-900 hover:underline cursor-pointer">
-                      Privacy Policy
-                    </span>
+                    Remember me
                   </label>
+
+                  <button
+                    type="button"
+                    className="text-sm text-gray-900 hover:underline"
+                  >
+                    Forgot Password?
+                  </button>
                 </div>
 
                 {/* BUTTON */}
@@ -267,14 +213,13 @@ const RegisterAdmin = () => {
                     py-3 rounded-lg
                     hover:bg-black
                     transition
-                    cursor-pointer
                     active:scale-[0.98]
                     disabled:opacity-60
                   "
                 >
-                  <UserPlus size={18} />
+                  <LogIn size={18} />
 
-                  {loading ? "Creating Account..." : "Create Account"}
+                  {loading ? "Signing In..." : "Login"}
                 </button>
               </form>
 
@@ -285,17 +230,17 @@ const RegisterAdmin = () => {
               </div>
             </div>
 
-            {/* LOGIN */}
+            {/* REGISTER */}
 
             <div className="mt-5 text-center">
               <p className="text-sm text-gray-500">
-                Already have an admin account?{" "}
+                Don't have an admin account?{" "}
                 <button
                   type="button"
-                  onClick={() => navigate("/admin/login")}
+                  onClick={() => navigate("/admin/register")}
                   className="font-medium text-gray-900 hover:underline cursor-pointer"
                 >
-                  Login
+                  Create Account
                 </button>
               </p>
             </div>
@@ -307,7 +252,7 @@ const RegisterAdmin = () => {
                 <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
 
                 <span className="text-xs text-gray-600">
-                  Secure Registration Enabled
+                  Secure Login Enabled
                 </span>
               </div>
             </div>
@@ -318,4 +263,4 @@ const RegisterAdmin = () => {
   );
 };
 
-export default RegisterAdmin;
+export default LoginAdmin;

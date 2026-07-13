@@ -3,22 +3,34 @@ const dbConn = require("../db/knex");
 
 const verifyToken = async (req, res, next) => {
   try {
+    let token = null;
+
+    // CHECK AUTHORIZATION HEADER
     const authHeader = req.headers.authorization;
 
     // Check Authorization header
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      token = authHeader.split(" ")[1];
+    }
+    // IF NOT HEADER CHECK COOKIE
+    if (!token && req.cookies?.access_token) {
+      token = req.cookies.access_token;
+    }
+    // IF TOKEN NOT FOUND
+    console.log("here is token", token);
+
+    if (!token) {
       return res.status(401).json({
         message: "Authorization token missing",
         code: "NO_TOKEN",
       });
     }
 
-    const token = authHeader.split(" ")[1];
-
     let decoded;
 
     try {
       decoded = jwt.verify(token, process.env.JWT_SECRET);
+      console.log("Here is Decoded: ", decoded);
     } catch (err) {
       if (err.name === "TokenExpiredError") {
         return res.status(401).json({

@@ -12,21 +12,29 @@ const listAllMedia = async (req, res) => {
         "alt_text",
         "display_order",
         "created_at",
+        "updated_at",
       )
-      .orderBy("created_at", "desc");
+      .whereNull("deleted_at") // Show only active media
+      .orderBy("product_id", "asc")
+      .orderBy("display_order", "asc");
+
     if (!media || media.length === 0) {
       throwError("No product media found", 404);
     }
+
     return res.status(200).json({
+      success: true,
       message: "Product media fetched successfully",
-      Total: media.length,
+      total: media.length,
       data: media,
     });
   } catch (error) {
-    console.log(error);
-    return res
-      .status(error.statusCode || 500)
-      .json({ message: error.message || "INTERNAL SERVER ERROR" });
+    console.log("List Media Error:", error);
+
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message || "INTERNAL SERVER ERROR",
+    });
   }
 };
 
