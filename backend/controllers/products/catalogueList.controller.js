@@ -34,6 +34,7 @@ ORDER BY p.product_id DESC; */
         "p.product_id",
         "p.product_display_name",
         "p.short_description",
+        "p.full_description",
         "pf.feature_name",
       )
       .join("shahDigital.categories AS c", "p.cat_id", "c.cat_id")
@@ -74,9 +75,33 @@ ORDER BY p.product_id DESC; */
       };
     });
 
+    const groupedProducts = Object.values(
+      catalogueWithImages.reduce((acc, item) => {
+        if (!acc[item.product_id]) {
+          acc[item.product_id] = {
+            product_id: item.product_id,
+            product_display_name: item.product_display_name,
+            short_description: item.short_description,
+            full_description: item.full_description,
+            cat_id: item.cat_id,
+            cat_display_name: item.cat_display_name,
+            brand_id: item.brand_id,
+            brand_display_name: item.brand_display_name,
+            brand_image: item.brand_image,
+            media_url: item.media_url,
+            features: [],
+          };
+        }
+
+        acc[item.product_id].features.push(item.feature_name);
+
+        return acc;
+      }, {}),
+    );
+
     return res.status(200).json({
       message: "Catalogue list fetched successfully",
-      data: catalogueWithImages,
+      data: groupedProducts,
     });
   } catch (error) {
     console.log(error);

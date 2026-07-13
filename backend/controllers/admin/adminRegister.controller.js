@@ -76,11 +76,18 @@ const registerAdmin = async (req, res) => {
       role: adminId.roleName,
     });
 
+    // SENDING TOKEN TO FRONTEND USING COOKIE
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      // secure: process.env.NODE_ENV === "production",  // HTTPS only in production
+      samSite: "strict",
+      maxAge: 24 * 60 * 60 * 1000, // 1 day time-limit
+    });
+
     return res.status(201).json({
       message: "Admin registered successfully",
       adminId,
       username,
-      token,
     });
   } catch (error) {
     console.log("Admin register error: ", error);

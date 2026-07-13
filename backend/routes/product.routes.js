@@ -41,6 +41,6 @@ router.post(
 );
 
 // PRODUCT CATALOGUE LIST CODE !
-router.post("/catalogue/list", catalogueList  );
+router.post("/catalogue/list", catalogueList);
 
 module.exports = router;

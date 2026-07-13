@@ -4,7 +4,7 @@ const throwError = require("../../utils/WebError");
 const addAttributeToCategory = async (req, res) => {
   try {
     const { catId, attributeId } = req.body;
-    
+
     if (!catId || !attributeId) {
       throwError("Category Id and Attribute Id are requried ", 400);
     }

@@ -1,12 +1,13 @@
 const express = require("express");
 const verifyToken = require("../utils/verifyToken");
 const onlyAdmins = require("../middleware/requireAdmin.middleware");
+const cat_by_id = require("../controllers/categories/categoryById.controller");
 const createCategory = require("../controllers/categories/createCategories.controller");
 const listCategories = require("../controllers/categories/listAllCategories.controller");
-const cat_by_id = require("../controllers/categories/categoryById.controller");
 const updateCatById = require("../controllers/categories/updateCategoryById.controller");
 const deleteCatById = require("../controllers/categories/deleteCatById.controller");
 const restoreCatById = require("../controllers/categories/restoreCatById.controller");
+
 const router = express.Router();
 
 // CREATE

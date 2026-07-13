@@ -1,10 +1,6 @@
 const logotuAuth = async (req, res) => {
   try {
     const userId = req.user.id;
-
-    
-
-
   } catch (error) {
     console.log(error);
 

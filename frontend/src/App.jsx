@@ -7,6 +7,8 @@ import Footer from "./user/layouts/Footer";
 import AdminLayout from "./admin/pages/AdminLayout";
 import RegisterPage from "./user/pages/RegisterPage";
 import LoginPage from "./user/pages/LoginPage";
+import RegisterAdmin from "./admin/pages/RegisterAdmin";
+import { Toaster } from "react-hot-toast";
 
 // Layout wrapper
 const UserLayout = () => (
@@ -33,11 +35,14 @@ const App = () => {
           <Route path="/products" element={<UnderConstruction />} />
           <Route path="/service" element={<UnderConstruction />} />
           <Route path="/catalogue" element={<CataloguePage />} />
+          <Route path="/contact-us" element={<UnderConstruction />} />
         </Route>
 
         {/* ADMIN ROUTES */}
         <Route path="/admin" element={<AdminLayout />} />
+        <Route path="/admin/register" element={<RegisterAdmin />} />
       </Routes>
+      <Toaster position="top-center" reverseOrder={false} />
     </BrowserRouter>
   );
 };
