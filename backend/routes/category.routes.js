@@ -7,6 +7,7 @@ const listCategories = require("../controllers/categories/listAllCategories.cont
 const updateCatById = require("../controllers/categories/updateCategoryById.controller");
 const deleteCatById = require("../controllers/categories/deleteCatById.controller");
 const restoreCatById = require("../controllers/categories/restoreCatById.controller");
+const listCatAdmin = require("../controllers/categories/listForAdminCategory.controller");
 
 const router = express.Router();
 
@@ -25,5 +26,8 @@ router.post("/cat-delete-id/:cat_id", verifyToken, onlyAdmins, deleteCatById);
 
 // RESTORE
 router.post("/cat-restore-id/:cat_id", verifyToken, onlyAdmins, restoreCatById);
+
+// LIST FOR ADMIN
+router.post("/cat-list-admin/", verifyToken, onlyAdmins, listCatAdmin);
 
 module.exports = router;

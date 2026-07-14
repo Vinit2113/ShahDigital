@@ -26,6 +26,8 @@ const UserLayout = () => (
   </div>
 );
 
+// STATUS LOGGIN
+
 const AdminLayout = () => (
   <div className="min-h-screen bg-gray-50">
     <AdminNavbar />
@@ -57,7 +59,7 @@ const App = () => {
         </Route>
 
         {/* ADMIN ROUTES */}
-
+        {/* UNIVERSAL FALLBACK CODE ! */}
         <Route path="/admin/register" element={<RegisterAdmin />} />
         <Route path="/admin/login" element={<LoginAdmin />} />
 

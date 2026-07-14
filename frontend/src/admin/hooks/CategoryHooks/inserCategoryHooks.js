@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
+import categoriesServicces from "../../services/categoriesServicces";
 
 const baseURL = import.meta.env.VITE_BACKEND_URL;
 
@@ -27,22 +28,18 @@ const addCatHook = () => {
     try {
       setLoading(true);
 
-      const res = await axios.post(
-        `${baseURL}category/cat-insert`,
-        {
-          cat_name: form.name,
-          cat_description: form.description,
-        },
-        {
-          withCredentials: true,
-        },
-      );
-      toast.success(res.data.message || "Category Inserted successfully");
+      const data = {
+        cat_name: form.name,
+        cat_description: form.description,
+      };
+
+      const res = await categoriesServicces.insertCatApi(data);
+      toast.success("Category Inserted successfully");
       setForm({
         name: "",
         description: "",
       });
-      navigate("/admin");
+      navigate("/admin/categories/list");
     } catch (error) {
       console.log("Cat front error: ", error);
       return toast.error(

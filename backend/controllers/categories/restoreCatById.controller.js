@@ -10,7 +10,7 @@ const restoreCatById = async (req, res) => {
     }
 
     //   1. CHECK IF CATEGORY EXISTS AND IS DELETED
-    const category = dbConn("shahDigital.categories")
+    const category = await dbConn("shahDigital.categories")
       .where({
         cat_id: catId,
       })

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import addCatHook from "../../hooks/CategoryHooks/inserCategoryHooks";
 
 const AddCategory = () => {
+  const navigate = useNavigate();
   const { form, handleChange, handleSubmit, loading } = addCatHook();
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -17,7 +18,7 @@ const AddCategory = () => {
         </div>
 
         <button
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/admin/categories/list")}
           className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-100 transition"
         >
           <ArrowLeft size={18} />

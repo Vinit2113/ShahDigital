@@ -17,7 +17,6 @@ const verifyToken = async (req, res, next) => {
       token = req.cookies.access_token;
     }
     // IF TOKEN NOT FOUND
-    console.log("here is token", token);
 
     if (!token) {
       return res.status(401).json({
@@ -30,7 +29,6 @@ const verifyToken = async (req, res, next) => {
 
     try {
       decoded = jwt.verify(token, process.env.JWT_SECRET);
-      console.log("Here is Decoded: ", decoded);
     } catch (err) {
       if (err.name === "TokenExpiredError") {
         return res.status(401).json({
