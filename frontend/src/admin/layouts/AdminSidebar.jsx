@@ -15,7 +15,15 @@ import {
   PlusCircle,
   Layers,
   Tag,
+  ExternalLink,
+  List,
+  UserRound,
+  MapPin,
+  RotateCcw,
+  Image,
+  FolderTree,
 } from "lucide-react";
+
 import adminLogoutHook from "../hooks/userAdminLogoutHooks";
 
 /* -----------------------------
@@ -59,14 +67,39 @@ const buildMenu = (data) => [
         title: "All Categories",
         path: "/admin/categories/list",
         count: data?.categories?.length,
+        icon: <List size={16} />,
       },
       {
         title: "Add Category",
         path: "/admin/categories/new",
+        icon: <PlusCircle size={16} />,
       },
       {
         title: "Category Tree",
         path: "/admin/categories/tree",
+        icon: <FolderTree size={16} />,
+      },
+    ],
+  },
+
+  {
+    title: "Attributes",
+    icon: <Layers size={20} />,
+    children: [
+      {
+        title: "All Attributes",
+        path: "/admin/attributes/list",
+        icon: <List size={16} />,
+      },
+      {
+        title: "Create Attribute",
+        path: "/admin/attributes/add",
+        icon: <PlusCircle size={16} />,
+      },
+      {
+        title: "Assign To Category",
+        path: "/admin/attributes/assign",
+        icon: <Tag size={16} />,
       },
     ],
   },
@@ -79,10 +112,12 @@ const buildMenu = (data) => [
         title: "All Brands",
         path: "/admin/brands",
         count: data?.brands?.length,
+        icon: <Tag size={16} />,
       },
       {
         title: "Add Brand",
         path: "/admin/brands/new",
+        icon: <PlusCircle size={16} />,
       },
     ],
   },
@@ -95,14 +130,17 @@ const buildMenu = (data) => [
         title: "All Orders",
         path: "/admin/orders",
         count: data?.orders?.length,
+        icon: <Package size={16} />,
       },
       {
         title: "Pending Orders",
         path: "/admin/orders/pending",
+        icon: <Truck size={16} />,
       },
       {
         title: "Completed Orders",
         path: "/admin/orders/completed",
+        icon: <Package size={16} />,
       },
     ],
   },
@@ -114,10 +152,12 @@ const buildMenu = (data) => [
       {
         title: "All Customers",
         path: "/admin/customers",
+        icon: <UserRound size={16} />,
       },
       {
         title: "Addresses",
         path: "/admin/customers/addresses",
+        icon: <MapPin size={16} />,
       },
     ],
   },
@@ -129,10 +169,12 @@ const buildMenu = (data) => [
       {
         title: "Transactions",
         path: "/admin/payments",
+        icon: <CreditCard size={16} />,
       },
       {
         title: "Refunds",
         path: "/admin/payments/refunds",
+        icon: <RotateCcw size={16} />,
       },
     ],
   },
@@ -144,15 +186,16 @@ const buildMenu = (data) => [
       {
         title: "Media Library",
         path: "/admin/media",
+        icon: <Image size={16} />,
       },
       {
         title: "Settings",
         path: "/admin/settings",
+        icon: <Settings size={16} />,
       },
     ],
   },
 ];
-
 /* -----------------------------
       Sidebar Component
 ------------------------------*/
@@ -176,7 +219,7 @@ const AdminSidebar = ({ data }) => {
   const handleNavigate = (path) => {
     if (path) {
       navigate(path);
-      setIsOpen(false); // close sidebar on mobile
+      setIsOpen(false);
     }
   };
 
@@ -187,6 +230,7 @@ const AdminSidebar = ({ data }) => {
         <button onClick={() => setIsOpen(true)}>
           <Menu />
         </button>
+
         <span className="ml-3 font-semibold">Admin Panel</span>
       </div>
 
@@ -275,6 +319,7 @@ const AdminSidebar = ({ data }) => {
                     >
                       <span className="flex items-center gap-2">
                         {child.icon}
+
                         {child.title}
                       </span>
 
@@ -290,14 +335,26 @@ const AdminSidebar = ({ data }) => {
             ))}
           </nav>
 
+          {/* GO TO WEBSITE */}
+          <div className="pt-4 border-t">
+            <button
+              onClick={() => window.open("/", "_blank")}
+              className="flex items-center gap-3 w-full px-4 py-3 rounded-lg hover:bg-blue-50 text-blue-600 transition active:scale-[0.98] cursor-pointer"
+            >
+              <ExternalLink size={20} />
+              Go to Website
+            </button>
+          </div>
+
           {/* LOGOUT */}
-          <div className="mt-auto pt-4 border-t">
+          <div className="pt-4 border-t">
             <button
               onClick={logout}
               disabled={loading}
               className="flex items-center gap-3 w-full px-4 py-3 rounded-lg hover:bg-red-50 text-red-500 transition active:scale-[0.98] cursor-pointer"
             >
               <LogOut size={20} />
+
               {loading ? "Logging out..." : "Logout"}
             </button>
           </div>

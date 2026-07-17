@@ -1,7 +1,5 @@
-import { Edit, Trash2, Plus, Check, X } from "lucide-react";
+import { Layers, Plus, Search, Pencil, Trash2, Check, X } from "lucide-react";
 import { useNavigate } from "react-router";
-
-import { useEffect, useState } from "react";
 import useCategory from "../../hooks/CategoryHooks/commontCatHooks";
 
 const ListCategory = () => {
@@ -9,166 +7,292 @@ const ListCategory = () => {
 
   const {
     categories,
-    loading,
     editId,
     editData,
     setEditData,
+    search,
+    setSearch,
     handleEdit,
     handleCancel,
     handleUpdate,
     handleDelete,
-    handleRestore,
     handleStatusToggle,
   } = useCategory();
 
+  const activeCount = categories.filter((c) => c.cat_is_active).length;
+  const inactiveCount = categories.length - activeCount;
+
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      {/* Header */}
-      <div className="bg-white border border-gray-200 rounded-xl p-5 mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold text-gray-900">Categories</h1>
+    <div className="min-h-screen bg-gray-50 p-6 md:p-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="flex flex-col lg:flex-row justify-between lg:items-center gap-5 mb-8">
+          <div>
+            <p className="text-sm text-gray-500">Admin / Categories</p>
 
-          <p className="text-sm text-gray-500 mt-1">
-            Manage your product categories.
-          </p>
-        </div>
+            <h1 className="text-3xl font-bold text-gray-800 mt-2">
+              Product Categories
+            </h1>
 
-        <button
-          onClick={() => navigate("/admin/categories/new")}
-          className="flex items-center gap-2 px-5 py-3 rounded-lg bg-black text-white hover:bg-gray-800 transition"
-        >
-          <Plus size={18} />
-          Add Category
-        </button>
-      </div>
-
-      {/* Table */}
-      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-        <div className="grid grid-cols-12 px-6 py-4 border-b border-gray-200 text-sm font-semibold text-gray-600 bg-gray-50">
-          <div className="col-span-1">#</div>
-          <div className="col-span-2">Name</div>
-          <div className="col-span-2">Display Name</div>
-          <div className="col-span-3">Description</div>
-          <div className="col-span-1">Created</div>
-          <div className="col-span-1">Updated</div>
-          <div className="col-span-1 text-center">Status</div>
-          <div className="col-span-1 text-center">Actions</div>
-        </div>
-
-        {categories.length === 0 ? (
-          <div className="py-8 text-center text-gray-500">
-            No categories found.
+            <p className="text-gray-500 mt-2">
+              Manage categories used across products.
+            </p>
           </div>
-        ) : (
-          categories.map((category, index) => (
-            <div
-              key={category.cat_id}
-              className="grid grid-cols-12 items-center px-6 py-5 border-b border-gray-100 hover:bg-gray-50 transition"
-            >
-              <div className="col-span-1 text-gray-500">{index + 1}</div>
 
-              {/* Name */}
-              <div className="col-span-2 font-medium text-gray-900">
-                {editId === category.cat_id ? (
-                  <input
-                    value={editData.cat_name}
-                    onChange={(e) =>
-                      setEditData({
-                        ...editData,
-                        cat_name: e.target.value,
-                      })
-                    }
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2"
-                  />
-                ) : (
-                  category.cat_name
-                )}
+          <button
+            onClick={() => navigate("/admin/categories/new")}
+            className="flex items-center gap-2 bg-black text-white px-6 py-3 rounded-xl hover:bg-gray-800 transition"
+          >
+            <Plus size={18} />
+            Add Category
+          </button>
+        </div>
+
+        {/* Stats */}
+        <div className="grid md:grid-cols-3 gap-5 mb-7">
+          <div className="bg-white rounded-2xl border border-gray-200 p-6">
+            <p className="text-sm text-gray-500">Total Categories</p>
+
+            <h2 className="text-3xl font-bold mt-2">{categories.length}</h2>
+          </div>
+
+          <div className="bg-white rounded-2xl border border-gray-200 p-6">
+            <p className="text-sm text-gray-500">Active</p>
+
+            <h2 className="text-3xl font-bold text-green-600 mt-2">
+              {activeCount}
+            </h2>
+          </div>
+
+          <div className="bg-white rounded-2xl border border-gray-200 p-6">
+            <p className="text-sm text-gray-500">Inactive</p>
+
+            <h2 className="text-3xl font-bold text-red-500 mt-2">
+              {inactiveCount}
+            </h2>
+          </div>
+        </div>
+
+        {/* Table Card */}
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          {/* Table Header */}
+          <div className="border-b border-gray-200 p-6 flex flex-col lg:flex-row justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 rounded-xl bg-gray-100 flex items-center justify-center">
+                <Layers size={26} className="text-gray-700" />
               </div>
 
-              <div className="col-span-2">{category.cat_display_name}</div>
+              <div>
+                <h2 className="font-semibold text-lg">Category Management</h2>
 
-              {/* Description */}
-              <div className="col-span-3 text-sm text-gray-500 truncate">
-                {editId === category.cat_id ? (
-                  <textarea
-                    value={editData.cat_description}
-                    onChange={(e) =>
-                      setEditData({
-                        ...editData,
-                        cat_description: e.target.value,
-                      })
-                    }
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2"
-                  />
-                ) : (
-                  category.cat_description
-                )}
-              </div>
-
-              <div className="col-span-1 text-sm text-gray-500">
-                {category.created_at
-                  ? new Date(category.created_at).toLocaleDateString()
-                  : "-"}
-              </div>
-
-              <div className="col-span-1 text-sm text-gray-500">
-                {category.updated_at
-                  ? new Date(category.updated_at).toLocaleDateString()
-                  : "-"}
-              </div>
-
-              <div className="col-span-1 flex justify-center">
-                <button
-                  onClick={() => handleStatusToggle(category)}
-                  className={`px-3 py-1 rounded-full text-xs font-medium transition ${
-                    category.cat_is_active
-                      ? "bg-green-100 text-green-700 hover:bg-green-200"
-                      : "bg-red-100 text-red-700 hover:bg-red-200"
-                  }`}
-                >
-                  {category.cat_is_active ? "Active" : "Inactive"}
-                </button>
-              </div>
-
-              {/* Actions */}
-              <div className="col-span-1 flex justify-center gap-3">
-                {editId === category.cat_id ? (
-                  <>
-                    <button
-                      onClick={() => handleUpdate(category.cat_id)}
-                      className="p-2 rounded-lg border border-green-200 text-green-600 hover:bg-green-50"
-                    >
-                      <Check size={18} />
-                    </button>
-
-                    <button
-                      onClick={handleCancel}
-                      className="p-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-100"
-                    >
-                      <X size={18} />
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      onClick={() => handleEdit(category)}
-                      className="p-2 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-100"
-                    >
-                      <Edit size={18} />
-                    </button>
-
-                    <button
-                      onClick={() => handleDelete(category.cat_id)}
-                      className="p-2 rounded-lg border border-red-200 text-red-600 hover:bg-red-50"
-                    >
-                      <Trash2 size={18} />
-                    </button>
-                  </>
-                )}
+                <p className="text-sm text-gray-500">
+                  View, edit and manage categories.
+                </p>
               </div>
             </div>
-          ))
-        )}
+
+            <div className="relative flex align-center">
+              <Search
+                size={18}
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              />
+
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search category..."
+                className="border border-gray-300 rounded-xl pl-10 pr-4 py-2.5 outline-none focus:border-black"
+              />
+            </div>
+          </div>
+
+          {/* Table */}
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-gray-50 border-b border-gray-200">
+                <tr className="text-left text-sm text-gray-600">
+                  <th className="px-6 py-4">Category</th>
+
+                  <th className="px-6 py-4">Display Name</th>
+
+                  <th className="px-6 py-4">Description</th>
+
+                  <th className="px-6 py-4">Created</th>
+
+                  <th className="px-6 py-4">Status</th>
+
+                  <th className="px-6 py-4 text-center">Actions</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {categories.length === 0 ? (
+                  <tr>
+                    <td colSpan="6" className="text-center py-10 text-gray-500">
+                      No categories found
+                    </td>
+                  </tr>
+                ) : (
+                  categories.map((category) => (
+                    <tr
+                      key={category.cat_id}
+                      className="border-b border-gray-100 hover:bg-gray-50 transition"
+                    >
+                      {/* Category */}
+
+                      <td className="px-6 py-5">
+                        <div className="flex items-center gap-4">
+                          <div className="w-11 h-11 rounded-lg bg-gray-100 flex items-center justify-center">
+                            <Layers size={18} />
+                          </div>
+
+                          <div>
+                            {editId === category.cat_id ? (
+                              <input
+                                value={editData.cat_name}
+                                onChange={(e) =>
+                                  setEditData({
+                                    ...editData,
+                                    cat_name: e.target.value,
+                                  })
+                                }
+                                className="border rounded-lg px-2 py-1"
+                              />
+                            ) : (
+                              <>
+                                <p className="font-semibold">
+                                  {category.cat_name}
+                                </p>
+
+                                <p className="text-xs text-gray-500">
+                                  ID #{category.cat_id}
+                                </p>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      </td>
+
+                      {/* Display Name */}
+
+                      <td className="px-6">
+                        {editId === category.cat_id ? (
+                          <input
+                            value={editData.cat_display_name}
+                            onChange={(e) =>
+                              setEditData({
+                                ...editData,
+                                cat_display_name: e.target.value,
+                              })
+                            }
+                            className="border rounded-lg px-2 py-1"
+                          />
+                        ) : (
+                          category.cat_display_name
+                        )}
+                      </td>
+
+                      {/* Description */}
+
+                      <td className="px-6 text-gray-500 max-w-sm">
+                        {editId === category.cat_id ? (
+                          <textarea
+                            value={editData.cat_description}
+                            onChange={(e) =>
+                              setEditData({
+                                ...editData,
+                                cat_description: e.target.value,
+                              })
+                            }
+                            className="w-full border rounded-lg p-2"
+                          />
+                        ) : (
+                          category.cat_description
+                        )}
+                      </td>
+
+                      {/* Created */}
+
+                      <td className="px-6">
+                        {category.created_at
+                          ? new Date(category.created_at).toLocaleDateString()
+                          : "-"}
+                      </td>
+
+                      {/* Status */}
+
+                      <td className="px-6">
+                        <button
+                          onClick={() => handleStatusToggle(category)}
+                          className={`px-3 py-1 rounded-full text-sm ${
+                            category.cat_is_active
+                              ? "bg-green-100 text-green-700"
+                              : "bg-red-100 text-red-600"
+                          }`}
+                        >
+                          {category.cat_is_active ? "Active" : "Inactive"}
+                        </button>
+                      </td>
+
+                      {/* Actions */}
+
+                      <td className="px-6">
+                        <div className="flex justify-center gap-2">
+                          {editId === category.cat_id ? (
+                            <>
+                              <button
+                                onClick={() => handleUpdate(category.cat_id)}
+                                className="w-10 h-10 rounded-lg border border-green-200 text-green-600 hover:bg-green-50 flex items-center justify-center"
+                              >
+                                <Check size={18} />
+                              </button>
+
+                              <button
+                                onClick={handleCancel}
+                                className="w-10 h-10 rounded-lg border border-gray-300 hover:bg-gray-100 flex items-center justify-center"
+                              >
+                                <X size={18} />
+                              </button>
+                            </>
+                          ) : (
+                            <>
+                              <button
+                                onClick={() => handleEdit(category)}
+                                className="w-10 h-10 rounded-lg border border-gray-300 hover:bg-gray-100 flex items-center justify-center"
+                              >
+                                <Pencil size={18} />
+                              </button>
+
+                              <button
+                                onClick={() => handleDelete(category.cat_id)}
+                                className="w-10 h-10 rounded-lg border border-red-200 text-red-500 hover:bg-red-50 flex items-center justify-center"
+                              >
+                                <Trash2 size={18} />
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Footer */}
+
+          <div className="border-t border-gray-200 p-5 flex justify-between items-center">
+            <p className="text-sm text-gray-500">
+              Total Categories :
+              <span className="font-semibold ml-1">{categories.length}</span>
+            </p>
+
+            <button className="bg-black text-white px-5 py-2 rounded-lg">
+              Page 1
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

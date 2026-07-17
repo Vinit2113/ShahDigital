@@ -1,36 +1,27 @@
-import React from "react";
-import { Save, RotateCcw, Layers, FileText, ArrowLeft } from "lucide-react";
+import { Layers, FileText, Save, RotateCcw } from "lucide-react";
 import { useNavigate } from "react-router";
-import addCatHook from "../../hooks/CategoryHooks/inserCategoryHooks";
+import addAttributeHook from "../../hooks/AttributesHooks/insertAttributeHooks";
 
-const AddCategory = () => {
+const AddAttribute = () => {
   const navigate = useNavigate();
-  const { form, handleChange, handleSubmit, loading } = addCatHook();
+
+  const { form, handleChange, handleSubmit, loading } = addAttributeHook();
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 md:p-8">
       <div className="max-w-4xl mx-auto">
-        {/* Page Header */}
-        <div className="flex items-start justify-between mb-8">
-          <div>
-            <p className="text-sm text-gray-500">Admin / Categories</p>
+        {/* Header */}
+        <div className="mb-8">
+          <p className="text-sm text-gray-500">Admin / Attributes</p>
 
-            <h1 className="text-3xl font-bold text-gray-800 mt-2">
-              Create Category
-            </h1>
+          <h1 className="text-3xl font-bold text-gray-800 mt-2">
+            Create Attribute
+          </h1>
 
-            <p className="text-gray-500 mt-2">
-              Create a new product category for organizing your products.
-            </p>
-          </div>
-
-          <button
-            onClick={() => navigate("/admin/categories/list")}
-            className="flex items-center gap-2 border border-gray-300 px-5 py-3 rounded-xl hover:bg-gray-100 transition"
-          >
-            <ArrowLeft size={18} />
-            Back
-          </button>
+          <p className="text-gray-500 mt-2">
+            Create a new product attribute that can be assigned to product
+            categories.
+          </p>
         </div>
 
         {/* Card */}
@@ -43,7 +34,7 @@ const AddCategory = () => {
 
             <div>
               <h2 className="text-lg font-semibold text-gray-800">
-                Category Details
+                Attribute Details
               </h2>
 
               <p className="text-sm text-gray-500">
@@ -54,10 +45,10 @@ const AddCategory = () => {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="p-8 space-y-7">
-            {/* Category Name */}
+            {/* Attribute Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Category Name
+                Attribute Name
               </label>
 
               <div className="relative">
@@ -71,8 +62,7 @@ const AddCategory = () => {
                   name="name"
                   value={form.name}
                   onChange={handleChange}
-                  placeholder="Example: Electronics"
-                  required
+                  placeholder="Example: Color"
                   className="w-full border border-gray-300 rounded-xl py-3 pl-11 pr-4 outline-none focus:border-black transition"
                 />
               </div>
@@ -91,7 +81,7 @@ const AddCategory = () => {
                 />
 
                 <textarea
-                  rows={5}
+                  rows="5"
                   name="description"
                   value={form.description}
                   onChange={handleChange}
@@ -110,12 +100,10 @@ const AddCategory = () => {
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <p className="text-xs uppercase tracking-wide text-gray-400">
-                    Category Name
+                    Attribute Name
                   </p>
 
-                  <p className="font-medium text-gray-700 mt-1">
-                    {form.name || "Not entered"}
-                  </p>
+                  <p className="font-medium text-gray-700 mt-1">Color</p>
                 </div>
 
                 <div>
@@ -123,25 +111,9 @@ const AddCategory = () => {
                     Status
                   </p>
 
-                  <span
-                    className={`inline-flex mt-1 px-3 py-1 rounded-full text-sm ${
-                      form.name
-                        ? "bg-green-100 text-green-700"
-                        : "bg-yellow-100 text-yellow-700"
-                    }`}
-                  >
-                    {form.name ? "Ready to Create" : "Waiting for Name"}
+                  <span className="inline-flex mt-1 px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm">
+                    Ready to Create
                   </span>
-                </div>
-
-                <div className="md:col-span-2">
-                  <p className="text-xs uppercase tracking-wide text-gray-400">
-                    Description
-                  </p>
-
-                  <p className="text-gray-700 mt-1">
-                    {form.description || "No description added."}
-                  </p>
                 </div>
               </div>
             </div>
@@ -149,8 +121,7 @@ const AddCategory = () => {
             {/* Footer */}
             <div className="border-t border-gray-200 pt-6 flex justify-end gap-4">
               <button
-                type="button"
-                // onClick={() => navigate(-1)}
+                type="reset"
                 className="flex items-center gap-2 border border-gray-300 px-5 py-3 rounded-xl hover:bg-gray-100 transition"
               >
                 <RotateCcw size={18} />
@@ -160,10 +131,10 @@ const AddCategory = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex items-center gap-2 bg-black text-white px-6 py-3 rounded-xl hover:bg-gray-800 transition disabled:opacity-50"
+                className="flex items-center gap-2 bg-black text-white px-6 py-3 rounded-xl hover:bg-gray-800 transition"
               >
                 <Save size={18} />
-                {loading ? "Saving..." : "Create Category"}
+                {loading ? "Saving..." : "Add Attribute"}
               </button>
             </div>
           </form>
@@ -173,4 +144,4 @@ const AddCategory = () => {
   );
 };
 
-export default AddCategory;
+export default AddAttribute;

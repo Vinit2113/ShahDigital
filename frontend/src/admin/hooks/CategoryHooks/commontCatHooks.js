@@ -8,13 +8,11 @@ const useCategory = () => {
   const { categories, loading, getCategories } = useListCatHook();
 
   const { updateCategory } = updateCatHook();
-
   const { deleteCategory } = deleteCatHook();
-
   const { restoreCat } = useRestoreCat();
 
   const [editId, setEditId] = useState(null);
-
+  const [search, setSearch] = useState("");
   const [editData, setEditData] = useState({
     cat_name: "",
     cat_description: "",
@@ -23,6 +21,17 @@ const useCategory = () => {
   useEffect(() => {
     getCategories();
   }, []);
+
+  // SEARCH FITLER
+  const filterCategories = categories.filter((category) => {
+    const searchText = search.trim().toLowerCase();
+
+    return (
+      category.cat_name?.toLowerCase().includes(searchText) ||
+      category.cat_display_name?.toLowerCase().includes(searchText) ||
+      category.cat_description?.toLowerCase().includes(searchText)
+    );
+  });
 
   const handleEdit = (category) => {
     setEditId(category.cat_id);
@@ -79,11 +88,14 @@ const useCategory = () => {
   };
 
   return {
-    categories,
+    categories: filterCategories,
     loading,
 
     editId,
     editData,
+
+    search,
+    setSearch,
 
     setEditData,
 

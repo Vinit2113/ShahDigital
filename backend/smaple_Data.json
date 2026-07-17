@@ -9,17 +9,7 @@
       { "cat_id": 7, "cat_name": "Graphics Card", "cat_description": "GPU devices", "is_active": 1 }
     ],
 
-    "brands": [
-      { "brand_id": 1, "name": "Dell", "brand_logo_img": "dell.png", "is_active": 1 },
-      { "brand_id": 2, "name": "Lenovo", "brand_logo_img": "lenovo.png", "is_active": 1 },
-      { "brand_id": 3, "name": "ASUS", "brand_logo_img": "asus.png", "is_active": 1 },
-      { "brand_id": 4, "name": "Seagate", "brand_logo_img": "seagate.png", "is_active": 1 },
-      { "brand_id": 5, "name": "Intel", "brand_logo_img": "intel.png", "is_active": 1 },
-      { "brand_id": 6, "name": "Corsair", "brand_logo_img": "corsair.png", "is_active": 1 },
-      { "brand_id": 7, "name": "Samsung", "brand_logo_img": "samsung.png", "is_active": 1 },
-      { "brand_id": 8, "name": "NVIDIA", "brand_logo_img": "nvidia.png", "is_active": 1 }
-    ],
-
+    
     "attributes": [ 
       { "attribute_id": 1, "attribute_name": "Processor", "is_active": 1 },
       { "attribute_id": 2, "attribute_name": "RAM" , "is_active": 1},
@@ -29,25 +19,35 @@
       { "attribute_id": 6, "attribute_name": "Print Speed", "is_active": 1 },
       { "attribute_id": 7, "attribute_name": "Resolution", "is_active": 1 }
     ],
-
+    
     "category_attribute": [
       { "category_id": 1, "attribute_id": 1 },
       { "category_id": 1, "attribute_id": 2 },
       { "category_id": 1, "attribute_id": 3 },
       { "category_id": 1, "attribute_id": 4 },
       { "category_id": 1, "attribute_id": 5 },
-
+      
       { "category_id": 2, "attribute_id": 3 },
       { "category_id": 2, "attribute_id": 4 },
-
+      
       { "category_id": 3, "attribute_id": 6 },
       { "category_id": 3, "attribute_id": 7 },
 
       { "category_id": 5, "attribute_id": 1 },
       { "category_id": 5, "attribute_id": 2 },
       { "category_id": 5, "attribute_id": 5 },
-
+      
       { "category_id": 7, "attribute_id": 5 }
+    ],
+    "brands": [
+      { "brand_id": 1, "name": "Dell", "brand_logo_img": "dell.png", "is_active": 1 },
+      { "brand_id": 2, "name": "Lenovo", "brand_logo_img": "lenovo.png", "is_active": 1 },
+      { "brand_id": 3, "name": "ASUS", "brand_logo_img": "asus.png", "is_active": 1 },
+      { "brand_id": 4, "name": "Seagate", "brand_logo_img": "seagate.png", "is_active": 1 },
+      { "brand_id": 5, "name": "Intel", "brand_logo_img": "intel.png", "is_active": 1 },
+      { "brand_id": 6, "name": "Corsair", "brand_logo_img": "corsair.png", "is_active": 1 },
+      { "brand_id": 7, "name": "Samsung", "brand_logo_img": "samsung.png", "is_active": 1 },
+      { "brand_id": 8, "name": "NVIDIA", "brand_logo_img": "nvidia.png", "is_active": 1 }
     ],
 
     "products": [

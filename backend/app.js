@@ -13,6 +13,7 @@ const productRoutes = require("./routes/product.routes");
 const productAttributesRoutes = require("./routes/productAttribute.routes");
 const productMediaRoutes = require("./routes/productMedia.routes");
 const productFeaturesRoutes = require("./routes/productFeatures.routes");
+const userAddressRoutes = require("./routes/userAddress.routes");
 const addCartRoutes = require("./routes/cart.routes");
 // const contactModelEnquiriesRoutes = require("./routes/contactModelEnquiries.routes");
 const cookieParser = require("cookie-parser");
@@ -39,5 +40,6 @@ app.use("/product-Attributes", productAttributesRoutes);
 app.use("/product-Features", productFeaturesRoutes);
 // app.use("/contact-form", contactModelEnquiriesRoutes);
 app.use("/cart", addCartRoutes);
+app.use("/user-address", userAddressRoutes);
 
 module.exports = app;

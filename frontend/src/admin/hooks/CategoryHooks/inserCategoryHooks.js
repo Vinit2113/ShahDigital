@@ -4,7 +4,6 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 import categoriesServicces from "../../services/categoriesServicces";
 
-const baseURL = import.meta.env.VITE_BACKEND_URL;
 
 const addCatHook = () => {
   const navigate = useNavigate();

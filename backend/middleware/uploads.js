@@ -19,7 +19,7 @@ const productStorage = multer.diskStorage({
     if (file.fieldname === "product_image") {
       return cb(null, "uploads/products/images");
     }
-      
+
     return cb(new Error("Invalid file field"));
   },
 

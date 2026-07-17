@@ -92,7 +92,6 @@ const CatalogueFilter = () => {
           axios.post("http://localhost:3197/category/cat-list"),
         ]);
 
-
         setBrands(brandRes.data.brands?.map((i) => i.brand_display_name) || []);
         setCategories(
           catRes.data.categories?.map((i) => i.cat_display_name) || [],

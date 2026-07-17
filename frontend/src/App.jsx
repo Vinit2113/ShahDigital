@@ -15,13 +15,20 @@ import AdminSidebar from "./admin/layouts/AdminSidebar";
 import LoginAdmin from "./admin/pages/LoginAdmin";
 import AdminProfile from "./admin/components/admins/AdminProfile";
 import AddCategory from "./admin/components/CategoryAdmin/AddCategory";
-import ListCategory from "./admin/components/CategoryAdmin/ListCategory";
+import ListCategory from "./admin/components/CategoryAdmin/ListCategory"; 
+import CategoryTree from "./admin/components/CategoryAdmin/CategoryTree";
+import AddAttribute from "./admin/components/AttributeAdmin/AddAttribute";
+import ListAttribute from "./admin/components/AttributeAdmin/ListAttribute";
+import ViewAttribute from "./admin/components/AttributeAdmin/ViewAttribute";
+import WhatsAppButton from "./user/layouts/WhatsAppButton";
+import CategoryAttributeMapping from "./admin/pages/CategoryAttributeMapping";
 
 // Layout wrapper
 const UserLayout = () => (
   <div className="font-mono">
     <Navbar />
     <Outlet />
+    <WhatsAppButton />
     <Footer />
   </div>
 );
@@ -70,6 +77,16 @@ const App = () => {
           {/* CATEGORY ROUTES */}
           <Route path="/admin/categories/new" element={<AddCategory />} />
           <Route path="/admin/categories/list" element={<ListCategory />} />
+          <Route path="/admin/categories/tree" element={<CategoryTree />} />
+
+          {/* ATTRIBUTE ROUTES */}
+          <Route path="/admin/attributes/add" element={<AddAttribute />} />
+          <Route path="/admin/attributes/list" element={<ListAttribute />} />
+          <Route path="/admin/attributes/view" element={<ViewAttribute />} />
+          <Route
+            path="/admin/attributes/assign"
+            element={<CategoryAttributeMapping />}
+          />
         </Route>
       </Routes>
       <Toaster position="top-center" reverseOrder={false} />

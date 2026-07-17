@@ -9,6 +9,8 @@ const {
 const updateAttributeById = require("../controllers/attributes/updateAttribute.controller");
 const deleteAttributeById = require("../controllers/attributes/deleteAttribute.controller");
 const restoreAttributeById = require("../controllers/attributes/restoreDeletedAttribute.controller");
+const listAdminAttributes = require("../controllers/attributes/listAdminAttributes.controller");
+const listActiveAttributes = require("../controllers/attributes/listActiveAttributes.controller");
 const router = express.Router();
 
 // CREATE
@@ -17,7 +19,11 @@ router.post("/insert", verifyToken, onlyAdmins, createAttribute);
 // LIST ALL
 router.post("/list-all", listAttributes);
 
-// LIST SPECIFIC
+// LIST FOR ADMIN
+router.post("/admin/list-all", verifyToken, onlyAdmins, listAdminAttributes);
+router.post("/list-all-active", verifyToken, onlyAdmins, listActiveAttributes);
+
+// SHOW SPECIFIC
 router.post(
   "/get/:attribute_id",
   verifyToken,
