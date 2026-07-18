@@ -71,9 +71,10 @@
             />
           </div>
 
-          {/* HAMBURGER */}
+          {/* MOBILE HAMBURGER */}
+          <div className="flex md:hidden items-center gap-1 mr-2">
           <button
-            className="md:hidden text-blue-900 mr-2"
+            className="text-blue-900"
             onClick={() => setOpen(!open)}
           >
             <svg
@@ -91,6 +92,7 @@
               />
             </svg>
           </button>
+          </div>
 
           {/* DESKTOP MENU */}
           <div className="hidden md:flex items-center gap-10 lg:gap-20">

@@ -6,9 +6,13 @@ const CategoryAttributeMapping = () => {
   const {
     categories,
     attributes,
-    mapping,
 
     loading,
+    // FIX (CategoryAttributeMapping.jsx): `mapping` (the hardcoded array)
+    // is gone from the hook - replaced with `mappingLoading`/`saving`,
+    // which track the real per-category fetch and the real save request.
+    mappingLoading,
+    saving,
 
     categorySearch,
     setCategorySearch,
@@ -68,10 +72,16 @@ const CategoryAttributeMapping = () => {
           </div>
 
           <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm shadow-gray-200/50">
-            <p className="text-gray-500 text-sm">Total Mapping</p>
+            {/* FIX: this used to render mapping.length - the hardcoded
+                array's fixed size (always 9), regardless of real data. It
+                now shows how many attributes are actually mapped to the
+                currently selected category. */}
+            <p className="text-gray-500 text-sm">
+              Mapped Attributes (Selected Category)
+            </p>
 
             <h2 className="text-3xl font-bold mt-2 text-green-600">
-              {mapping.length}
+              {selectedAttributes.length}
             </h2>
           </div>
         </div>
@@ -232,7 +242,15 @@ const CategoryAttributeMapping = () => {
                     />
                   </div>
 
-                  {filteredAttributes.map((attribute) => {
+                  {/* FIX: while the real per-category mapping is being
+                      fetched, show a loading state instead of briefly
+                      rendering stale checkboxes from the previous category. */}
+                  {mappingLoading ? (
+                    <p className="text-gray-500 p-5 md:col-span-2">
+                      Loading mapped attributes...
+                    </p>
+                  ) : (
+                    filteredAttributes.map((attribute) => {
                     const checked = selectedAttributes.includes(
                       attribute.attribute_id,
                     );
@@ -285,7 +303,8 @@ const CategoryAttributeMapping = () => {
                         </div>
                       </button>
                     );
-                  })}
+                    })
+                  )}
                 </div>
               </div>{" "}
               {/* FOOTER ACTIONS */}
@@ -299,8 +318,12 @@ const CategoryAttributeMapping = () => {
               gap-4
             "
               >
+                {/* FIX: Reset/Save are now disabled while a fetch/save is
+                    in flight, so a double-click can't fire two requests -
+                    previously there was no pending state at all. */}
                 <button
                   onClick={resetMapping}
+                  disabled={mappingLoading || saving}
                   className="
                   flex
                   items-center
@@ -313,6 +336,8 @@ const CategoryAttributeMapping = () => {
                   hover:bg-gray-100
                   transition-all
                   duration-300
+                  disabled:opacity-50
+                  disabled:cursor-not-allowed
                 "
                 >
                   <RotateCcw size={18} />
@@ -321,6 +346,7 @@ const CategoryAttributeMapping = () => {
 
                 <button
                   onClick={saveMapping}
+                  disabled={mappingLoading || saving}
                   className="
                   flex
                   items-center
@@ -335,10 +361,12 @@ const CategoryAttributeMapping = () => {
                   hover:bg-black
                   transition-all
                   duration-300
+                  disabled:opacity-50
+                  disabled:cursor-not-allowed
                 "
                 >
                   <Save size={18} />
-                  Save Mapping
+                  {saving ? "Saving..." : "Save Mapping"}
                 </button>
               </div>
             </div>

@@ -1,14 +1,17 @@
 import api from "../api/axiosInstance";
 
+// FIX (catAttribute.services.js): both paths below were missing the
+// "catAttribute/" mount prefix (backend mounts this router at /catAttribute
+// in app.js), so these calls 404'd before ever reaching the controller.
 const addAttributeToCategoryApi = (data) => {
-  return api.post("map/cat_attribute", data, {
+  return api.post("catAttribute/map/cat_attribute", data, {
     withCredentials: true,
   });
 };
 
 const getMappedAttributesApi = (cat_id) => {
   return api.post(
-    `list/map-catat/${cat_id}`,
+    `catAttribute/list/map-catat/${cat_id}`,
     {},
     {
       withCredentials: true,
