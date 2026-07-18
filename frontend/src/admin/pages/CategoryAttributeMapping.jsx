@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Layers, Search, Check, Save, RotateCcw } from "lucide-react";
 import useCategoryAttributeMapping from "../hooks/CatAttributesHooks/useCatAttributeHook";
 
@@ -28,6 +28,10 @@ const CategoryAttributeMapping = () => {
     resetMapping,
     saveMapping,
   } = useCategoryAttributeMapping();
+
+  useEffect(() => {
+    if (!selectedCategory && selectedAttributes.length === 0) return;
+  }, [selectedCategory, selectedAttributes]);
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 md:p-8">

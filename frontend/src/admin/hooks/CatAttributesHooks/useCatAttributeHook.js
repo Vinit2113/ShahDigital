@@ -1,36 +1,7 @@
 import { useEffect, useState } from "react";
 import useCatActiveList from "./useCatActiveListHook";
-
-const attributes = [
-  {
-    attribute_id: 1,
-    attribute_name: "Processor",
-  },
-  {
-    attribute_id: 2,
-    attribute_name: "RAM",
-  },
-  {
-    attribute_id: 3,
-    attribute_name: "Storage Type",
-  },
-  {
-    attribute_id: 4,
-    attribute_name: "Storage Capacity",
-  },
-  {
-    attribute_id: 5,
-    attribute_name: "Graphics",
-  },
-  {
-    attribute_id: 6,
-    attribute_name: "Print Speed",
-  },
-  {
-    attribute_id: 7,
-    attribute_name: "Resolution",
-  },
-];
+import useAttributeActiveList from "./useAttributeActiveListHook";
+import toast from "react-hot-toast";
 
 const mapping = [
   { category_id: 1, attribute_id: 1 },
@@ -47,18 +18,27 @@ const mapping = [
 ];
 
 const useCategoryAttributeMapping = () => {
-  const { categories, loading, refetch: getCategories } = useCatActiveList();
+  const {
+    categories,
+    loading: categoryLoading,
+    refetch: getCategories,
+  } = useCatActiveList();
 
-  console.log("Here is active cat list", categories);
+  const {
+    attributes,
+    loading: attributeLoading,
+    fetchAttribute,
+  } = useAttributeActiveList();
 
   const [categorySearch, setCategorySearch] = useState("");
   const [attributeSearch, setAttributeSearch] = useState("");
+
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedAttributes, setSelectedAttributes] = useState([]);
 
-  // No need to fetch categories here because
-  // useCatActiveList() already fetches them automatically.
-
+  /**
+   * Select first category automatically
+   */
   useEffect(() => {
     if (categories.length > 0 && !selectedCategory) {
       const firstCategory = categories[0];
@@ -73,16 +53,25 @@ const useCategoryAttributeMapping = () => {
     }
   }, [categories, selectedCategory]);
 
+  /**
+   * Category Search
+   */
   const filteredCategories = categories.filter((category) =>
     category.cat_name?.toLowerCase().includes(categorySearch.toLowerCase()),
   );
 
+  /**
+   * Attribute Search
+   */
   const filteredAttributes = attributes.filter((attribute) =>
     attribute.attribute_name
-      .toLowerCase()
+      ?.toLowerCase()
       .includes(attributeSearch.toLowerCase()),
   );
 
+  /**
+   * Change Category
+   */
   const handleCategory = (category) => {
     setSelectedCategory(category);
 
@@ -93,12 +82,18 @@ const useCategoryAttributeMapping = () => {
     setSelectedAttributes(mappedAttributes);
   };
 
+  /**
+   * Select / Unselect Attribute
+   */
   const toggleAttribute = (id) => {
     setSelectedAttributes((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
     );
   };
 
+  /**
+   * Reset to Default Mapping
+   */
   const resetMapping = () => {
     if (!selectedCategory) return;
 
@@ -109,36 +104,57 @@ const useCategoryAttributeMapping = () => {
     setSelectedAttributes(mappedAttributes);
   };
 
+  /**
+   * Save Payload
+   */
   const saveMapping = () => {
+    if (!selectedCategory) return null;
+
     const payload = {
       category_id: selectedCategory.cat_id,
       attributes: selectedAttributes,
     };
 
-    console.log(payload);
+    if (!payload) {
+      try {
+      } catch (error) {}
+    }
+    // console.log(payload);
+
     return payload;
   };
 
   return {
+    // Category Data
     categories,
-    loading,
-    getCategories, // alias of refetch if needed
+    getCategories,
 
+    // Attribute Data
     attributes,
+    fetchAttribute,
+
+    // Loading
+    loading: categoryLoading || attributeLoading,
+
+    // Mapping
     mapping,
 
+    // Search
     categorySearch,
     setCategorySearch,
 
     attributeSearch,
     setAttributeSearch,
 
+    // Selected Data
     selectedCategory,
     selectedAttributes,
 
+    // Filtered Data
     filteredCategories,
     filteredAttributes,
 
+    // Actions
     handleCategory,
     toggleAttribute,
 

@@ -6,7 +6,7 @@ const listActiveAttributes = async (req, res) => {
       .select(
         "attribute_id",
         "attribute_display_name",
-        "atribute_name",
+        "attribute_name",
         "attribute_is_active",
       )
       .where({ attribute_is_active: true });

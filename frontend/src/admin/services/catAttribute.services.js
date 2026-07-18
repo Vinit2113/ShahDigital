@@ -24,7 +24,15 @@ const getCatActiveListApi = (token) => {
 };
 
 const getAttributeActiveListApi = (token) => {
-  return api.post(`attribute/cat-list-active/`, token, {
+  return api.post(`attribute/list-all-active/`, token, {
+    withCredentials: true,
+  });
+};
+
+const mapCatAttributeApi = (data, token) => {
+  console.log("Mapping data fetched: ", data);
+
+  return api.post(`catAttribute/map/cat_attribute`, token, {
     withCredentials: true,
   });
 };
@@ -34,4 +42,5 @@ export default {
   getMappedAttributesApi,
   getCatActiveListApi,
   getAttributeActiveListApi,
+  mapCatAttributeApi,
 };

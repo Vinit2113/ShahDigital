@@ -18,7 +18,6 @@ const useCatActiveList = () => {
     try {
       const response = await catAttributeServices.getCatActiveListApi();
 
-      console.log("CATEGORY API RESPONSE:", response.data.categories);
 
       setCategories(response.data.categories || []);
     } catch (err) {

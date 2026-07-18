@@ -1,6 +1,10 @@
-import { useEffect } from "react";
+import { useGSAP } from "@gsap/react";
+import { useRef } from "react";
 import { Link } from "react-router";
+import gsap from "gsap";
 // import { fetchHeroSec } from "../CataloguePage/CatalogueAPI";
+
+gsap.registerPlugin(useGSAP);
 
 const HeroSection = () => {
   // useEffect(() => {
@@ -15,12 +19,45 @@ const HeroSection = () => {
   //   loadHero();
   // }, []);
 
+  const leftBox_ref = useRef(null);
+  const rightBox_ref = useRef(null);
+  const heroRef = useRef(null);
+
+  useGSAP(
+    () => {
+      let tl = gsap.timeline();
+
+      tl.from(leftBox_ref.current, {
+        x: -100,
+        opacity: 0,
+        duration: 0.8,
+        delay:1,
+
+      });
+      
+      tl.from(rightBox_ref.current, {
+        x: 100,
+        opacity: 0,
+        duration: 0.8,
+      },"< ");
+
+      
+    },
+    { scope: heroRef },
+  );
+
   return (
-    <section className="relative overflow-hidden bg-linear-to-br from-blue-50 via-white to-blue-100">
+    <section
+      ref={heroRef}
+      className="relative overflow-hidden bg-linear-to-br from-blue-50 via-white to-blue-100"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-12">
           {/* LEFT CONTENT */}
-          <div className="text-center lg:text-left">
+          <div
+            className=" leftBox  text-center lg:text-left"
+            ref={leftBox_ref}
+          >
             <span className="inline-block px-4 py-2 rounded-full bg-black-100 text-blue-700 font-medium mb-6">
               Trusted Product Catalogue
             </span>
@@ -77,7 +114,7 @@ const HeroSection = () => {
           </div>
 
           {/* RIGHT CONTENT */}
-          <div className="relative flex justify-center mt-10 lg:mt-0">
+          <div className=" rightBox  relative flex justify-center mt-10 lg:mt-0" ref={rightBox_ref}>
             {/* Main Catalogue Card */}
             <div className="w-full max-w-sm sm:max-w-md lg:w-112.5 lg:h-125 bg-white rounded-3xl shadow-2xl p-4 sm:p-6 border border-blue-100">
               <div className="h-40 sm:h-48 lg:h-56 rounded-2xl bg-linear-to-r from-blue-700 to-blue-900"></div>
