@@ -1,9 +1,10 @@
 const dbConn = require("../../db/knex");
 const throwError = require("../../utils/WebError");
+const fs = require("fs");
+const path = require("path");
 
 const updateCatById = async (req, res) => {
   try {
-    // ✅ FIXED: correct param handling
     const catId = req.params.cat_id;
 
     if (!catId) {
@@ -12,8 +13,7 @@ const updateCatById = async (req, res) => {
 
     const { cat_name, cat_description } = req.body || {};
 
-    // ✅ Require at least one field
-    if (!cat_name && !cat_description) {
+    if (!cat_name && !cat_description && !req.file) {
       throwError("Enter at least one field", 400);
     }
 
@@ -55,6 +55,22 @@ const updateCatById = async (req, res) => {
     // 3. UPDATE DESCRIPTION
     if (cat_description) {
       updateData.cat_description = cat_description.trim();
+    }
+
+    if (req.file) {
+      if (existingCategory.cat_image) {
+        const oldImagePath = path.join(
+          __dirname,
+          "../../uploads/categories",
+          existingCategory.cat_image,
+        );
+
+        if (fs.existsSync(oldImagePath)) {
+          fs.unlinkSync(oldImagePath);
+        }
+      }
+
+      updateData.cat_image = req.file.filename;
     }
 
     // 4. UPDATE CATEGORY

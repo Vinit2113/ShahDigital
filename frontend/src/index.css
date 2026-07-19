@@ -3,3 +3,34 @@
 body {
   @apply bg-white text-gray-900;
 }
+
+/* NEW: admin dashboard felt oversized. Scoped to .admin-shell (App.jsx's
+   AdminLayout wrapper) so only /admin/* pages are affected, not the
+   public site. zoom scales the whole rendered box (text, padding, icons)
+   together, unlike a font-size change here which Tailwind's rem-based
+   text-* utilities would ignore (rem is always relative to the root
+   <html> element, not a nested ancestor). */
+.admin-shell {
+  zoom: 93.75%; /* ~1-2px smaller across the board */
+}
+
+/* NEW: thin, subtle scrollbar for the admin sidebar nav (AdminSidebar.jsx)
+   instead of the default fat browser scrollbar, which looks clunky in a
+   narrow 256px column. */
+.admin-sidebar-scroll {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #d1d5db transparent;
+}
+
+.admin-sidebar-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.admin-sidebar-scroll::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 9999px;
+}
+
+.admin-sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}

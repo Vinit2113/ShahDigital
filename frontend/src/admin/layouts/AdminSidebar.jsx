@@ -21,7 +21,8 @@ import {
   MapPin,
   RotateCcw,
   Image,
-  FolderTree,
+  Network,
+  Mail,
 } from "lucide-react";
 
 import adminLogoutHook from "../hooks/userAdminLogoutHooks";
@@ -74,11 +75,6 @@ const buildMenu = (data) => [
         path: "/admin/categories/new",
         icon: <PlusCircle size={16} />,
       },
-      {
-        title: "Category Tree",
-        path: "/admin/categories/tree",
-        icon: <FolderTree size={16} />,
-      },
     ],
   },
 
@@ -101,6 +97,13 @@ const buildMenu = (data) => [
         path: "/admin/attributes/assign",
         icon: <Tag size={16} />,
       },
+      // NEW: links to the read-only CategoryAttributeList.jsx page, which
+      // shows every category with its mapped attributes as chips.
+      {
+        title: "Mapping Overview",
+        path: "/admin/attributes/mappings",
+        icon: <Network size={16} />,
+      },
     ],
   },
 
@@ -118,6 +121,20 @@ const buildMenu = (data) => [
         title: "Add Brand",
         path: "/admin/brands/new",
         icon: <PlusCircle size={16} />,
+      },
+    ],
+  },
+
+  // NEW: links to ListEnquiries.jsx - submissions from the catalogue
+  // page's "Enquire Now" form.
+  {
+    title: "Enquiries",
+    icon: <Mail size={20} />,
+    children: [
+      {
+        title: "All Enquiries",
+        path: "/admin/enquiries",
+        icon: <Mail size={16} />,
       },
     ],
   },
@@ -261,7 +278,15 @@ const AdminSidebar = ({ data }) => {
           </div>
 
           {/* MENU */}
-          <nav className="space-y-2 flex-1 overflow-y-auto">
+          {/* FIX: added min-h-0 - a flex-1 child defaults to min-height:
+              auto, which means it grows to fit ALL menu items instead of
+              respecting the parent's fixed height, so overflow-y-auto
+              never actually kicked in (nothing to scroll, just an
+              overflowing sidebar). min-h-0 lets it actually shrink to the
+              available space and scroll internally once there are more
+              sections than fit, while "Go to Website"/"Logout" stay
+              pinned at the bottom. */}
+          <nav className="admin-sidebar-scroll space-y-2 flex-1 min-h-0 overflow-y-auto">
             {menuItems.map((item) => (
               <div key={item.title}>
                 {/* MAIN ITEM */}

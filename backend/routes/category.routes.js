@@ -1,3 +1,4 @@
+
 const express = require("express");
 const verifyToken = require("../utils/verifyToken");
 const onlyAdmins = require("../middleware/requireAdmin.middleware");
@@ -9,18 +10,33 @@ const deleteCatById = require("../controllers/categories/deleteCatById.controlle
 const restoreCatById = require("../controllers/categories/restoreCatById.controller");
 const listCatAdmin = require("../controllers/categories/listForAdminCategory.controller");
 const listActiveCategories = require("../controllers/categories/catActiveList.controller");
+const { catStorage } = require("../middleware/uploads");
 
 const router = express.Router();
 
 // CREATE
-router.post("/cat-insert", verifyToken, onlyAdmins, createCategory);
+
+router.post(
+  "/cat-insert",
+  verifyToken,
+  onlyAdmins,
+  catStorage.single("cat_image"),
+  createCategory,
+);
 
 // LISTS
 router.post("/cat-list", listCategories);
 router.post("/cat-list-id/:cat_id", cat_by_id);
 
 // UPDATE
-router.post("/cat-update-id/:cat_id", verifyToken, onlyAdmins, updateCatById);
+
+router.post(
+  "/cat-update-id/:cat_id",
+  verifyToken,
+  onlyAdmins,
+  catStorage.single("cat_image"),
+  updateCatById,
+);
 
 // DELETE
 router.post("/cat-delete-id/:cat_id", verifyToken, onlyAdmins, deleteCatById);

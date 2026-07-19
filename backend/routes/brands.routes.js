@@ -7,6 +7,7 @@ const brandById = require("../controllers/brands/brandsById.controller");
 const updateBrandById = require("../controllers/brands/updateBrandById.controller");
 const deleteBrandById = require("../controllers/brands/deleteBrandById.controller");
 const restoreDeletedBrandById = require("../controllers/brands/restoreDeletedBrandById.controller");
+const listAdminBrands = require("../controllers/brands/listAdminBrands.controller");
 const { brandStorage } = require("../middleware/uploads");
 
 const router = express.Router();
@@ -23,6 +24,8 @@ router.post(
 // LISTS
 router.post("/list-All", listBrands);
 router.post("/show/:brand_id", brandById);
+
+router.post("/list-admin", verifyToken, onlyAdmins, listAdminBrands);
 
 // UPDATE
 router.post(

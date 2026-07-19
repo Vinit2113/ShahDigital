@@ -1,20 +1,14 @@
-// CATEGORIES ADMIN SECTION - COMPLETE (create), including an optional
-// category image/icon upload. Part of a 2-page flow with ListCategory.jsx
-// (list/edit/delete/restore). Category Tree was removed entirely - it
-// showed fake data and served no real purpose (see git history).
-import React from "react";
-import {
-  Save,
-  RotateCcw,
-  Layers,
-  FileText,
-  ArrowLeft,
-  Image as ImageIcon,
-} from "lucide-react";
-import { useNavigate } from "react-router";
-import addCatHook from "../../hooks/CategoryHooks/inserCategoryHooks";
+// WIRED (AddBrand.jsx): connected to the real create-brand endpoint via
+// useInsertBrand (insertBrandHooks.js -> brandsServices.js). Form state,
+// image preview, and submit/loading logic all live in the hook now -
+// this component is just the layout.
 
-const AddCategory = () => {
+import React from "react";
+import { Save, RotateCcw, Tag, FileText, ArrowLeft, Image as ImageIcon } from "lucide-react";
+import { useNavigate } from "react-router";
+import useInsertBrand from "../../hooks/BrandHooks/insertBrandHooks";
+
+const AddBrand = () => {
   const navigate = useNavigate();
   const {
     form,
@@ -24,7 +18,7 @@ const AddCategory = () => {
     handleImageChange,
     handleSubmit,
     loading,
-  } = addCatHook();
+  } = useInsertBrand();
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 md:p-8">
@@ -32,19 +26,19 @@ const AddCategory = () => {
         {/* Page Header */}
         <div className="flex items-start justify-between mb-8">
           <div>
-            <p className="text-sm text-gray-500">Admin / Categories</p>
+            <p className="text-sm text-gray-500">Admin / Brands</p>
 
             <h1 className="text-3xl font-bold text-gray-800 mt-2">
-              Create Category
+              Create Brand
             </h1>
 
             <p className="text-gray-500 mt-2">
-              Create a new product category for organizing your products.
+              Add a new brand with its name, description and logo.
             </p>
           </div>
 
           <button
-            onClick={() => navigate("/admin/categories/list")}
+            onClick={() => navigate("/admin/brands")}
             className="flex items-center gap-2 border border-gray-300 px-5 py-3 rounded-xl hover:bg-gray-100 transition"
           >
             <ArrowLeft size={18} />
@@ -57,12 +51,12 @@ const AddCategory = () => {
           {/* Card Header */}
           <div className="border-b border-gray-200 px-8 py-6 flex items-center gap-4">
             <div className="w-14 h-14 rounded-xl bg-gray-100 flex items-center justify-center">
-              <Layers size={26} className="text-gray-700" />
+              <Tag size={26} className="text-gray-700" />
             </div>
 
             <div>
               <h2 className="text-lg font-semibold text-gray-800">
-                Category Details
+                Brand Details
               </h2>
 
               <p className="text-sm text-gray-500">
@@ -73,14 +67,14 @@ const AddCategory = () => {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="p-8 space-y-7">
-            {/* Category Name */}
+            {/* Brand Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Category Name
+                Brand Name
               </label>
 
               <div className="relative">
-                <Layers
+                <Tag
                   size={18}
                   className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
                 />
@@ -90,7 +84,7 @@ const AddCategory = () => {
                   name="name"
                   value={form.name}
                   onChange={handleChange}
-                  placeholder="Example: Electronics"
+                  placeholder="Example: Dell"
                   required
                   className="w-full border border-gray-300 rounded-xl py-3 pl-11 pr-4 outline-none focus:border-black transition"
                 />
@@ -120,18 +114,22 @@ const AddCategory = () => {
               </div>
             </div>
 
-            {/* Category Image / Icon - OPTIONAL, unlike brand logos */}
+            {/* Brand Image / Logo */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Category Image / Icon (optional)
+                Brand Logo / Image
               </label>
 
               <div className="flex items-center gap-5">
+                {/* FIX: fixed-size square frame + object-contain so the
+                    preview always renders at a consistent size regardless
+                    of the uploaded image's original dimensions/aspect
+                    ratio - matches the same frame used in ListBrand.jsx. */}
                 <div className="w-24 h-24 rounded-xl border border-gray-200 bg-gray-50 flex items-center justify-center overflow-hidden shrink-0 p-2">
                   {imagePreview ? (
                     <img
                       src={imagePreview}
-                      alt="Category preview"
+                      alt="Brand preview"
                       className="w-full h-full object-contain"
                     />
                   ) : (
@@ -148,8 +146,7 @@ const AddCategory = () => {
                   />
 
                   <p className="text-xs text-gray-400 mt-2">
-                    JPG, PNG, WEBP or AVIF. Leave empty to create the
-                    category without an icon.
+                    JPG, PNG, WEBP or AVIF. Required.
                   </p>
                 </div>
               </div>
@@ -164,7 +161,7 @@ const AddCategory = () => {
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <p className="text-xs uppercase tracking-wide text-gray-400">
-                    Category Name
+                    Brand Name
                   </p>
 
                   <p className="font-medium text-gray-700 mt-1">
@@ -179,12 +176,14 @@ const AddCategory = () => {
 
                   <span
                     className={`inline-flex mt-1 px-3 py-1 rounded-full text-sm ${
-                      form.name
+                      form.name && imageFile
                         ? "bg-green-100 text-green-700"
                         : "bg-yellow-100 text-yellow-700"
                     }`}
                   >
-                    {form.name ? "Ready to Create" : "Waiting for Name"}
+                    {form.name && imageFile
+                      ? "Ready to Create"
+                      : "Waiting for Name & Logo"}
                   </span>
                 </div>
 
@@ -204,7 +203,7 @@ const AddCategory = () => {
             <div className="border-t border-gray-200 pt-6 flex justify-end gap-4">
               <button
                 type="button"
-                // onClick={() => navigate(-1)}
+                onClick={() => navigate("/admin/brands")}
                 className="flex items-center gap-2 border border-gray-300 px-5 py-3 rounded-xl hover:bg-gray-100 transition"
               >
                 <RotateCcw size={18} />
@@ -217,7 +216,7 @@ const AddCategory = () => {
                 className="flex items-center gap-2 bg-black text-white px-6 py-3 rounded-xl hover:bg-gray-800 transition disabled:opacity-50"
               >
                 <Save size={18} />
-                {loading ? "Saving..." : "Create Category"}
+                {loading ? "Saving..." : "Create Brand"}
               </button>
             </div>
           </form>
@@ -227,4 +226,4 @@ const AddCategory = () => {
   );
 };
 
-export default AddCategory;
+export default AddBrand;

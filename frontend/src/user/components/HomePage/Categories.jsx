@@ -1,4 +1,12 @@
 // @ts-nocheck
+// NOTE: this Home page showcase is a separate, hardcoded list of 8
+// categories with icons - it is NOT fetched from the admin-managed
+// categories table (backend/routes/category.routes.js), so changes made
+// in the admin Categories section have no effect here. This may be
+// intentional (a curated marketing list can legitimately differ from the
+// internal product categories used for SKU organization), but it's worth
+// a deliberate decision rather than an assumption - flagged here so it's
+// not mistaken for a bug later.
 import { FaHdd, FaPrint, FaShieldAlt } from "react-icons/fa";
 import {
   FaCableCar,

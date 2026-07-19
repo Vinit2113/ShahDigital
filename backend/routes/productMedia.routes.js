@@ -12,13 +12,13 @@ const router = express.Router();
 
 router.post(
   "/add/:product_id/media",
+  verifyToken,
+  onlyAdmins,
   attachProductName,
   productStorage.fields([
     { name: "product_image", maxCount: 10 },
     { name: "product_video", maxCount: 1 },
   ]),
-  verifyToken,
-  onlyAdmins,
   insertProductMedia,
 );
 
@@ -26,13 +26,13 @@ router.post("/list/media", verifyToken, onlyAdmins, listAllMedia);
 
 router.post(
   "/update/:media_id/media",
+  verifyToken,
+  onlyAdmins,
+  attachProductNameByMedia,
   productStorage.fields([
     { name: "product_image", maxCount: 10 },
     { name: "product_video", maxCount: 1 },
   ]),
-  attachProductNameByMedia,
-  verifyToken,
-  onlyAdmins,
   updateProductMedia,
 );
 

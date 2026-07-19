@@ -15,13 +15,18 @@ import AdminSidebar from "./admin/layouts/AdminSidebar";
 import LoginAdmin from "./admin/pages/LoginAdmin";
 import AdminProfile from "./admin/components/admins/AdminProfile";
 import AddCategory from "./admin/components/CategoryAdmin/AddCategory";
-import ListCategory from "./admin/components/CategoryAdmin/ListCategory"; 
-import CategoryTree from "./admin/components/CategoryAdmin/CategoryTree";
+import ListCategory from "./admin/components/CategoryAdmin/ListCategory";
 import AddAttribute from "./admin/components/AttributeAdmin/AddAttribute";
 import ListAttribute from "./admin/components/AttributeAdmin/ListAttribute";
 import ViewAttribute from "./admin/components/AttributeAdmin/ViewAttribute";
 import WhatsAppButton from "./user/layouts/WhatsAppButton";
 import CategoryAttributeMapping from "./admin/pages/CategoryAttributeMapping";
+// NEW: read-only "which attributes are mapped to which category" list page,
+// separate from the CategoryAttributeMapping editor above.
+import CategoryAttributeList from "./admin/pages/CategoryAttributeList";
+import AddBrand from "./admin/components/BrandsAdmin/AddBrand";
+import ListBrand from "./admin/components/BrandsAdmin/ListBrand";
+import ListEnquiries from "./admin/components/EnquiriesAdmin/ListEnquiries";
 
 // Layout wrapper
 const UserLayout = () => (
@@ -35,8 +40,14 @@ const UserLayout = () => (
 
 // STATUS LOGGIN
 
+// FIX: "admin-shell" class scales down the whole admin dashboard (see
+// index.css) - the user-facing site is untouched. Tailwind's text-*
+// utilities are rem-based, which only respond to the root <html> font-size
+// no matter how deeply nested, so scoping a font-size change to just this
+// div wouldn't shrink anything inside it - zoom does, since it scales the
+// actual rendered box (text, padding, icons, borders) as one unit.
 const AdminLayout = () => (
-  <div className="min-h-screen bg-gray-50">
+  <div className="admin-shell min-h-screen bg-gray-50">
     <AdminNavbar />
     <AdminSidebar />
 
@@ -77,7 +88,6 @@ const App = () => {
           {/* CATEGORY ROUTES */}
           <Route path="/admin/categories/new" element={<AddCategory />} />
           <Route path="/admin/categories/list" element={<ListCategory />} />
-          <Route path="/admin/categories/tree" element={<CategoryTree />} />
 
           {/* ATTRIBUTE ROUTES */}
           <Route path="/admin/attributes/add" element={<AddAttribute />} />
@@ -87,6 +97,21 @@ const App = () => {
             path="/admin/attributes/assign"
             element={<CategoryAttributeMapping />}
           />
+          {/* NEW: read-only category -> attributes overview page */}
+          <Route
+            path="/admin/attributes/mappings"
+            element={<CategoryAttributeList />}
+          />
+
+          {/* BRAND ROUTES */}
+          {/* NEW: sidebar already linked here (AdminSidebar.jsx "Add
+              Brand" / "All Brands") but no pages existed for either
+              until now. */}
+          <Route path="/admin/brands/new" element={<AddBrand />} />
+          <Route path="/admin/brands" element={<ListBrand />} />
+
+          {/* ENQUIRY ROUTES */}
+          <Route path="/admin/enquiries" element={<ListEnquiries />} />
         </Route>
       </Routes>
       <Toaster position="top-center" reverseOrder={false} />

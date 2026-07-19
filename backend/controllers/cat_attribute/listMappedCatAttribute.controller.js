@@ -20,7 +20,6 @@ const listMappedCatAt = async (req, res) => {
       throwError("Category not foun", 404);
     }
 
-    //   SELECT ca.cat_id, ca.attribute_id, a.attribute_id, a.attribute_display_name, a.attribute_name FROM shahDigital.cat_attribute as ca LEFT JOIN shahDigital.attributes as a WHERE ca.attribute_id = a.attribute_id LEFT JOIN ca.
 
     /**
      * SELECT
@@ -60,4 +59,4 @@ const listMappedCatAt = async (req, res) => {
   }
 };
 
-module.exports = { listMappedCatAt };
+module.exports = listMappedCatAt;

@@ -23,11 +23,15 @@ const createCategory = async (req, res) => {
       throwError("Category already exists", 409);
     }
 
+
+    const catImage = req.file ? req.file.filename : null;
+
     // 3. INSERT CATEGORY
     const [newCategory] = await dbConn("shahDigital.categories").insert({
       cat_name: normalizedName, // for logic/search
       cat_display_name: trimmedName, // for display
       cat_description: cat_description?.trim() || null,
+      cat_image: catImage,
       cat_is_active: true,
       created_at: new Date(),
       updated_at: new Date(),

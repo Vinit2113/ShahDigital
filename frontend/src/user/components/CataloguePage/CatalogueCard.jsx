@@ -13,6 +13,15 @@ const CatalogueCard = () => {
   const [catalogues, setCatalogues] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
+  // NEW: category/brand/sort are now owned here and passed down to
+  // CatalogueFilter as controlled props, and search drives the (until now
+  // decorative) search box below - all four actually filter/sort the
+  // product grid now instead of just sitting in local state unused.
+  const [category, setCategory] = useState("");
+  const [brand, setBrand] = useState("");
+  const [sort, setSort] = useState("");
+  const [search, setSearch] = useState("");
+
   useEffect(() => {
     const getCatalogues = async () => {
       try {
@@ -49,6 +58,33 @@ Looking forward to your response.
 
     window.open(whatsappURL, "_blank");
   };
+
+  // NEW: client-side filter + sort. The catalogue is fetched in one shot
+  // already (no pagination), so there's no need for backend query params -
+  // filtering the already-fetched list is simplest and matches the data
+  // scale here.
+  const searchText = search.trim().toLowerCase();
+
+  const filteredCatalogues = catalogues
+    .filter((item) => (category ? item.cat_display_name === category : true))
+    .filter((item) => (brand ? item.brand_display_name === brand : true))
+    .filter((item) =>
+      searchText
+        ? item.product_display_name?.toLowerCase().includes(searchText) ||
+          item.full_description?.toLowerCase().includes(searchText) ||
+          item.cat_display_name?.toLowerCase().includes(searchText)
+        : true,
+    )
+    .sort((a, b) => {
+      if (sort === "Name (A - Z)") {
+        return a.product_display_name.localeCompare(b.product_display_name);
+      }
+      if (sort === "Name (Z - A)") {
+        return b.product_display_name.localeCompare(a.product_display_name);
+      }
+      return 0;
+    });
+
   return (
     <section className="bg-slate-50 py-10">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -57,7 +93,14 @@ Looking forward to your response.
           <BreadCrumbs />
         </div>
 
-        <CatalogueFilter />
+        <CatalogueFilter
+          category={category}
+          setCategory={setCategory}
+          brand={brand}
+          setBrand={setBrand}
+          sort={sort}
+          setSort={setSort}
+        />
 
         {/* HEADER */}
         <div className="mb-8 text-center">
@@ -73,19 +116,21 @@ Looking forward to your response.
           <div className="mx-auto mt-6 max-w-xl">
             <input
               type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               placeholder="Search products, SKU, category..."
               className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm shadow-sm outline-none focus:border-blue-950 focus:ring-2 focus:ring-blue-100"
             />
           </div>
         </div>
 
-        {catalogues.length === 0 ? (
+        {filteredCatalogues.length === 0 ? (
           <p className="text-center text-gray-500">
             No products found matching your search.
           </p>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {catalogues.map((catProduct) => (
+            {filteredCatalogues.map((catProduct) => (
               <div
                 key={catProduct.product_id}
                 className="group rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"

@@ -38,7 +38,8 @@ ORDER BY p.product_id DESC; */
         "pf.feature_name",
       )
       .join("shahDigital.categories AS c", "p.cat_id", "c.cat_id")
-      .join(
+
+      .leftJoin(
         "shahDigital.product_features AS pf",
         "p.product_id",
         "pf.product_id",
@@ -93,7 +94,12 @@ ORDER BY p.product_id DESC; */
           };
         }
 
-        acc[item.product_id].features.push(item.feature_name);
+        // FIX: with the leftJoin above, a product with no features
+        // produces one row with feature_name === null - guard against
+        // pushing that into the features array.
+        if (item.feature_name) {
+          acc[item.product_id].features.push(item.feature_name);
+        }
 
         return acc;
       }, {}),

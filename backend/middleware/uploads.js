@@ -1,36 +1,51 @@
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
+
+const sanitizeName = (name) =>
+  (name || "product")
+    .toLowerCase()
+    .replace(/\s+/g, "_")
+    .replace(/[^a-z0-9_]/g, "");
 
 // PRODUCT STORAGE
 const productStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    if (file.fieldname === "product_video") {
-      const ext = path.extname(file.originalname).toLowerCase();
+    const safeProductName = sanitizeName(req.productName);
 
-      const allowedVideos = [".mp4", ".mov", ".avi", ".mkv", ".webm"];
+    try {
+      if (file.fieldname === "product_video") {
+        const ext = path.extname(file.originalname).toLowerCase();
 
-      if (file.mimetype.startsWith("video/") || allowedVideos.includes(ext)) {
-        return cb(null, "uploads/products/videos");
+        const allowedVideos = [".mp4", ".mov", ".avi", ".mkv", ".webm"];
+
+        if (
+          !file.mimetype.startsWith("video/") &&
+          !allowedVideos.includes(ext)
+        ) {
+          return cb(new Error("Only video files are allowed"));
+        }
+
+        const dir = path.join("uploads/products/videos", safeProductName);
+
+        fs.mkdirSync(dir, { recursive: true });
+        return cb(null, dir);
       }
 
-      return cb(new Error("Only video files are allowed"));
-    }
+      if (file.fieldname === "product_image") {
+        const dir = path.join("uploads/products/images", safeProductName);
 
-    if (file.fieldname === "product_image") {
-      return cb(null, "uploads/products/images");
-    }
+        fs.mkdirSync(dir, { recursive: true });
+        return cb(null, dir);
+      }
 
-    return cb(new Error("Invalid file field"));
+      return cb(new Error("Invalid file field"));
+    } catch (err) {
+      cb(err);
+    }
   },
 
   filename: (req, file, cb) => {
-    const productName = req.productName || "product";
-
-    const safeProductName = productName
-      .toLowerCase()
-      .replace(/\s+/g, "_")
-      .replace(/[^a-z0-9_]/g, "");
-
     const now = new Date();
 
     const timestamp = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}_${String(now.getHours()).padStart(2, "0")}-${String(now.getMinutes()).padStart(2, "0")}-${String(now.getSeconds()).padStart(2, "0")}`;
@@ -40,15 +55,12 @@ const productStorage = multer.diskStorage({
     if (file.fieldname === "product_video") {
       const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
 
-      return cb(
-        null,
-        `${safeProductName}_video_${timestamp}_${uniqueSuffix}${ext}`,
-      );
+      return cb(null, `video_${timestamp}_${uniqueSuffix}${ext}`);
     }
 
     req.uploadCounter = (req.uploadCounter || 0) + 1;
 
-    cb(null, `${safeProductName}_${req.uploadCounter}_${timestamp}${ext}`);
+    cb(null, `${req.uploadCounter}_${timestamp}${ext}`);
   },
 });
 const brandStorage = multer.diskStorage({
@@ -76,6 +88,32 @@ const brandStorage = multer.diskStorage({
       const finalName = `${safeBrandName}_${timestamp}${ext}`;
 
       cb(null, finalName);
+    } catch (error) {
+      cb(error);
+    }
+  },
+});
+
+
+const catStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/categories");
+  },
+  filename: (req, file, cb) => {
+    try {
+      const catName = req.body.cat_name || "category";
+
+      const safeCatName = catName
+        .toLowerCase()
+        .replace(/\s+/g, "_")
+        .replace(/[^a-z0-9_]/g, "");
+
+      const date = new Date();
+      const timestamp = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}_${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}`;
+
+      const ext = path.extname(file.originalname);
+
+      cb(null, `${safeCatName}_${timestamp}${ext}`);
     } catch (error) {
       cb(error);
     }
@@ -156,6 +194,12 @@ module.exports = {
     fileFilter,
   }),
 
+  // NEW: category image upload - same image-only fileFilter as brands.
+  catStorage: multer({
+    storage: catStorage,
+    fileFilter,
+  }),
+
   productStorage: multer({
     storage: productStorage,
     fileFilter: productFileFilter,
@@ -163,4 +207,10 @@ module.exports = {
       fileSize: 100 * 1024 * 1024,
     },
   }),
+
+  // NEW: exported so the product_media controllers can build a media_url
+  // that matches the per-product subfolder Multer actually saved the file
+  // into, using the exact same sanitization (no risk of the controller's
+  // copy drifting out of sync with this one).
+  sanitizeName,
 };

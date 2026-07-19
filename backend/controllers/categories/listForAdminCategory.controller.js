@@ -7,6 +7,7 @@ const listCatAdmin = async (req, res) => {
       "cat_name",
       "cat_display_name",
       "cat_description",
+      "cat_image",
       "cat_is_active",
       "created_at",
       "updated_at",

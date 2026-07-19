@@ -1,7 +1,7 @@
 const dbConn = require("../../db/knex");
 const throwError = require("../../utils/WebError");
 const fs = require("fs");
-const path = require("path");
+const { sanitizeName } = require("../../middleware/uploads");
 
 const updateProductMedia = async (req, res) => {
   const trx = await dbConn.transaction();
@@ -30,19 +30,24 @@ const updateProductMedia = async (req, res) => {
 
     const updateData = {};
 
-    /*
-        UPDATE ALT TEXT
-    */
     if (req.body.alt_text !== undefined) {
       updateData.alt_text = req.body.alt_text;
     }
 
-    /*
-        UPDATE DISPLAY ORDER
-    */
     if (req.body.display_order !== undefined) {
       updateData.display_order = Number(req.body.display_order);
     }
+
+
+    const safeProductName = sanitizeName(req.productName);
+
+    const deleteOldFile = (mediaUrl) => {
+      const oldPath = mediaUrl.replace(/^\//, "");
+
+      if (fs.existsSync(oldPath)) {
+        fs.unlinkSync(oldPath);
+      }
+    };
 
     /*
         UPDATE IMAGE
@@ -50,19 +55,14 @@ const updateProductMedia = async (req, res) => {
     if (req.files?.product_image && req.files.product_image.length > 0) {
       const image = req.files.product_image[0];
 
+      // CHANGED: includes the per-product subfolder now, matching the
+      // new Multer destination (see createMedia.controller.js for the
+      // same change on the create path).
       updateData.media_type = "image";
-      updateData.media_url = image.filename;
+      updateData.media_url = `/uploads/products/images/${safeProductName}/${image.filename}`;
 
-      // OPTIONAL DELETE OLD IMAGE
       if (existingMedia.media_type === "image") {
-        const oldPath = path.join(
-          "uploads/products/images",
-          existingMedia.media_url,
-        );
-
-        if (fs.existsSync(oldPath)) {
-          fs.unlinkSync(oldPath);
-        }
+        deleteOldFile(existingMedia.media_url);
       }
     }
 
@@ -73,18 +73,10 @@ const updateProductMedia = async (req, res) => {
       const video = req.files.product_video[0];
 
       updateData.media_type = "video";
-      updateData.media_url = video.filename;
+      updateData.media_url = `/uploads/products/videos/${safeProductName}/${video.filename}`;
 
-      // OPTIONAL DELETE OLD VIDEO
       if (existingMedia.media_type === "video") {
-        const oldPath = path.join(
-          "uploads/products/videos",
-          existingMedia.media_url,
-        );
-
-        if (fs.existsSync(oldPath)) {
-          fs.unlinkSync(oldPath);
-        }
+        deleteOldFile(existingMedia.media_url);
       }
     }
 

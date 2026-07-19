@@ -8,6 +8,7 @@ const listActiveCategories = async (req, res) => {
         "cat_display_name",
         "cat_name",
         "cat_description",
+        "cat_image",
         "cat_is_active",
       )
       .where({ deleted_at: null })

@@ -2,6 +2,11 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 
+// FIX: this used to be hardcoded to http://localhost:3197, which only
+// works in local dev - breaks the moment this is deployed anywhere else.
+// Matches the same env var CatalogueAPI.js already uses.
+const baseURL = import.meta.env.VITE_BACKEND_URL;
+
 const selectBase =
   "w-full cursor-pointer rounded-xl border border-gray-300 px-4 py-3 pr-10 text-sm text-gray-900 shadow-sm outline-none transition hover:border-gray-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20";
 
@@ -71,11 +76,18 @@ const Dropdown = ({ label, options, value, onChange, placeholder }) => {
   );
 };
 
-const CatalogueFilter = () => {
-  const [category, setCategory] = useState("");
-  const [brand, setBrand] = useState("");
-  const [sort, setSort] = useState("");
-
+// CHANGED: category/brand/sort are now controlled props (owned by
+// CatalogueCard.jsx, the parent) instead of local state, so the parent
+// can actually use the selected values to filter/sort the product grid -
+// previously these selections were captured but never used anywhere.
+const CatalogueFilter = ({
+  category,
+  setCategory,
+  brand,
+  setBrand,
+  sort,
+  setSort,
+}) => {
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -88,8 +100,8 @@ const CatalogueFilter = () => {
         setLoading(true);
 
         const [brandRes, catRes] = await Promise.all([
-          axios.post("http://localhost:3197/brands/list-All"),
-          axios.post("http://localhost:3197/category/cat-list"),
+          axios.post(`${baseURL}brands/list-All`),
+          axios.post(`${baseURL}category/cat-list`),
         ]);
 
         setBrands(brandRes.data.brands?.map((i) => i.brand_display_name) || []);

@@ -1,5 +1,6 @@
 const dbConn = require("../../db/knex");
 const throwError = require("../../utils/WebError");
+const { sanitizeName } = require("../../middleware/uploads");
 
 const insertProductMedia = async (req, res) => {
   const trx = await dbConn.transaction();
@@ -33,6 +34,9 @@ const insertProductMedia = async (req, res) => {
     const mediaData = [];
     let order = 1;
 
+
+    const safeProductName = sanitizeName(existsProduct.product_display_name);
+
     // MERGE ALL UPLOADED FILES
     const uploadedFiles = [
       ...(files.product_image || []),
@@ -63,9 +67,9 @@ const insertProductMedia = async (req, res) => {
       let mediaPath;
 
       if (mediaType === "image") {
-        mediaPath = `/uploads/products/images/${file.filename}`;
+        mediaPath = `/uploads/products/images/${safeProductName}/${file.filename}`;
       } else {
-        mediaPath = `/uploads/products/videos/${file.filename}`;
+        mediaPath = `/uploads/products/videos/${safeProductName}/${file.filename}`;
       }
 
       mediaData.push({

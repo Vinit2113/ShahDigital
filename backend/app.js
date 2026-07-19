@@ -15,7 +15,11 @@ const productMediaRoutes = require("./routes/productMedia.routes");
 const productFeaturesRoutes = require("./routes/productFeatures.routes");
 const userAddressRoutes = require("./routes/userAddress.routes");
 const addCartRoutes = require("./routes/cart.routes");
-// const contactModelEnquiriesRoutes = require("./routes/contactModelEnquiries.routes");
+// FIX: this was commented out (and the routes file it points to didn't
+// even exist yet) - the catalogue page's "Enquire Now" form has been
+// POSTing to a dead endpoint. Routes file now exists at
+// backend/routes/contactModelEnquiries.routes.js.
+const contactModelEnquiriesRoutes = require("./routes/contactModelEnquiries.routes");
 const cookieParser = require("cookie-parser");
 
 app.use(
@@ -38,7 +42,7 @@ app.use("/catAttribute", catAttributeRoutes);
 app.use("/products", productRoutes, productMediaRoutes);
 app.use("/product-Attributes", productAttributesRoutes);
 app.use("/product-Features", productFeaturesRoutes);
-// app.use("/contact-form", contactModelEnquiriesRoutes);
+app.use("/contact-form", contactModelEnquiriesRoutes);
 app.use("/cart", addCartRoutes);
 app.use("/user-address", userAddressRoutes);
 

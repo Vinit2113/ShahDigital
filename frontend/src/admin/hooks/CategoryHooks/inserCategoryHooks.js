@@ -13,12 +13,25 @@ const addCatHook = () => {
     description: "",
   });
 
+  // NEW: optional category image/icon, mirrors insertBrandHooks.js -
+  // unlike brands, this is NOT required (see createCategories.controller.js).
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
   };
 
   const handleSubmit = async (e) => {
@@ -30,6 +43,7 @@ const addCatHook = () => {
       const data = {
         cat_name: form.name,
         cat_description: form.description,
+        imageFile,
       };
 
       const res = await categoriesServicces.insertCatApi(data);
@@ -38,6 +52,8 @@ const addCatHook = () => {
         name: "",
         description: "",
       });
+      setImageFile(null);
+      setImagePreview(null);
       navigate("/admin/categories/list");
     } catch (error) {
       console.log("Cat front error: ", error);
@@ -51,6 +67,9 @@ const addCatHook = () => {
   return {
     form,
     handleChange,
+    imageFile,
+    imagePreview,
+    handleImageChange,
     handleSubmit,
     loading,
   };
