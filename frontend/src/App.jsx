@@ -1,6 +1,8 @@
 import { BrowserRouter, Route, Routes, Outlet } from "react-router";
 import HomePage from "./user/pages/HomePage";
+import AboutUsPage from "./user/pages/AboutUsPage";
 import UnderConstruction from "./user/pages/UnderConstruction";
+import NotFound from "./user/pages/NotFound";
 import CataloguePage from "./user/pages/CataloguePage";
 import Navbar from "./user/layouts/Navbar";
 import Footer from "./user/layouts/Footer";
@@ -10,8 +12,7 @@ import RegisterAdmin from "./admin/pages/RegisterAdmin";
 import { Toaster } from "react-hot-toast";
 
 import AdminDashboard from "./admin/pages/AdminDashboard";
-import AdminNavbar from "./admin/layouts/AdminNavbar";
-import AdminSidebar from "./admin/layouts/AdminSidebar";
+import ProtectedAdminRoute from "./admin/layouts/ProtectedAdminRoute";
 import LoginAdmin from "./admin/pages/LoginAdmin";
 import AdminProfile from "./admin/components/admins/AdminProfile";
 import AddCategory from "./admin/components/CategoryAdmin/AddCategory";
@@ -40,23 +41,6 @@ const UserLayout = () => (
 
 // STATUS LOGGIN
 
-// FIX: "admin-shell" class scales down the whole admin dashboard (see
-// index.css) - the user-facing site is untouched. Tailwind's text-*
-// utilities are rem-based, which only respond to the root <html> font-size
-// no matter how deeply nested, so scoping a font-size change to just this
-// div wouldn't shrink anything inside it - zoom does, since it scales the
-// actual rendered box (text, padding, icons, borders) as one unit.
-const AdminLayout = () => (
-  <div className="admin-shell min-h-screen bg-gray-50">
-    <AdminNavbar />
-    <AdminSidebar />
-
-    <main className="ml-64 mt-16 min-h-[calc(100vh-64px)] p-6">
-      <Outlet />
-    </main>
-  </div>
-);
-
 const App = () => {
   return (
     <BrowserRouter>
@@ -69,19 +53,28 @@ const App = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
 
-          <Route path="/about-us" element={<UnderConstruction />} />
+          <Route path="/about-us" element={<AboutUsPage />} />
           <Route path="/products" element={<UnderConstruction />} />
           <Route path="/service" element={<UnderConstruction />} />
-          <Route path="/catalogue" element={<CataloguePage />} />
+          <Route path="/catalogue/admin" element={<CataloguePage />} />
+          <Route path="/catalogue" element={<UnderConstruction />} />
           <Route path="/contact-us" element={<UnderConstruction />} />
+
+          {/* LEGAL / FOOTER LINKS - not built yet, same placeholder as the
+              other unfinished pages so Footer's links go somewhere real */}
+          <Route path="/privacy-policy" element={<UnderConstruction />} />
+          <Route path="/terms" element={<UnderConstruction />} />
+          <Route path="/support" element={<UnderConstruction />} />
+
+          {/* CATCH-ALL - must stay last within this layout group */}
+          <Route path="*" element={<NotFound />} />
         </Route>
 
         {/* ADMIN ROUTES */}
         {/* UNIVERSAL FALLBACK CODE ! */}
         <Route path="/admin/register" element={<RegisterAdmin />} />
         <Route path="/admin/login" element={<LoginAdmin />} />
-
-        <Route element={<AdminLayout />}>
+        <Route element={<ProtectedAdminRoute />}>
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/profile" element={<AdminProfile />} />
 

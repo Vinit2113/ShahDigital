@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router";
 
-// IMPLEMENTN PROTECTED ROUTES
-// 413 entity too large
+const baseURL = import.meta.env.VITE_BACKEND_URL;
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -33,7 +32,10 @@ const RegisterPage = () => {
     try {
       setLoading(true);
 
-      const res = await fetch("http://localhost:5000/api/customers/register", {
+      // FIX: was pointing at a URL that doesn't match this backend at all -
+      // the real endpoint is ${VITE_BACKEND_URL}auth/register (see
+      // backend/routes/auth.routes.js).
+      const res = await fetch(`${baseURL}auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

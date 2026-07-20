@@ -21,7 +21,7 @@ const register = async (req, res) => {
     const normalizeUsername = username.trim();
 
     // HASH PASSOWRD
-    const saltRound = Number(process.env.SALTROUND) || 10;
+    const saltRound = Number(process.env.SALTROUNDS) || 10;
     const hashPassword = await bcrypt.hash(normalizePassword, saltRound);
 
     // Either all operations succeed together, or everything is rolled back if something fails.

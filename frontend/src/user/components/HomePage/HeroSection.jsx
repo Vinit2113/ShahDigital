@@ -3,8 +3,19 @@ import { useRef } from "react";
 import { Link } from "react-router";
 import gsap from "gsap";
 // import { fetchHeroSec } from "../CataloguePage/CatalogueAPI";
+import bannerLaptop from "../../../assets/HeroSection/banner-laptop.jpg";
+import gridLaptop from "../../../assets/HeroSection/grid-laptop.jpg";
+import gridDesktop from "../../../assets/HeroSection/grid-desktop.jpg";
+import gridCctv from "../../../assets/HeroSection/grid-cctv.jpg";
+import gridKeyboard from "../../../assets/HeroSection/grid-keyboard.jpg";
 
 gsap.registerPlugin(useGSAP);
+
+// Static local images (bundled by Vite, not fetched at runtime) covering a
+// spread of product categories - laptop, desktop, CCTV, keyboard - not just
+// laptops, and with a plain white/studio background matching the card style.
+const heroImage = bannerLaptop;
+const gridImages = [gridLaptop, gridDesktop, gridCctv, gridKeyboard];
 
 const HeroSection = () => {
   // useEffect(() => {
@@ -34,14 +45,14 @@ const HeroSection = () => {
         delay:1,
 
       });
-      
+
       tl.from(rightBox_ref.current, {
         x: 100,
         opacity: 0,
         duration: 0.8,
       },"< ");
 
-      
+
     },
     { scope: heroRef },
   );
@@ -74,14 +85,14 @@ const HeroSection = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 mt-8 justify-center lg:justify-start">
               <Link
-                to={"/"}
+                to="/catalogue"
                 className="px-8 py-4 rounded-xl bg-[#0a54ff] text-white font-semibold hover:bg-blue-700 transition text-center"
               >
                 Browse Catalogue
               </Link>
 
               <Link
-                to={"/"}
+                to="/contact-us"
                 className="px-8 py-4 rounded-xl border border-blue-200 text-blue-900 font-semibold hover:bg-blue-50 transition text-center"
               >
                 Contact Us
@@ -117,7 +128,11 @@ const HeroSection = () => {
           <div className=" rightBox  relative flex justify-center mt-10 lg:mt-0" ref={rightBox_ref}>
             {/* Main Catalogue Card */}
             <div className="w-full max-w-sm sm:max-w-md lg:w-112.5 lg:h-125 bg-white rounded-3xl shadow-2xl p-4 sm:p-6 border border-blue-100">
-              <div className="h-40 sm:h-48 lg:h-56 rounded-2xl bg-linear-to-r from-blue-700 to-blue-900"></div>
+              <img
+                src={heroImage}
+                alt="Product catalogue preview"
+                className="h-40 sm:h-48 lg:h-56 w-full rounded-2xl object-cover"
+              />
 
               <div className="mt-6">
                 <h3 className="text-xl sm:text-2xl font-bold text-blue-900">
@@ -129,10 +144,14 @@ const HeroSection = () => {
                 </p>
 
                 <div className="grid grid-cols-2 gap-3 sm:gap-4 mt-6">
-                  <div className="h-20 sm:h-24 bg-blue-50 rounded-xl"></div>
-                  <div className="h-20 sm:h-24 bg-blue-50 rounded-xl"></div>
-                  <div className="h-20 sm:h-24 bg-blue-50 rounded-xl"></div>
-                  <div className="h-20 sm:h-24 bg-blue-50 rounded-xl"></div>
+                  {gridImages.map((src) => (
+                    <img
+                      key={src}
+                      src={src}
+                      alt=""
+                      className="h-20 sm:h-24 w-full rounded-xl object-cover bg-blue-50"
+                    />
+                  ))}
                 </div>
               </div>
             </div>

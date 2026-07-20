@@ -28,6 +28,9 @@ backend/node_modules/
 frontend/node_modules/
 frontend/.env
 
+# Uploads
+uploads/
+
 
 # Build output
 dist/

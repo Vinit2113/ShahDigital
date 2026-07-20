@@ -1,5 +1,5 @@
   import { useEffect, useState } from "react";
-  import { NavLink, useNavigate } from "react-router";
+  import { NavLink, useNavigate, useLocation } from "react-router";
   import sd_image from "../../assets/Logo_shahdigital_no_bg.png";
   import gsap from "gsap";
   import { useGSAP } from "@gsap/react";
@@ -28,14 +28,17 @@
     const [user, setUser] = useState(null);
 
     const navigate = useNavigate();
+    const location = useLocation();
 
+    // FIX: this only ran once on mount (empty dep array), so logging in via
+    // LoginPage and then navigating here client-side (no full page reload)
+    // never re-read localStorage - the navbar looked logged-out even right
+    // after a successful login. Re-checking on every route change catches
+    // the post-login navigate("/").
     useEffect(() => {
       const storedUser = localStorage.getItem("user");
-
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
-      }
-    }, []);
+      setUser(storedUser ? JSON.parse(storedUser) : null);
+    }, [location.pathname]);
 
     const handleLogout = () => {
       localStorage.removeItem("user");
@@ -95,10 +98,10 @@
           </div>
 
           {/* DESKTOP MENU */}
-          <div className="hidden md:flex items-center gap-10 lg:gap-20">
+          <div className="hidden md:flex items-center gap-10 lg:gap-10">
             <NavLink to="/" end className={  navLinkClass}>
               Home
-      
+
             </NavLink>
 
             <NavLink to="/about-us" className={navLinkClass }>

@@ -15,16 +15,13 @@ const productMediaRoutes = require("./routes/productMedia.routes");
 const productFeaturesRoutes = require("./routes/productFeatures.routes");
 const userAddressRoutes = require("./routes/userAddress.routes");
 const addCartRoutes = require("./routes/cart.routes");
-// FIX: this was commented out (and the routes file it points to didn't
-// even exist yet) - the catalogue page's "Enquire Now" form has been
-// POSTing to a dead endpoint. Routes file now exists at
-// backend/routes/contactModelEnquiries.routes.js.
+
 const contactModelEnquiriesRoutes = require("./routes/contactModelEnquiries.routes");
 const cookieParser = require("cookie-parser");
 
 app.use(
   cors({
-    origin: "http://localhost:2040",
+    origin: process.env.FRONTEND_URL || "http://localhost:2040",
     credentials: true,
   }),
 );

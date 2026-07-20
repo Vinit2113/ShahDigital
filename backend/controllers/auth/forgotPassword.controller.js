@@ -32,7 +32,11 @@ const forgotPassword = async (req, res) => {
     });
 
     // CREATE RESET LINK !
-    const resetLink = `http://localhost:${process.env.PORT}/auth/reset-password?token=${resetToken}&email=${normalizeEmail}`;
+
+    // /reset-password frontend route/page yet, so this link isn't
+    // consumable end-to-end until that's built; this only fixes the URL
+    // itself pointing at the right host.
+    const resetLink = `${process.env.FRONTEND_URL || "http://localhost:2040"}/reset-password?token=${resetToken}&email=${normalizeEmail}`;
 
     await passwordResetMail(normalizeEmail, resetLink);
 

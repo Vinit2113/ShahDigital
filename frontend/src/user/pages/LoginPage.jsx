@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router";
 
+const baseURL = import.meta.env.VITE_BACKEND_URL;
+
 const LoginPage = () => {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
     email: "",
     password: "",
-    confirmPassword: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -24,16 +25,13 @@ const LoginPage = () => {
     e.preventDefault();
     setError("");
 
-    // ✅ confirm password validation
-    if (form.password !== form.confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-
     try {
       setLoading(true);
 
-      const res = await fetch("http://localhost:5000/api/customers/login", {
+      // FIX: was pointing at a URL ("localhost:5000/api/customers/login")
+      // that doesn't match this backend at all - the real endpoint is
+      // ${VITE_BACKEND_URL}auth/login (see backend/routes/auth.routes.js).
+      const res = await fetch(`${baseURL}auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -50,8 +48,11 @@ const LoginPage = () => {
         throw new Error(data.message || "Login failed");
       }
 
-      // optional token storage
-      // localStorage.setItem("token", data.token);
+      // FIX: this was never actually storing anything, so Navbar.jsx's
+      // `localStorage.getItem("user")` check never found a session and the
+      // UI never reflected a successful login.
+      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("token", data.token);
 
       navigate("/");
     } catch (err) {
@@ -92,17 +93,6 @@ const LoginPage = () => {
             name="password"
             placeholder="Password"
             value={form.password}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0a54ff]"
-            required
-          />
-
-          {/* Confirm Password */}
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            value={form.confirmPassword}
             onChange={handleChange}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0a54ff]"
             required

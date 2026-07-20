@@ -61,6 +61,7 @@ const loginAdmin = async (req, res) => {
     });
     res.cookie("access_token", token, {
       httpOnly: true, // Prevents JS access (protects against XSS)
+      secure: process.env.NODE_ENV === "production", // HTTPS only in production
       sameSite: "strict", // CSRF protection
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });

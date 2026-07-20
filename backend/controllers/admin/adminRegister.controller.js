@@ -27,7 +27,7 @@ const registerAdmin = async (req, res) => {
     const username = generateAdminUsername(normalizeEmail);
 
     // HASH PASSWORD
-    const saltRound = parseInt(process.env.SALTROUND) || 10;
+    const saltRound = parseInt(process.env.SALTROUNDS) || 10;
     const hashPassword = await bcrypt.hash(normalizePassword, saltRound);
 
     const admin = await dbConn.transaction(async (trx) => {
@@ -79,10 +79,13 @@ const registerAdmin = async (req, res) => {
     });
 
     // SENDING TOKEN TO FRONTEND USING COOKIE
+    // FIX: "samSite" was a typo (silently ignored by the cookie parser -
+    // this cookie had no CSRF protection at all), and `secure` was
+    // commented out - both fixed here.
     res.cookie("access_token", token, {
       httpOnly: true,
-      // secure: process.env.NODE_ENV === "production",  // HTTPS only in production
-      samSite: "strict",
+      secure: process.env.NODE_ENV === "production", // HTTPS only in production
+      sameSite: "strict",
       maxAge: 24 * 60 * 60 * 1000, // 1 day time-limit
     });
 

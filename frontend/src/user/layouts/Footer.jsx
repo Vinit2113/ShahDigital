@@ -1,4 +1,5 @@
 import { FaEnvelope, FaMapMarkerAlt, FaPhone } from "react-icons/fa";
+import { Link } from "react-router";
 
 const Footer = () => {
   return (
@@ -12,7 +13,7 @@ const Footer = () => {
               <div className="w-10 h-10 bg-white text-blue-950 rounded-xl flex items-center justify-center font-bold">
                 IT
               </div>
-              <span className="text-xl font-bold">CorpRix IT</span>
+              <span className="text-xl font-bold">ShahDigital.in</span>
             </div>
 
             <p className="text-blue-100 text-sm leading-relaxed">
@@ -26,29 +27,29 @@ const Footer = () => {
             <h3 className="font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-sm text-blue-200">
               <li>
-                <a href="#" className="hover:text-white">
+                <Link to="/" className="hover:text-white">
                   Home
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#products" className="hover:text-white">
+                <Link to="/products" className="hover:text-white">
                   Products
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#brands" className="hover:text-white">
+                <Link to="/catalogue" className="hover:text-white">
                   Brands
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#about" className="hover:text-white">
+                <Link to="/about-us" className="hover:text-white">
                   About Us
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#contact" className="hover:text-white">
+                <Link to="/contact-us" className="hover:text-white">
                   Contact
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -70,6 +71,7 @@ const Footer = () => {
             <h3 className="font-semibold mb-4">Contact Us</h3>
 
             <div className="space-y-3 text-sm text-blue-200">
+              {/* TODO: replace with real business phone/email before launch */}
               <div className="flex items-center justify-center sm:justify-start gap-2">
                 <FaPhone />
                 <span className="wrap-break-words">+91 98765 43210</span>
@@ -82,7 +84,9 @@ const Footer = () => {
 
               <div className="flex items-start justify-center sm:justify-start gap-2">
                 <FaMapMarkerAlt className="mt-1" />
-                <span className="wrap-break-word">Ahmedabad, Gujarat, India</span>
+                <span className="wrap-break-word">
+                  Ahmedabad, Gujarat, India
+                </span>
               </div>
             </div>
           </div>
@@ -91,19 +95,19 @@ const Footer = () => {
         {/* Divider */}
         <div className="border-t border-blue-800 mt-8 sm:mt-10 pt-6 flex flex-col md:flex-row items-center justify-between text-sm text-blue-300 gap-3 md:gap-0">
           <p className="text-center md:text-left">
-            © {new Date().getFullYear()} CorpRix IT. All rights reserved.
+            © {new Date().getFullYear()} ShahDigital. All rights reserved.
           </p>
 
           <div className="flex flex-wrap justify-center md:justify-end gap-4">
-            <a href="#" className="hover:text-white">
-              Priv acy Policy
-            </a>
-            <a href="#" className="hover:text-white">
+            <Link to="/privacy-policy" className="hover:text-white">
+              Privacy Policy
+            </Link>
+            <Link to="/terms" className="hover:text-white">
               Terms
-            </a>
-            <a href="#" className="hover:text-white">
+            </Link>
+            <Link to="/support" className="hover:text-white">
               Support
-            </a>
+            </Link>
           </div>
         </div>
       </div>

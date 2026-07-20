@@ -1,10 +1,9 @@
 import { FaWhatsapp } from "react-icons/fa";
-
-const whatsappNumber = "919876543210";
+import { getWhatsAppLink } from "../utils/whatsapp";
 
 export default function WhatsAppButton({ product }) {
   const handleWhatsApp = () => {
-    let message = "";
+    let message;
 
     if (product) {
       message = `
@@ -32,11 +31,7 @@ Thank you.
 `;
     }
 
-    const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-      message,
-    )}`;
-
-    window.open(whatsappURL, "_blank");
+    window.open(getWhatsAppLink(message), "_blank");
   };
 
   return (

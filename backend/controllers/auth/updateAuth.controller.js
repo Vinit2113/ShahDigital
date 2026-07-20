@@ -69,7 +69,7 @@ const updateUser = async (req, res) => {
 
     //   UPDATE PASSWORD
     if (password) {
-      const saltRound = parseInt(process.env.SALTROUND) || 10;
+      const saltRound = parseInt(process.env.SALTROUNDS) || 10;
 
       updateData.password = await bcrypt.hash(password.trim(), saltRound);
     }
