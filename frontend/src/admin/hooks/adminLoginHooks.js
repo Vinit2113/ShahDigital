@@ -42,7 +42,7 @@ const adminLoginHook = () => {
       setLoading(true);
 
       const response = await axios.post(
-        `${baseURL}auth/admin-auth-login`,
+        `${baseURL}admin/login`,
         {
           email,
           password,
@@ -53,8 +53,8 @@ const adminLoginHook = () => {
       );
       const { message, user } = response.data;
 
-      // Check role
-      if (user?.role !== "admin") {
+      // Check role - admin and owner both get dashboard access
+      if (user?.role !== "admin" && user?.role !== "owner") {
         toast.error("You are not authorized as admin");
         return;
       }
@@ -66,7 +66,6 @@ const adminLoginHook = () => {
 
       navigate("/admin");
     } catch (error) {
-      console.log("Admin Login Error:", error);
 
       toast.error(error.response?.data?.message || "Invalid credentials");
     } finally {

@@ -3,17 +3,10 @@ const throwError = require("../../utils/WebError");
 
 const deleteUser = async (req, res) => {
   try {
-    const role = req.user.role;
-    console.log("", role);
-
     const userId = req.params.id;
 
-    console.log("Delete request by role:", role);
-
-    // Only admin allowed
-    if (role !== "admin") {
-      return throwError("Unauthorized access", 401);
-    }
+    // Route already requires onlyAdmins (admin or owner) - no need to
+    // re-check role here too.
 
     // Check if user exists and not already deleted
     const user = await dbConn("shahDigital.customers")

@@ -1,6 +1,6 @@
 
 const express = require("express");
-const verifyToken = require("../utils/verifyToken");
+const verifyToken = require("../utils/verifyToken").verifyAdminToken;
 const onlyAdmins = require("../middleware/requireAdmin.middleware");
 const cat_by_id = require("../controllers/categories/categoryById.controller");
 const createCategory = require("../controllers/categories/createCategories.controller");

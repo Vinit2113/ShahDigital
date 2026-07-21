@@ -34,7 +34,6 @@ const updateAttributeHook = () => {
 
       return true;
     } catch (error) {
-      console.log("Update Attribute error: ", error);
 
       toast.error(error.response?.data?.message || "Something went wrong");
 
@@ -61,7 +60,6 @@ const updateAttributeHook = () => {
 
       navigate("/admin/attribute/list");
     } catch (error) {
-      console.log("Update attribute error:", error);
 
       toast.error(error.response?.data?.message || "Something ent wrong");
     } finally {

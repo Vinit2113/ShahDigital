@@ -3,12 +3,8 @@ const throwError = require("../../utils/WebError");
 
 const listAllProfile = async (req, res) => {
   try {
-    const role = req.user.role;
-    console.log("Here is role ", role);
-
-    if (role === "customer") {
-      return throwError("Unauthorized access", 401);
-    }
+    // Route already requires onlyAdmins (admin or owner) - no need to
+    // re-check role here too.
 
     const allUser = await dbConn("shahDigital.customers as c")
       .select(

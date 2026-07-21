@@ -56,7 +56,7 @@ const adminRegisterHook = () => {
       setLoading(true);
 
       const res = await axios.post(
-        `${baseURL}auth/admin-auth-register`,
+        `${baseURL}admin/register`,
         adminData,
         {
           withCredentials: true,
@@ -70,7 +70,6 @@ const adminRegisterHook = () => {
 
       navigate("/admin");
     } catch (error) {
-      console.log("Register Error", error);
 
       toast.error(error.response?.data?.message || "Something went wrong");
     } finally {

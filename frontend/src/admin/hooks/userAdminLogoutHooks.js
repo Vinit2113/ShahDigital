@@ -12,7 +12,7 @@ const adminLogoutHook = () => {
     try {
       setLoading(true);
       const res = await axios.post(
-        `${baseURL}auth/admin-auth-logout`,
+        `${baseURL}admin/logout`,
         {},
         { withCredentials: true },
       );
@@ -21,7 +21,6 @@ const adminLogoutHook = () => {
       localStorage.clear();
       navigate("/admin/login");
     } catch (error) {
-      console.log("Cat front error: ", error);
       return toast.error(
         error.response?.data?.message || "Something went wrong ",
       );

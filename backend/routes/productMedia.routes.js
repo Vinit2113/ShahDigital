@@ -1,6 +1,6 @@
 const express = require("express");
 const onlyAdmins = require("../middleware/requireAdmin.middleware");
-const verifyToken = require("../utils/verifyToken");
+const verifyToken = require("../utils/verifyToken").verifyAdminToken;
 const insertProductMedia = require("../controllers/product_media/createMedia.controller");
 const { productStorage } = require("../middleware/uploads");
 const attachProductName = require("../middleware/attachProductName.middlewre");

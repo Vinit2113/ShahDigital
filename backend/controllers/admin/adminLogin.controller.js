@@ -59,7 +59,7 @@ const loginAdmin = async (req, res) => {
       email: user.email,
       role: roleName,
     });
-    res.cookie("access_token", token, {
+    res.cookie("admin_access_token", token, {
       httpOnly: true, // Prevents JS access (protects against XSS)
       secure: process.env.NODE_ENV === "production", // HTTPS only in production
       sameSite: "strict", // CSRF protection

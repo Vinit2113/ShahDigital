@@ -40,7 +40,6 @@ const addAttributeHook = () => {
       });
       navigate("/admin/attributes/list");
     } catch (error) {
-      console.log("Attribute front error: ", error);
       return toast.error(error.res?.data?.message || "Something went wrong");
     } finally {
       setLoading(false);

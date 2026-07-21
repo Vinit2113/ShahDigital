@@ -10,12 +10,10 @@ const ProductControlsBar = () => {
   const handleSortChange = (e) => {
     const value = e.target.value;
     setSort(value);
-    console.log("Sort changed:", value);
   };
 
   const handleViewChange = (mode) => {
     setView(mode);
-    console.log("View changed:", mode);
   };
 
   return (

@@ -1,6 +1,6 @@
 const logouAdmin = async (req, res) => {
   try {
-    res.clearCookie("access_token", {
+    res.clearCookie("admin_access_token", {
       httpOnly: true,
       sameSite: "strict",
     });

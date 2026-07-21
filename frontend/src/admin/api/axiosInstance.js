@@ -13,13 +13,10 @@ api.interceptors.response.use(
   },
 
   (error) => {
-    console.log("API ERROR:", error);
 
     const response = error?.response;
     const data = response?.data;
 
-    console.log("ERROR STATUS:", response?.status);
-    console.log("ERROR DATA:", data);
 
     const status = response?.status || data?.status;
 
@@ -33,7 +30,6 @@ api.interceptors.response.use(
         code === "NO_TOKEN" ||
         code?.toLowerCase()?.includes("token"))
     ) {
-      console.log("JWT FAILED - LOGGING OUT");
 
       // Remove saved user data
       localStorage.clear();
@@ -41,7 +37,7 @@ api.interceptors.response.use(
 
       // Remove cookie (only works if cookie is not HttpOnly)
       document.cookie =
-        "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        "admin_access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
       // Redirect to login
       window.location.replace("/admin/login");

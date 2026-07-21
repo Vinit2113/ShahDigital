@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 import toast from "react-hot-toast";
 import categoriesServicces from "../../services/categoriesServicces";
 
@@ -24,7 +23,6 @@ const useDeleteCat = () => {
 
       return response.data;
     } catch (error) {
-      console.log(error);
 
       const message =
         error.response?.data?.message ||

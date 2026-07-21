@@ -1,6 +1,6 @@
 
 const express = require("express");
-const verifyToken = require("../utils/verifyToken");
+const verifyToken = require("../utils/verifyToken").verifyAdminToken;
 const onlyAdmins = require("../middleware/requireAdmin.middleware");
 const contactModel = require("../controllers/admin/contactModel.controller");
 const listEnquiries = require("../controllers/admin/listEnquiries.controller");

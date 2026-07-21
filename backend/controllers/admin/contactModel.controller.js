@@ -9,17 +9,23 @@ const contactModel = async (req, res) => {
     const { name, email, phone, message, productId } = req.body;
     console.log(name, email, phone, message, productId);
 
-    if (!name || !email || !phone || !message || !productId) {
+    if (!name || !email || !phone || !message) {
       throwError("All details required", 400);
     }
-    await existingProductQuery(productId);
+
+    // productId is optional - the site-wide "Enquire Now" button submits a
+    // general enquiry with no product attached, alongside the existing
+    // product-specific enquiries from the catalogue page.
+    if (productId) {
+      await existingProductQuery(productId);
+    }
 
     await dbConn("enquiries").insert({
       name,
       email,
       phone,
       message,
-      product_id: productId,
+      product_id: productId || null,
     });
 
     return res.status(201).json({ message: "Inquiry submitted successfully" });

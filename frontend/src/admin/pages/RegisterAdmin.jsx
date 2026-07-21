@@ -7,6 +7,7 @@ import {
   ShieldCheck,
   Eye,
   EyeOff,
+  AlertTriangle,
 } from "lucide-react";
 
 import logo from "../../assets/Logo_shahdigital_no_bg.png";
@@ -24,6 +25,13 @@ const RegisterAdmin = () => {
   } = adminRegisterHook();
 
   const navigate = useNavigate();
+
+  // The backend only requires an existing admin/owner session once an
+  // admin account already exists (bootstrap: the very first admin can
+  // register without being logged in). We can't know that state here
+  // without an extra API call, so keep this as an informational note
+  // rather than a hard blocker.
+  const isAdminLoggedIn = !!localStorage.getItem("admin");
 
   return (
     <div className="h-screen bg-gray-50 flex items-center justify-center px-4 overflow-hidden">
@@ -124,6 +132,36 @@ const RegisterAdmin = () => {
                 Register a new administrator for your dashboard
               </p>
             </div>
+
+            {/* LOGIN / REGISTER TABS */}
+
+            <div className="flex bg-gray-100 rounded-xl p-1 mb-4">
+              <button
+                type="button"
+                onClick={() => navigate("/admin/login")}
+                className="flex-1 rounded-lg py-2 text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors cursor-pointer"
+              >
+                Login
+              </button>
+
+              <button
+                type="button"
+                className="flex-1 rounded-lg py-2 text-sm font-medium bg-white text-gray-900 shadow-sm cursor-default"
+              >
+                Register
+              </button>
+            </div>
+
+            {!isAdminLoggedIn && (
+              <div className="mb-4 flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800">
+                <AlertTriangle size={16} className="mt-0.5 shrink-0" />
+                <span>
+                  If this is the first admin account, you can register
+                  directly. If an admin already exists, you'll need to log in
+                  first before creating another one.
+                </span>
+              </div>
+            )}
 
             {/* REGISTER CARD */}
 
@@ -283,21 +321,6 @@ const RegisterAdmin = () => {
                   Admin Dashboard Security System
                 </p>
               </div>
-            </div>
-
-            {/* LOGIN */}
-
-            <div className="mt-5 text-center">
-              <p className="text-sm text-gray-500">
-                Already have an admin account?{" "}
-                <button
-                  type="button"
-                  onClick={() => navigate("/admin/login")}
-                  className="font-medium text-gray-900 hover:underline cursor-pointer"
-                >
-                  Login
-                </button>
-              </p>
             </div>
 
             {/* SECURITY BADGE */}

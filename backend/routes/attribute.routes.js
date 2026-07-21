@@ -1,5 +1,5 @@
 const express = require("express");
-const verifyToken = require("../utils/verifyToken");
+const verifyToken = require("../utils/verifyToken").verifyAdminToken;
 const onlyAdmins = require("../middleware/requireAdmin.middleware");
 const createAttribute = require("../controllers/attributes/createAttributes.controller");
 const listAttributes = require("../controllers/attributes/listAllAttributes.controller");

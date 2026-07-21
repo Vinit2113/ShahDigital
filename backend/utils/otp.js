@@ -2,7 +2,6 @@ const crypto = require("crypto");
 const generateOTP = () => {
   return Math.floor(100000 + Math.random() * 999999).toString(); // 6 digit otp
 };
-console.log(generateOTP());
 
 const hashOTP = (otp) => {
   return crypto.createHash("sha256").update(otp).digest("hex");

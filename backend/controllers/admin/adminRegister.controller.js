@@ -82,7 +82,7 @@ const registerAdmin = async (req, res) => {
     // FIX: "samSite" was a typo (silently ignored by the cookie parser -
     // this cookie had no CSRF protection at all), and `secure` was
     // commented out - both fixed here.
-    res.cookie("access_token", token, {
+    res.cookie("admin_access_token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // HTTPS only in production
       sameSite: "strict",

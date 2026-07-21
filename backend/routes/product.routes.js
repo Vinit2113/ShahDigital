@@ -1,6 +1,6 @@
 const express = require("express");
 const createProducts = require("../controllers/products/createProducts.controller");
-const verifyToken = require("../utils/verifyToken");
+const verifyToken = require("../utils/verifyToken").verifyAdminToken;
 const onlyAdmins = require("../middleware/requireAdmin.middleware");
 const listProductsAdmin = require("../controllers/products/listAllProductsAdmin.controller");
 const updateProduct = require("../controllers/products/updateProducts.controller");

@@ -1,6 +1,6 @@
 const onlyAdmins = async (req, res, next) => {
   try {
-    if (!req.user || req.user.role !== "admin") {
+    if (!req.user || (req.user.role !== "admin" && req.user.role !== "owner")) {
       return res.status(403).json({ message: "Admin access only" });
     }
     next();

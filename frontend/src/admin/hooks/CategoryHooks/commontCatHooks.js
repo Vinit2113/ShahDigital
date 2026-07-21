@@ -89,7 +89,6 @@ const useCategory = () => {
       }
       getCategories();
     } catch (error) {
-      console.log(error);
     }
   };
 

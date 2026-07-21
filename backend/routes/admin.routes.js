@@ -4,7 +4,7 @@ const loginAdmin = require("../controllers/admin/adminLogin.controller");
 const {
   listAllProfile,
 } = require("../controllers/admin/listAllUser.controller");
-const verifyToken = require("../utils/verifyToken");
+const verifyToken = require("../utils/verifyToken").verifyAdminToken;
 const onlyAdmins = require("../middleware/requireAdmin.middleware");
 const userBlock = require("../controllers/admin/blockUser.controller");
 const {
@@ -16,12 +16,12 @@ const router = express.Router();
 
 // AUTH
 
-router.post("/admin-auth-register", verifyToken, onlyAdmins, registerAdmin);
-router.post("/admin-auth-login", loginLimiter, loginAdmin);
-router.post("/admin-auth-logout", logouAdmin);
+router.post("/register", registerAdmin);
+router.post("/login", loginLimiter, loginAdmin);
+router.post("/logout", logouAdmin);
 
 // LIST ALL USER'S PROFILE
-router.get("/admin-list-users", verifyToken, onlyAdmins, listAllProfile);
+router.get("/list-users", verifyToken, onlyAdmins, listAllProfile);
 
 // BLOCK USER
 router.post("/:userid/block", verifyToken, onlyAdmins, userBlock);

@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, Outlet } from "react-router";
+import { BrowserRouter, Route, Routes, Outlet, Navigate } from "react-router";
 import HomePage from "./user/pages/HomePage";
 import AboutUsPage from "./user/pages/AboutUsPage";
 import UnderConstruction from "./user/pages/UnderConstruction";
@@ -6,8 +6,6 @@ import NotFound from "./user/pages/NotFound";
 import CataloguePage from "./user/pages/CataloguePage";
 import Navbar from "./user/layouts/Navbar";
 import Footer from "./user/layouts/Footer";
-import RegisterPage from "./user/pages/RegisterPage";
-import LoginPage from "./user/pages/LoginPage";
 import RegisterAdmin from "./admin/pages/RegisterAdmin";
 import { Toaster } from "react-hot-toast";
 
@@ -49,9 +47,10 @@ const App = () => {
         <Route element={<UserLayout />}>
           <Route path="/" element={<HomePage />} />
 
-          {/* USER AUTH */}
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/login" element={<LoginPage />} />
+          {/* USER AUTH - disabled for now (site still under construction);
+              Navbar's "Enquire Now" is the interim path instead */}
+          <Route path="/register" element={<Navigate to="/" replace />} />
+          <Route path="/login" element={<Navigate to="/" replace />} />
 
           <Route path="/about-us" element={<AboutUsPage />} />
           <Route path="/products" element={<UnderConstruction />} />

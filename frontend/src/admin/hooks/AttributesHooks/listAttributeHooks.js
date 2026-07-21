@@ -20,7 +20,6 @@ const useListAttributeHook = () => {
 
       //   setAttributes(res.data);
     } catch (error) {
-      console.log(error);
       toast.error(error.res?.data?.message || "Failed to fetch attribute");
     } finally {
       setLoading(false);

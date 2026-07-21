@@ -24,7 +24,6 @@ const useDeleteAttribute = () => {
 
       return res.data;
     } catch (error) {
-      console.log(error);
 
       const message =
         error.response?.data?.message ||

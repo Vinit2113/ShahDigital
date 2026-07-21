@@ -33,7 +33,6 @@ const getAttributeActiveListApi = (token) => {
 };
 
 const mapCatAttributeApi = (data, token) => {
-  console.log("Mapping data fetched: ", data);
 
   return api.post(`catAttribute/map/cat_attribute`, token, {
     withCredentials: true,

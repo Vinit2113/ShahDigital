@@ -140,7 +140,11 @@ const ListEnquiries = () => {
                       </td>
 
                       <td className="px-6 text-gray-700">
-                        {enquiry.product_display_name}
+                        {enquiry.product_display_name || (
+                          <span className="text-gray-400 italic">
+                            General enquiry
+                          </span>
+                        )}
                       </td>
 
                       <td className="px-6 text-gray-500 max-w-xs">

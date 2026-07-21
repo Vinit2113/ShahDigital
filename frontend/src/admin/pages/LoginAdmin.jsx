@@ -123,6 +123,25 @@ const LoginAdmin = () => {
               </p>
             </div>
 
+            {/* LOGIN / REGISTER TABS */}
+
+            <div className="flex bg-gray-100 rounded-xl p-1 mb-4">
+              <button
+                type="button"
+                className="flex-1 rounded-lg py-2 text-sm font-medium bg-white text-gray-900 shadow-sm cursor-default"
+              >
+                Login
+              </button>
+
+              <button
+                type="button"
+                onClick={() => navigate("/admin/register")}
+                className="flex-1 rounded-lg py-2 text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors cursor-pointer"
+              >
+                Register
+              </button>
+            </div>
+
             {/* LOGIN CARD */}
 
             <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-4">
@@ -228,21 +247,6 @@ const LoginAdmin = () => {
                   Admin Dashboard Security System
                 </p>
               </div>
-            </div>
-
-            {/* REGISTER */}
-
-            <div className="mt-5 text-center">
-              <p className="text-sm text-gray-500">
-                Don't have an admin account?{" "}
-                <button
-                  type="button"
-                  onClick={() => navigate("/admin/register")}
-                  className="font-medium text-gray-900 hover:underline cursor-pointer"
-                >
-                  Create Account
-                </button>
-              </p>
             </div>
 
             {/* SECURITY BADGE */}

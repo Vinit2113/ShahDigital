@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import categoriesServicces from "../../services/categoriesServicces";
@@ -20,7 +19,6 @@ const useListCatHook = () => {
 
       toast.success("Categories fetched successfully");
     } catch (err) {
-      console.log(err);
 
       toast.error(err.response?.data?.message || "Failed to fetch categories");
     } finally {

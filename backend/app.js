@@ -4,6 +4,12 @@ const cors = require("cors");
 const path = require("path");
 const helmet = require("helmet");
 
+// Trust the first hop (the IIS/nginx reverse proxy this sits behind in
+// production) so req.ip and express-rate-limit read the real client IP
+// from X-Forwarded-For instead of treating every request as coming from
+// the proxy itself.
+app.set("trust proxy", 1);
+
 const authRoutes = require("./routes/auth.routes");
 const adminRoutes = require("./routes/admin.routes");
 const catRoutes = require("./routes/category.routes");
@@ -38,7 +44,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-app.use("/auth", authRoutes, adminRoutes);
+app.use("/auth", authRoutes);
+app.use("/admin", adminRoutes);
 app.use("/category", catRoutes);
 app.use("/attribute", attributeRoutes);
 app.use("/brands", brandRoutes);

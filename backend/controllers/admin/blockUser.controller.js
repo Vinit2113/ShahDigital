@@ -5,13 +5,8 @@ const userBlock = async (req, res) => {
   try {
     const { userid } = req.params;
 
-    const role = req.user.role;
-
-    // CHECK IF JWT'S ROLE AUTHORIZATION
-    if (role === "customer") {
-      return throwError("Unauthorized Access", 401);
-      // return res.status(401).json({ message: "Unauthorized Access" });
-    }
+    // Route already requires onlyAdmins (admin or owner) - no need to
+    // re-check role here too.
 
     // FIND THE USER BY ID
     const getUser = await dbConn("shahDigital.customers")

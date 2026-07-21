@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
@@ -56,7 +55,6 @@ const addCatHook = () => {
       setImagePreview(null);
       navigate("/admin/categories/list");
     } catch (error) {
-      console.log("Cat front error: ", error);
       return toast.error(
         error.response?.data?.message || "Something went wrong ",
       );

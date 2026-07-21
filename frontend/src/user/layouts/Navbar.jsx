@@ -3,6 +3,7 @@
   import sd_image from "../../assets/Logo_shahdigital_no_bg.png";
   import gsap from "gsap";
   import { useGSAP } from "@gsap/react";
+  import ContactModal from "../components/CataloguePage/ContactModel";
 
   // Register the hook as a plugin
   gsap.registerPlugin(useGSAP);
@@ -26,6 +27,10 @@
   const Navbar = () => {
     const [open, setOpen] = useState(false);
     const [user, setUser] = useState(null);
+    // Login/registration are disabled for now (site still under
+    // construction) - "Enquire Now" opens the same enquiry form used on
+    // product pages, in its general (no specific product) mode.
+    const [enquiryOpen, setEnquiryOpen] = useState(false);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -141,21 +146,12 @@
                 </button>
               </>
             ) : (
-              <>
-                <NavLink
-                  to="/login"
-                  className=" px-5 py-2 text-sm font-medium text-[#0a54ff] border border-[#0a54ff] rounded-lg hover:bg-[#0a54ff] hover:text-white transition-all duration-200"
-                >
-                  Login
-                </NavLink>
-
-                <NavLink
-                  to="/register"
-                  className=" px-5 py-2 text-sm font-medium text-white bg-[#0a54ff] rounded-lg hover:bg-blue-800 transition-all duration-200 shadow-sm"
-                >
-                  Registration
-                </NavLink>
-              </>
+              <button
+                onClick={() => setEnquiryOpen(true)}
+                className=" px-5 py-2 text-sm font-medium text-white bg-[#0a54ff] rounded-lg hover:bg-blue-800 transition-all duration-200 shadow-sm"
+              >
+                Enquire Now
+              </button>
             )}
           </div>
         </div>
@@ -202,25 +198,24 @@
                   </button>
                 </>
               ) : (
-                <div className="flex flex-col gap-3">
-                  <NavLink
-                    to="/login"
-                    className="block w-full text-center px-5 py-2 text-sm font-medium text-[#0a54ff] border border-[#0a54ff] rounded-lg hover:bg-[#0a54ff] hover:text-white transition-all duration-200"
-                  >
-                    Login
-                  </NavLink>
-
-                  <NavLink
-                    to="/register"
-                    className="block w-full text-center px-5 py-2 text-sm font-medium text-white bg-[#0a54ff] rounded-lg hover:bg-blue-800 transition-all duration-200 shadow-sm"
-                  >
-                    Registration
-                  </NavLink>
-                </div>
+                <button
+                  onClick={() => {
+                    setOpen(false);
+                    setEnquiryOpen(true);
+                  }}
+                  className="block w-full text-center px-5 py-2 text-sm font-medium text-white bg-[#0a54ff] rounded-lg hover:bg-blue-800 transition-all duration-200 shadow-sm"
+                >
+                  Enquire Now
+                </button>
               )}
             </div>
           </div>
         )}
+
+        <ContactModal
+          selectedProduct={enquiryOpen ? {} : null}
+          setSelectedProduct={(val) => setEnquiryOpen(Boolean(val))}
+        />
       </div>
     );
   };

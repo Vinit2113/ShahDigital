@@ -107,7 +107,6 @@ const useAttribute = () => {
       }
       getAttributes();
     } catch (error) {
-      console.log(error);
     }
   };
 
@@ -134,7 +133,6 @@ const useAttribute = () => {
       // Close modal after successful update
       closeViewModal();
     } catch (error) {
-      console.log(error);
     }
   };
 
