@@ -101,7 +101,7 @@ const registerAdmin = async (req, res) => {
   } catch (error) {
     console.log("Admin register error: ", error);
     return res.status(error.statusCode || 500).json({
-      message: error.message || "INTERNAL SERVER ERROR",
+      message: error.statusCode ? error.message : "INTERNAL SERVER ERROR",
     });
   }
 };

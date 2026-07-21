@@ -36,7 +36,7 @@ const deleteProductFeature = async (req, res) => {
     console.log(error);
 
     return res.status(error.statusCode || 500).json({
-      message: error.message || "INTERNAL SERVER ERROR",
+      message: error.statusCode ? error.message : "INTERNAL SERVER ERROR",
     });
   }
 };

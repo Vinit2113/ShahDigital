@@ -113,7 +113,7 @@ ORDER BY p.product_id DESC; */
     console.log(error);
     return res
       .status(error.statusCode || 500)
-      .json({ message: error.message || "INTERNAL SERVER ERROR" });
+      .json({ message: error.statusCode ? error.message : "INTERNAL SERVER ERROR" });
   }
 };
 

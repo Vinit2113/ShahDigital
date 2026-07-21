@@ -2,6 +2,7 @@ const crypto = require("crypto");
 const throwError = require("../../utils/WebError");
 const dbConn = require("../../db/knex");
 const { passwordResetMail } = require("../../utils/mailer");
+const { hashOTP } = require("../../utils/otp");
 
 const forgotPassword = async (req, res) => {
   try {
@@ -22,12 +23,13 @@ const forgotPassword = async (req, res) => {
         .json({ message: "If email exists, reset link will be sent." });
     }
 
-    // Generate secure token
+    // Generate secure token - only the hash is stored, the raw token is
+    // emailed to the user and never persisted (mirrors the OTP handling).
     const resetToken = crypto.randomBytes(32).toString("hex");
     const tokenExpiry = new Date(Date.now() + 1000 * 60 * 15); // 15 min
 
     await dbConn("shahDigital.customers").where({ id: user.id }).update({
-      reset_token: resetToken,
+      reset_token: hashOTP(resetToken),
       reset_token_expiry: tokenExpiry,
     });
 

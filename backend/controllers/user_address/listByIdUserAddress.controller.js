@@ -5,7 +5,7 @@ const getUserAddress = async (req, res) => {
   try {
     const userId = req.user.id;
 
-    const addresses = await dbConn("shahDigital.user_addresses")
+    const address = await dbConn("shahDigital.user_addresses")
       .where({
         user_id: req.user.id,
         is_active: true,
@@ -26,7 +26,7 @@ const getUserAddress = async (req, res) => {
     console.log("GET USER ADDRESS ERROR", error);
 
     return res.status(error.statusCode || 500).json({
-      message: error.message || "Internal Server Error",
+      message: error.statusCode ? error.message : "Internal Server Error",
     });
   }
 };

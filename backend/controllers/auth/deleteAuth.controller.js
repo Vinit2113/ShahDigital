@@ -36,7 +36,7 @@ const deleteAuth = async (req, res) => {
 
     return res
       .status(error.status || 500)
-      .json({ message: error.message || "INTERNAL SERVER ERROR" });
+      .json({ message: error.statusCode ? error.message : "INTERNAL SERVER ERROR" });
   }
 };
 

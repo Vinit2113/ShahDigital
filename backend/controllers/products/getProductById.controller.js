@@ -152,7 +152,7 @@ const getProductById = async (req, res) => {
 
     return res.status(500).json({
       success: false,
-      message: error.message || "INTERNAL SERVER ERROR",
+      message: error.statusCode ? error.message : "INTERNAL SERVER ERROR",
     });
   }
 };

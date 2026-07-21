@@ -96,7 +96,7 @@ const updateAddress = async (req, res) => {
     console.log("UPDATE ADDRESS ERROR", error);
 
     return res.status(error.statusCode || error.status || 500).json({
-      message: error.message || "Internal Server Error",
+      message: error.statusCode ? error.message : "Internal Server Error",
     });
   }
 };

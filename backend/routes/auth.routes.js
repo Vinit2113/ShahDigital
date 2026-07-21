@@ -10,20 +10,25 @@ const verifyToken = require("../utils/verifyToken");
 const { userProfile } = require("../controllers/auth/getProfile.controller");
 const updateUser = require("../controllers/auth/updateAuth.controller");
 const deleteAuth = require("../controllers/auth/deleteAuth.controller");
+const {
+  loginLimiter,
+  otpVerifyLimiter,
+  otpRequestLimiter,
+} = require("../middleware/rateLimit.middleware");
 const router = express.Router();
 
 // AUTH
 router.post("/register", register);
-router.post("/login", authLogin);
+router.post("/login", loginLimiter, authLogin);
 
 // FORGOT-RESET-PASSWORD
-router.post("/forgot-password", forgotPassword);
-router.post("/reset-password", resetPassword);
+router.post("/forgot-password", otpRequestLimiter, forgotPassword);
+router.post("/reset-password", loginLimiter, resetPassword);
 
 // VERIFICATION
 router.post("/user-verify", startVerification);
-router.post("/verify-otp", verifyOtp);
-router.post("/resend-otp", resendOtp);
+router.post("/verify-otp", otpVerifyLimiter, verifyOtp);
+router.post("/resend-otp", otpRequestLimiter, resendOtp);
 
 // USER PROFILE
 router.get("/profile", verifyToken, userProfile);

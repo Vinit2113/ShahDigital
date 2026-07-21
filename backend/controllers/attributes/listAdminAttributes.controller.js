@@ -21,7 +21,7 @@ const listAdminAttributes = async (req, res) => {
 
     return res
       .status(error.statusCode || 500)
-      .json({ message: error.message || "INTERNAL SERVER ERROR" });
+      .json({ message: error.statusCode ? error.message : "INTERNAL SERVER ERROR" });
   }
 };
 

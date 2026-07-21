@@ -26,7 +26,7 @@ const brandById = async (req, res) => {
     console.log("Brand error: ", error);
     return res
       .status(error.statusCode || 500)
-      .json({ message: error.message || "INTERNAL SERVER ERROR" });
+      .json({ message: error.statusCode ? error.message : "INTERNAL SERVER ERROR" });
   }
 };
 

@@ -85,7 +85,7 @@ const createAddress = async (req, res) => {
     console.log("CREATE ADDRESS ERROR", error);
 
     return res.status(500).json({
-      message: error.message || "Internal Server Error",
+      message: error.statusCode ? error.message : "Internal Server Error",
     });
   }
 };

@@ -77,7 +77,7 @@ const updateProduct = async (req, res) => {
     });
   } catch (error) {
     return res.status(error.statusCode || 500).json({
-      message: error.message || "INTERNAL SERVER ERROR",
+      message: error.statusCode ? error.message : "INTERNAL SERVER ERROR",
     });
   }
 };

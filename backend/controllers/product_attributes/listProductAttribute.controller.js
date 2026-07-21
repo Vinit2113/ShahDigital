@@ -46,7 +46,7 @@ const listProductAttributes = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      message: error.message || "INTERNAL SERVER ERROR",
+      message: error.statusCode ? error.message : "INTERNAL SERVER ERROR",
     });
   }
 };

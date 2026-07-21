@@ -6,8 +6,7 @@ require("dotenv").config();
 
 const resetPassword = async (req, res) => {
   try {
-    const { newPassword } = req.body;
-    const { token, email } = req.params;
+    const { token, email, newPassword } = req.body || {};
     if (!token || !email || !newPassword) {
       throwError("Token, email and new password required", 400);
     }
@@ -37,10 +36,8 @@ const resetPassword = async (req, res) => {
     }
 
     // HASH PASSOWRD
-    const hashedPassword = await bcrypt.hash(
-      newPassword,
-      process.env.SALTROUNDS,
-    );
+    const saltRound = parseInt(process.env.SALTROUNDS) || 10;
+    const hashedPassword = await bcrypt.hash(normalizePassword, saltRound);
 
     // UPDATE PASSWORD AND CLEAR TOKEN
     await dbConn("shahDigital.customers").where({ id: user.id }).update({

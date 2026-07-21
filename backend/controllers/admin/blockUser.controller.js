@@ -45,7 +45,7 @@ const userBlock = async (req, res) => {
     console.log("BLOCK USER: ", error);
     // return res.status(500).json({ message: "INTERNAL SERVER ERROR" });
     return res.status(error.statusCode || 500).json({
-      message: error.message || "INTERNAL SERVER ERROR",
+      message: error.statusCode ? error.message : "INTERNAL SERVER ERROR",
     });
   }
 };

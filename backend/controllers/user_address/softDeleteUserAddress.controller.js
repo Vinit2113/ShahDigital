@@ -45,7 +45,7 @@ const deleteAddress = async (req, res) => {
     console.error("DELETE ADDRESS ERROR:", error);
 
     return res.status(500).json({
-      message: error.message || "Internal Server Error",
+      message: error.statusCode ? error.message : "Internal Server Error",
     });
   }
 };

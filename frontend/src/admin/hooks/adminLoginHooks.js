@@ -51,8 +51,6 @@ const adminLoginHook = () => {
           withCredentials: true,
         },
       );
-      console.log("Here is response", response.data.token);
-
       const { message, user } = response.data;
 
       // Check role
@@ -65,7 +63,6 @@ const adminLoginHook = () => {
 
       // Store user only (JWT is already stored in HTTP-only cookie)
       localStorage.setItem("admin", JSON.stringify(user));
-      localStorage.setItem("token", response.data.token);
 
       navigate("/admin");
     } catch (error) {

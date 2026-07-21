@@ -11,21 +11,22 @@ const {
   deleteUser,
 } = require("../controllers/admin/deleteUserByAdmin.controller");
 const logouAdmin = require("../controllers/admin/adminLogout.controller");
+const { loginLimiter } = require("../middleware/rateLimit.middleware");
 const router = express.Router();
 
 // AUTH
 
 router.post("/admin-auth-register", verifyToken, onlyAdmins, registerAdmin);
-router.post("/admin-auth-login", loginAdmin);
+router.post("/admin-auth-login", loginLimiter, loginAdmin);
 router.post("/admin-auth-logout", logouAdmin);
 
 // LIST ALL USER'S PROFILE
-router.get("/admin-list-users", verifyToken, listAllProfile);
+router.get("/admin-list-users", verifyToken, onlyAdmins, listAllProfile);
 
 // BLOCK USER
-router.post("/:userid/block", verifyToken, userBlock);
+router.post("/:userid/block", verifyToken, onlyAdmins, userBlock);
 
 // DELETE SPECIFIC USER
-router.post("/:id/user-delete", verifyToken, deleteUser);
+router.post("/:id/user-delete", verifyToken, onlyAdmins, deleteUser);
 
 module.exports = router;

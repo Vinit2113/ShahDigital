@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const path = require("path");
+const helmet = require("helmet");
 
 const authRoutes = require("./routes/auth.routes");
 const adminRoutes = require("./routes/admin.routes");
@@ -18,6 +19,12 @@ const addCartRoutes = require("./routes/cart.routes");
 
 const contactModelEnquiriesRoutes = require("./routes/contactModelEnquiries.routes");
 const cookieParser = require("cookie-parser");
+
+// crossOriginResourcePolicy is relaxed to "cross-origin" so that
+// /uploads images/videos can still be embedded by the frontend, which
+// runs on a different origin - helmet's "same-origin" default would
+// otherwise block the browser from loading them.
+app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
 
 app.use(
   cors({

@@ -1,11 +1,13 @@
 const knex = require("knex");
 const config = require("../knexfile");
 
-/** 
- * Initializes Knex using the development database settings
-This creates a live connection interface (db) to your database
-so that we can run queries ! 
+/**
+ * Initializes Knex using the settings for the current environment
+ * (config.production when NODE_ENV=production, config.development
+ * otherwise) so production traffic doesn't silently run on the dev
+ * profile.
  */
-const dbConn = knex(config.development);
+const env = process.env.NODE_ENV === "production" ? "production" : "development";
+const dbConn = knex(config[env]);
 
 module.exports = dbConn;
