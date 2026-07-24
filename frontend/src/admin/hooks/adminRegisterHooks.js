@@ -1,9 +1,7 @@
 import { useState } from "react";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
-
-const baseURL = import.meta.env.VITE_BACKEND_URL;
+import api from "../api/axiosInstance";
 
 const adminRegisterHook = () => {
   const navigate = useNavigate();
@@ -55,13 +53,9 @@ const adminRegisterHook = () => {
     try {
       setLoading(true);
 
-      const res = await axios.post(
-        `${baseURL}admin/register`,
-        adminData,
-        {
-          withCredentials: true,
-        },
-      );
+      const res = await api.post("admin/register", adminData, {
+        withCredentials: true,
+      });
 
     //   console.log(res.data.admin);
       toast.success(res.data.message || "Admin created successfully");

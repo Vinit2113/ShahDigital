@@ -31,9 +31,19 @@
     // construction) - "Enquire Now" opens the same enquiry form used on
     // product pages, in its general (no specific product) mode.
     const [enquiryOpen, setEnquiryOpen] = useState(false);
+    // Shrinks the navbar once the page scrolls past a small threshold, so
+    // it reclaims screen space while browsing instead of staying full-height.
+    const [scrolled, setScrolled] = useState(false);
 
     const navigate = useNavigate();
     const location = useLocation();
+
+    useEffect(() => {
+      const handleScroll = () => setScrolled(window.scrollY > 20);
+      handleScroll();
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     // FIX: this only ran once on mount (empty dep array), so logging in via
     // LoginPage and then navigating here client-side (no full page reload)
@@ -67,14 +77,26 @@
     
 
     return (
-      <div className="bg-[#fcfcfc] shadow-sm border border-transparent">
+      <div
+        className={`sticky top-0 z-50 bg-[#fcfcfc]/70 backdrop-blur-md border border-transparent transition-all duration-500 ease-in-out ${
+          scrolled ? "shadow-md" : "shadow-sm"
+        }`}
+      >
         {/* TOP BAR */}
-        <div className=" flex justify-between items-center px-3">
+        <div
+          className={`flex justify-between items-center px-3 transition-all duration-500 ease-in-out ${
+            scrolled ? "py-0" : "py-1"
+          }`}
+        >
           {/* LEFT LOGO */}
           <div>
             <img
               src={sd_image}
-              className=" navlink w-40 sm:w-50 h-16 sm:h-20 object-contain m-2"
+              className={`navlink object-contain m-2 transition-all duration-500 ease-in-out ${
+                scrolled
+                  ? "w-28 sm:w-36 h-10 sm:h-14"
+                  : "w-40 sm:w-50 h-16 sm:h-20"
+              }`}
               alt="Logo"
             />
           </div>

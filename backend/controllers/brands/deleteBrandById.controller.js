@@ -4,7 +4,7 @@ const throwError = require("../../utils/WebError");
 const deleteBrandById = async (req, res) => {
   try {
     const brandId = req.params.brand_id;
-    if (!brandId) [throwError("Brand Id is required", 400)];
+    if (!brandId) throwError("Brand Id is required", 400);
 
     // CHECK IF BRAND EXISTS OR NOT
     const brand = await dbConn("shahDigital.brands")

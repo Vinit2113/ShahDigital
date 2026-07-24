@@ -37,9 +37,9 @@ Thank you.
   return (
     <button
       onClick={handleWhatsApp}
-      className="fixed bottom-6 right-6 z-50 h-16 w-16 rounded-full bg-[#25D366] text-white shadow-lg flex items-center justify-center animate-float hover:scale-110 transition"
+      className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 h-14 w-14 sm:h-16 sm:w-16 rounded-full bg-[#25D366] text-white shadow-lg flex items-center justify-center animate-float hover:scale-110 transition"
     >
-      <FaWhatsapp size={36} />
+      <FaWhatsapp className="text-3xl sm:text-4xl" />
     </button>
   );
 }

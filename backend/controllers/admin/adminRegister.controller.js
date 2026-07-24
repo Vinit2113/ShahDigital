@@ -70,7 +70,6 @@ const registerAdmin = async (req, res) => {
       };
     });
 
-
     // GENERATE JWT TOKEN
     const token = generateToken({
       id: admin.id,
@@ -79,9 +78,7 @@ const registerAdmin = async (req, res) => {
     });
 
     // SENDING TOKEN TO FRONTEND USING COOKIE
-    // FIX: "samSite" was a typo (silently ignored by the cookie parser -
-    // this cookie had no CSRF protection at all), and `secure` was
-    // commented out - both fixed here.
+
     res.cookie("admin_access_token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // HTTPS only in production

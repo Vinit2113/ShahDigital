@@ -26,8 +26,15 @@ const LoginAdmin = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="h-screen bg-gray-50 flex items-center justify-center px-4 overflow-hidden">
-      <div className="w-full max-w-5xl bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden grid md:grid-cols-2 max-h-[90vh]">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-6 sm:py-10">
+      {/* FIX: was "h-screen ... overflow-hidden" with "max-h-[90vh]" - on
+          mobile the grid collapses to a single column, stacking the
+          company panel on top of the login form inside a viewport-height
+          clipped box, so the actual login form was cut off and
+          unreachable on small screens. min-h-screen + natural scroll and
+          only capping height at md+ (where the two columns sit side by
+          side) fixes that. */}
+      <div className="w-full max-w-5xl bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden grid md:grid-cols-2 md:max-h-[90vh]">
         {/* ================= LEFT COMPANY SECTION ================= */}
 
         <div className="bg-gray-900 text-white p-6 flex flex-col justify-center">

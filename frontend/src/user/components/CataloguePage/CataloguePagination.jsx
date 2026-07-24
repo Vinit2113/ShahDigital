@@ -17,7 +17,7 @@ const CataloguePagination = ({
 
   return (
     <>
-      <div className="mt-10 flex items-center justify-center gap-2">
+      <div className="mt-10 flex flex-wrap items-center justify-center gap-2 px-2">
         <button
           className="rounded-lg border px-3 py-1 text-sm disabled:opacity-50"
           onClick={handlePrev}

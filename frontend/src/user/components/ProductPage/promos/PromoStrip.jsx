@@ -2,21 +2,21 @@
 const PromoStrip = () => {
   return (
     <div className="my-10">
-      <div className="max-w-7xl mx-auto px-8">
-        <div className="bg-linear-to-r from-[#0a54ff] to-blue-700 text-white rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-linear-to-r from-[#0a54ff] to-blue-700 text-white rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center text-center md:text-left justify-between gap-5 sm:gap-6 shadow-lg">
           {/* Text */}
           <div>
-            <h3 className="text-2xl font-bold">
+            <h3 className="text-xl sm:text-2xl font-bold">
               Bulk Order Discounts Available
             </h3>
 
-            <p className="mt-2 text-blue-100">
+            <p className="mt-2 text-blue-100 text-sm sm:text-base">
               Get special pricing for corporate & wholesale IT hardware orders.
             </p>
           </div>
 
           {/* CTA */}
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <button className="px-6 py-3 bg-white text-blue-700 font-semibold rounded-xl hover:bg-blue-50 transition">
               Contact Sales
             </button>
@@ -34,19 +34,19 @@ const PromoStrip = () => {
 const HelpStrip = () => {
   return (
     <div className="my-10">
-      <div className="max-w-7xl mx-auto px-8">
-        <div className="bg-white border border-blue-100 rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white border border-blue-100 rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center text-center md:text-left justify-between gap-4 shadow-sm">
           <div>
-            <h3 className="text-xl font-bold text-blue-950">
+            <h3 className="text-lg sm:text-xl font-bold text-blue-950">
               Not sure what to choose?
             </h3>
 
-            <p className="text-gray-600 mt-2">
+            <p className="text-gray-600 mt-2 text-sm sm:text-base">
               Our experts can help you pick the right networking or IT hardware.
             </p>
           </div>
 
-          <button className="mt-4 md:mt-0 px-6 py-3 bg-[#0a54ff] text-white rounded-xl hover:bg-blue-700 transition">
+          <button className="w-full md:w-auto px-6 py-3 bg-[#0a54ff] text-white rounded-xl hover:bg-blue-700 transition">
             Get Expert Help
           </button>
         </div>
@@ -68,7 +68,7 @@ const FeaturedBrands = () => {
 
   return (
     <div className="my-10">
-      <div className="max-w-7xl mx-auto px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white border border-blue-100 rounded-2xl p-6">
           <h3 className="text-lg font-semibold text-blue-950 mb-4">
             Featured Brands

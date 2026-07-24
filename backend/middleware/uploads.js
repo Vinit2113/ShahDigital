@@ -192,12 +192,18 @@ module.exports = {
   brandStorage: multer({
     storage: brandStorage,
     fileFilter,
+    limits: {
+      fileSize: 5 * 1024 * 1024,
+    },
   }),
 
   // NEW: category image upload - same image-only fileFilter as brands.
   catStorage: multer({
     storage: catStorage,
     fileFilter,
+    limits: {
+      fileSize: 5 * 1024 * 1024,
+    },
   }),
 
   productStorage: multer({

@@ -23,7 +23,7 @@ const createAttribute = async (req, res) => {
       throwError("Attribute already exists", 409);
     }
 
-    const [newAttribute] = await dbConn("shahDigital.attributes").insert({
+    const [newAttributeId] = await dbConn("shahDigital.attributes").insert({
       attribute_name: normalizedAttributeName,
       attribute_display_name: trimmedAttributeName,
       attribute_description: attribute_description?.trim() || null,
@@ -32,12 +32,20 @@ const createAttribute = async (req, res) => {
       updated_at: new Date(),
     });
 
+    const newAttribute = await dbConn("shahDigital.attributes")
+      .where({ attribute_id: newAttributeId })
+      .first();
+
     return res.status(201).json({
       message: "Attribute created successfully",
       attribute: newAttribute,
     });
   } catch (error) {
     console.log(error);
+
+    if (error.code === "ER_DUP_ENTRY") {
+      return res.status(409).json({ message: "Attribute already exists" });
+    }
 
     return res
       .status(error.statusCode || 500)

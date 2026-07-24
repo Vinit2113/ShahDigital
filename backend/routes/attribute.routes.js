@@ -1,5 +1,5 @@
 const express = require("express");
-const verifyToken = require("../utils/verifyToken").verifyAdminToken;
+const verifyToken = require("../utils/verifyToken");
 const onlyAdmins = require("../middleware/requireAdmin.middleware");
 const createAttribute = require("../controllers/attributes/createAttributes.controller");
 const listAttributes = require("../controllers/attributes/listAllAttributes.controller");
@@ -11,10 +11,17 @@ const deleteAttributeById = require("../controllers/attributes/deleteAttribute.c
 const restoreAttributeById = require("../controllers/attributes/restoreDeletedAttribute.controller");
 const listAdminAttributes = require("../controllers/attributes/listAdminAttributes.controller");
 const listActiveAttributes = require("../controllers/attributes/listActiveAttributes.controller");
+const { adminWriteLimiter } = require("../middleware/rateLimit.middleware");
 const router = express.Router();
 
 // CREATE
-router.post("/insert", verifyToken, onlyAdmins, createAttribute);
+router.post(
+  "/insert",
+  adminWriteLimiter,
+  verifyToken,
+  onlyAdmins,
+  createAttribute,
+);
 
 // LIST ALL
 router.post("/list-all", listAttributes);
@@ -34,6 +41,7 @@ router.post(
 // UPDATE ATTRIBUTE
 router.post(
   "/update/:attribute_id",
+  adminWriteLimiter,
   verifyToken,
   onlyAdmins,
   updateAttributeById,
@@ -41,6 +49,7 @@ router.post(
 
 router.post(
   "/delete/:attribute_id",
+  adminWriteLimiter,
   verifyToken,
   onlyAdmins,
   deleteAttributeById,
@@ -48,6 +57,7 @@ router.post(
 
 router.post(
   "/restore/:attribute_id",
+  adminWriteLimiter,
   verifyToken,
   onlyAdmins,
   restoreAttributeById,

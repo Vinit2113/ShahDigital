@@ -24,11 +24,11 @@ const AddBrand = () => {
     <div className="min-h-screen bg-gray-50 p-6 md:p-8">
       <div className="max-w-4xl mx-auto">
         {/* Page Header */}
-        <div className="flex items-start justify-between mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
             <p className="text-sm text-gray-500">Admin / Brands</p>
 
-            <h1 className="text-3xl font-bold text-gray-800 mt-2">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mt-2">
               Create Brand
             </h1>
 
@@ -39,7 +39,7 @@ const AddBrand = () => {
 
           <button
             onClick={() => navigate("/admin/brands")}
-            className="flex items-center gap-2 border border-gray-300 px-5 py-3 rounded-xl hover:bg-gray-100 transition"
+            className="flex items-center gap-2 border border-gray-300 px-5 py-3 rounded-xl hover:bg-gray-100 transition w-fit"
           >
             <ArrowLeft size={18} />
             Back
@@ -49,8 +49,8 @@ const AddBrand = () => {
         {/* Card */}
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
           {/* Card Header */}
-          <div className="border-b border-gray-200 px-8 py-6 flex items-center gap-4">
-            <div className="w-14 h-14 rounded-xl bg-gray-100 flex items-center justify-center">
+          <div className="border-b border-gray-200 px-4 sm:px-6 md:px-8 py-6 flex items-center gap-4">
+            <div className="w-14 h-14 rounded-xl bg-gray-100 flex items-center justify-center shrink-0">
               <Tag size={26} className="text-gray-700" />
             </div>
 
@@ -66,7 +66,7 @@ const AddBrand = () => {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="p-8 space-y-7">
+          <form onSubmit={handleSubmit} className="p-4 sm:p-6 md:p-8 space-y-7">
             {/* Brand Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">

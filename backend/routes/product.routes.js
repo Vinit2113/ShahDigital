@@ -1,19 +1,20 @@
 const express = require("express");
 const createProducts = require("../controllers/products/createProducts.controller");
-const verifyToken = require("../utils/verifyToken").verifyAdminToken;
+const verifyToken = require("../utils/verifyToken");
 const onlyAdmins = require("../middleware/requireAdmin.middleware");
 const listProductsAdmin = require("../controllers/products/listAllProductsAdmin.controller");
 const updateProduct = require("../controllers/products/updateProducts.controller");
 const deleteProduct = require("../controllers/products/softDeleteProducts.controller");
 const restoreProduct = require("../controllers/products/restoreDeletedProducts.controller");
-const catalogueList = require("../controllers/products/catalogueList.controller");
 const listProducts = require("../controllers/products/allProducts.controller");
 const getProductById = require("../controllers/products/getProductById.controller");
+const { adminWriteLimiter } = require("../middleware/rateLimit.middleware");
 const router = express.Router();
 
 // CREATE
 router.post(
   "/insert/cat-:cat_id/brand-:brand_id",
+  adminWriteLimiter,
   verifyToken,
   onlyAdmins,
   createProducts,
@@ -26,6 +27,7 @@ router.post("/detail/:product_id", getProductById);
 
 router.post(
   "/update-product-:product_id",
+  adminWriteLimiter,
   verifyToken,
   onlyAdmins,
   updateProduct,
@@ -33,6 +35,7 @@ router.post(
 
 router.post(
   "/delete-product-:product_id",
+  adminWriteLimiter,
   verifyToken,
   onlyAdmins,
   deleteProduct,
@@ -40,12 +43,10 @@ router.post(
 
 router.post(
   "/restore-product-:product_id",
+  adminWriteLimiter,
   verifyToken,
   onlyAdmins,
   restoreProduct,
 );
-
-// PRODUCT CATALOGUE LIST CODE !
-router.post("/catalogue/list", catalogueList);
 
 module.exports = router;

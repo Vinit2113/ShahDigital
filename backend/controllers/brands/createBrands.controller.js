@@ -60,6 +60,10 @@ const createBrands = async (req, res) => {
   } catch (error) {
     console.log(error);
 
+    if (error.code === "ER_DUP_ENTRY") {
+      return res.status(409).json({ message: "Brand already exists" });
+    }
+
     return res
       .status(error.statusCode || 500)
       .json({ message: error.statusCode ? error.message : "INTERNAL SERVER ERROR" });

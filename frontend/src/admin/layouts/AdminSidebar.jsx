@@ -9,7 +9,6 @@ import {
   Users,
   Settings,
   LogOut,
-  Menu,
   X,
   Package,
   PlusCircle,
@@ -23,6 +22,7 @@ import {
   Image,
   Network,
   Mail,
+  BookOpen,
 } from "lucide-react";
 
 import adminLogoutHook from "../hooks/userAdminLogoutHooks";
@@ -56,6 +56,26 @@ const buildMenu = (data) => [
         title: "Inventory",
         path: "/admin/products/inventory",
         icon: <Layers size={16} />,
+      },
+    ],
+  },
+
+  // NEW: separate CRUD from Products - catalogue-facing fields only (name,
+  // description, category, brand, features, images), no pricing/stock. See
+  // ListCatalogue.jsx.
+  {
+    title: "Catalogue",
+    icon: <BookOpen size={20} />,
+    children: [
+      {
+        title: "All Catalogue Items",
+        path: "/admin/catalogue",
+        icon: <BookOpen size={16} />,
+      },
+      {
+        title: "Add to Catalogue",
+        path: "/admin/catalogue/new",
+        icon: <PlusCircle size={16} />,
       },
     ],
   },
@@ -216,13 +236,17 @@ const buildMenu = (data) => [
 /* -----------------------------
       Sidebar Component
 ------------------------------*/
-const AdminSidebar = ({ data }) => {
+// FIX: isOpen/setIsOpen are now controlled by the parent (ProtectedAdminRoute)
+// instead of local state, so AdminNavbar's hamburger button can open this
+// same sidebar instance - this component used to render its own separate
+// fixed mobile top bar just to have something that could call setIsOpen,
+// which duplicated/overlapped AdminNavbar's real fixed header on mobile.
+const AdminSidebar = ({ data, isOpen = false, setIsOpen = () => {} }) => {
   const menuItems = buildMenu(data);
 
   const { logout, loading } = adminLogoutHook();
 
   const [openMenu, setOpenMenu] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -242,16 +266,8 @@ const AdminSidebar = ({ data }) => {
 
   return (
     <>
-      {/* Mobile Top Bar */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-14 bg-white border-b flex items-center px-4 z-50">
-        <button onClick={() => setIsOpen(true)}>
-          <Menu />
-        </button>
-
-        <span className="ml-3 font-semibold">Admin Panel</span>
-      </div>
-
-      {/* Overlay */}
+      {/* Overlay - AdminNavbar's hamburger button opens this sidebar now,
+          it stays visible above the overlay on every screen size. */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/40 z-40 md:hidden"
@@ -262,8 +278,8 @@ const AdminSidebar = ({ data }) => {
       {/* Sidebar */}
       <aside
         className={`
-          fixed top-0 md:top-16 left-0 z-50
-          h-full md:h-[calc(100vh-64px)]
+          fixed top-16 left-0 z-50
+          h-[calc(100vh-64px)]
           w-72 md:w-64 bg-white border-r border-gray-200
           transform transition-transform duration-300 ease-in-out
           ${isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}

@@ -27,4 +27,20 @@ const otpRequestLimiter = rateLimit({
   message: { message: "Too many requests. Please try again later." },
 });
 
-module.exports = { loginLimiter, otpVerifyLimiter, otpRequestLimiter };
+// ADMIN WRITES: 100 create/update/delete/restore requests per 15 minutes
+// per IP (category/attribute/brand/mapping). Generous enough for normal
+// admin usage, still blocks scripted abuse against an authenticated route.
+const adminWriteLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: "Too many requests. Please try again later." },
+});
+
+module.exports = {
+  loginLimiter,
+  otpVerifyLimiter,
+  otpRequestLimiter,
+  adminWriteLimiter,
+};

@@ -3,7 +3,10 @@ import HomePage from "./user/pages/HomePage";
 import AboutUsPage from "./user/pages/AboutUsPage";
 import UnderConstruction from "./user/pages/UnderConstruction";
 import NotFound from "./user/pages/NotFound";
-import CataloguePage from "./user/pages/CataloguePage";
+import PrivacyPolicy from "./user/pages/PrivacyPolicy";
+import TermsAndConditions from "./user/pages/TermsAndConditions";
+import ContactUsPage from "./user/pages/ContactUsPage";
+// import SupportPage from "./user/pages/SupportPage";
 import Navbar from "./user/layouts/Navbar";
 import Footer from "./user/layouts/Footer";
 import RegisterAdmin from "./admin/pages/RegisterAdmin";
@@ -26,6 +29,11 @@ import CategoryAttributeList from "./admin/pages/CategoryAttributeList";
 import AddBrand from "./admin/components/BrandsAdmin/AddBrand";
 import ListBrand from "./admin/components/BrandsAdmin/ListBrand";
 import ListEnquiries from "./admin/components/EnquiriesAdmin/ListEnquiries";
+import AddProduct from "./admin/components/ProductsAdmin/AddProduct";
+import ListProduct from "./admin/components/ProductsAdmin/ListProduct";
+import ListCatalogue from "./admin/components/CatalogueAdmin/ListCatalogue";
+import AddCatalogueProduct from "./admin/components/CatalogueAdmin/AddCatalogueProduct";
+import CataloguePage from "./user/pages/CataloguePage";
 
 // Layout wrapper
 const UserLayout = () => (
@@ -55,14 +63,14 @@ const App = () => {
           <Route path="/about-us" element={<AboutUsPage />} />
           <Route path="/products" element={<UnderConstruction />} />
           <Route path="/service" element={<UnderConstruction />} />
-          <Route path="/catalogue/admin" element={<CataloguePage />} />
           <Route path="/catalogue" element={<UnderConstruction />} />
-          <Route path="/contact-us" element={<UnderConstruction />} />
+          <Route path="/catalogue/admin" element={<CataloguePage />} />
+          <Route path="/contact-us" element={<ContactUsPage />} />
 
-          {/* LEGAL / FOOTER LINKS - not built yet, same placeholder as the
-              other unfinished pages so Footer's links go somewhere real */}
-          <Route path="/privacy-policy" element={<UnderConstruction />} />
-          <Route path="/terms" element={<UnderConstruction />} />
+          {/* LEGAL / FOOTER LINKS */}
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsAndConditions />} />
+          {/* <Route path="/support" element={<SupportPage />} /> */}
           <Route path="/support" element={<UnderConstruction />} />
 
           {/* CATCH-ALL - must stay last within this layout group */}
@@ -71,11 +79,11 @@ const App = () => {
 
         {/* ADMIN ROUTES */}
         {/* UNIVERSAL FALLBACK CODE ! */}
-        <Route path="/admin/register" element={<RegisterAdmin />} />
         <Route path="/admin/login" element={<LoginAdmin />} />
         <Route element={<ProtectedAdminRoute />}>
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/profile" element={<AdminProfile />} />
+          <Route path="/admin/register" element={<RegisterAdmin />} />
 
           {/* CATEGORY ROUTES */}
           <Route path="/admin/categories/new" element={<AddCategory />} />
@@ -101,6 +109,23 @@ const App = () => {
               until now. */}
           <Route path="/admin/brands/new" element={<AddBrand />} />
           <Route path="/admin/brands" element={<ListBrand />} />
+
+          {/* PRODUCT ROUTES */}
+          {/* NEW: sidebar already linked here (AdminSidebar.jsx "All
+              Products" / "Add Product") but no pages existed for either
+              until now. */}
+          <Route path="/admin/products/new" element={<AddProduct />} />
+          <Route path="/admin/products" element={<ListProduct />} />
+
+          {/* CATALOGUE ROUTES - separate from Products: its own CRUD for
+              catalogue-facing fields only (name, description, category,
+              brand, features, images) - no pricing/stock, same
+              shahDigital.products table Products uses. */}
+          <Route
+            path="/admin/catalogue/new"
+            element={<AddCatalogueProduct />}
+          />
+          <Route path="/admin/catalogue" element={<ListCatalogue />} />
 
           {/* ENQUIRY ROUTES */}
           <Route path="/admin/enquiries" element={<ListEnquiries />} />

@@ -67,6 +67,10 @@ const useEnquiryList = () => {
 
   return {
     enquiries: filteredEnquiries,
+    // Unfiltered list, so stat cards (New/Contacted/Closed) stay stable
+    // while the admin is typing a search query instead of recounting
+    // whatever the search happens to match.
+    allEnquiries: enquiries,
     totalCount: enquiries.length,
     loading,
     search,

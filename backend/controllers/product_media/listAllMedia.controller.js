@@ -1,5 +1,4 @@
 const dbConn = require("../../db/knex");
-const throwError = require("../../utils/WebError");
 
 const listAllMedia = async (req, res) => {
   try {
@@ -17,10 +16,6 @@ const listAllMedia = async (req, res) => {
       .whereNull("deleted_at") // Show only active media
       .orderBy("product_id", "asc")
       .orderBy("display_order", "asc");
-
-    if (!media || media.length === 0) {
-      throwError("No product media found", 404);
-    }
 
     return res.status(200).json({
       success: true,

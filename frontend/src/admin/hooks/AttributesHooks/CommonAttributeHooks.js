@@ -84,6 +84,9 @@ const useAttribute = () => {
   });
 
   // DELETE
+  // FIX: no more window.confirm() here - ListAttribute.jsx now arms an
+  // inline tick/cross toggle on the row before calling this, same pattern
+  // as commontCatHooks.js/handleDelete.
   const handleDelete = async (attributeId) => {
     await deleteAttribute(attributeId);
 
@@ -98,6 +101,8 @@ const useAttribute = () => {
   };
 
   // TOGGLE STATUS
+  // FIX: no more window.confirm() here either - same reasoning as
+  // handleDelete above.
   const handleToggleStatus = async (attribute) => {
     try {
       if (attribute.attribute_is_active === 1) {

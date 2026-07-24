@@ -386,13 +386,22 @@ const AboutUsPage = () => {
             Chat with us directly on WhatsApp and we&apos;ll help you find the
             right product, pricing and availability.
           </p>
-          <button
-            onClick={handleEnquiry}
-            className="mt-8 inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-[#25D366] text-white font-semibold hover:bg-[#1ebe5b] transition"
-          >
-            <FaWhatsapp size={20} />
-            Enquire Now
-          </button>
+          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={handleEnquiry}
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-[#25D366] text-white font-semibold hover:bg-[#1ebe5b] transition"
+            >
+              <FaWhatsapp size={20} />
+              Enquire Now
+            </button>
+
+            <Link
+              to="/contact-us"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border border-white/30 text-white font-semibold hover:bg-white/10 transition"
+            >
+              Contact Us
+            </Link>
+          </div>
         </div>
       </section>
     </div>

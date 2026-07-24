@@ -76,12 +76,12 @@ const WhyChooseUs = () => {
   );
 
   return (
-    <section ref={sectionRef} className="py-20 bg-linear-to-b from-blue-50 to-white">
-      <div className="max-w-6xl mx-auto px-8">
+    <section ref={sectionRef} className="py-12 sm:py-16 lg:py-20 bg-linear-to-b from-blue-50 to-white">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-blue-950">⭐ Why Choose Us</h2>
-          <p className="text-gray-600 mt-3">
+        <div className="text-center mb-10 sm:mb-16">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-blue-950">⭐ Why Choose Us</h2>
+          <p className="text-gray-600 mt-3 text-sm sm:text-base">
             Trusted by IT professionals for reliable hardware sourcing
           </p>
         </div>

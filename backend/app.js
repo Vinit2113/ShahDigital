@@ -4,10 +4,6 @@ const cors = require("cors");
 const path = require("path");
 const helmet = require("helmet");
 
-// Trust the first hop (the IIS/nginx reverse proxy this sits behind in
-// production) so req.ip and express-rate-limit read the real client IP
-// from X-Forwarded-For instead of treating every request as coming from
-// the proxy itself.
 app.set("trust proxy", 1);
 
 const authRoutes = require("./routes/auth.routes");
@@ -24,12 +20,9 @@ const userAddressRoutes = require("./routes/userAddress.routes");
 const addCartRoutes = require("./routes/cart.routes");
 
 const contactModelEnquiriesRoutes = require("./routes/contactModelEnquiries.routes");
+const catalogueRoutes = require("./routes/catalogue.routes");
 const cookieParser = require("cookie-parser");
 
-// crossOriginResourcePolicy is relaxed to "cross-origin" so that
-// /uploads images/videos can still be embedded by the frontend, which
-// runs on a different origin - helmet's "same-origin" default would
-// otherwise block the browser from loading them.
 app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
 
 app.use(
@@ -54,7 +47,22 @@ app.use("/products", productRoutes, productMediaRoutes);
 app.use("/product-Attributes", productAttributesRoutes);
 app.use("/product-Features", productFeaturesRoutes);
 app.use("/contact-form", contactModelEnquiriesRoutes);
+app.use("/catalogue", catalogueRoutes);
 app.use("/cart", addCartRoutes);
 app.use("/user-address", userAddressRoutes);
+
+app.use((err, req, res, next) => {
+  if (err.name === "MulterError") {
+    if (err.code === "LIMIT_FILE_SIZE") {
+      return res.status(413).json({ message: "File is too large" });
+    }
+    return res.status(400).json({ message: err.message });
+  }
+
+  console.error(err);
+  return res.status(err.statusCode || 500).json({
+    message: err.statusCode ? err.message : "INTERNAL SERVER ERROR",
+  });
+});
 
 module.exports = app;

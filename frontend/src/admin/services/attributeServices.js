@@ -1,31 +1,31 @@
 import api from "../api/axiosInstance";
 
-const addAttributeAdmin = (token) => {
-  return api.post(`attribute/insert/`, token, {
+const addAttributeAdmin = (payload) => {
+  return api.post(`attribute/insert/`, payload, {
     withCredentials: true,
   });
 };
 
-const listAttirbuteAdmin = (token) => {
-  return api.post(`attribute/admin/list-all`, token, {
+const listAttirbuteAdmin = (payload) => {
+  return api.post(`attribute/admin/list-all`, payload, {
     withCredentials: true,
   });
 };
 
-const deleteAttributeApi = (attributeId, token) => {
-  return api.post(`attribute/delete/${attributeId}`, token, {
+const deleteAttributeApi = (attributeId, payload) => {
+  return api.post(`attribute/delete/${attributeId}`, payload, {
     withCredentials: true,
   });
 };
 
-const restoreAttributeApi = (attributeId, token) => {
-  return api.post(`attribute/restore/${attributeId}`, token, {
+const restoreAttributeApi = (attributeId, payload) => {
+  return api.post(`attribute/restore/${attributeId}`, payload, {
     withCredentials: true,
   });
 };
 
-const updateAttributeApi = (attributeId, token) => {
-  return api.post(`attribute/update/${attributeId}`, token, {
+const updateAttributeApi = (attributeId, payload) => {
+  return api.post(`attribute/update/${attributeId}`, payload, {
     withCredentials: true,
   });
 };

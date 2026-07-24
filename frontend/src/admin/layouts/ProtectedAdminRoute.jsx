@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Navigate, Outlet } from "react-router";
 import AdminNavbar from "./AdminNavbar";
 import AdminSidebar from "./AdminSidebar";
@@ -8,6 +9,10 @@ import AdminSidebar from "./AdminSidebar";
 // visitor before their first API call fails.
 const ProtectedAdminRoute = () => {
   const admin = localStorage.getItem("admin");
+  // FIX: sidebar open/close state lifted here (was local to AdminSidebar,
+  // with no way for AdminNavbar to open it) so AdminNavbar's hamburger
+  // button can actually toggle the same sidebar instance.
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   if (!admin) {
     return <Navigate to="/admin/login" replace />;
@@ -21,10 +26,14 @@ const ProtectedAdminRoute = () => {
     // wouldn't shrink anything inside it - zoom does, since it scales the
     // actual rendered box (text, padding, icons, borders) as one unit.
     <div className="admin-shell min-h-screen bg-gray-50">
-      <AdminNavbar />
-      <AdminSidebar />
+      <AdminNavbar onMenuClick={() => setSidebarOpen(true)} />
+      <AdminSidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
 
-      <main className="ml-64 mt-16 min-h-[calc(100vh-64px)] p-6">
+      {/* FIX: this was "ml-64" unconditionally, pushing all content 256px
+          right even on mobile where the sidebar is hidden off-canvas -
+          most of the admin dashboard was squeezed into a sliver on small
+          screens. Sidebar only takes up permanent layout space at md+. */}
+      <main className="ml-0 md:ml-64 mt-16 min-h-[calc(100vh-64px)] p-4 sm:p-6">
         <Outlet />
       </main>
     </div>

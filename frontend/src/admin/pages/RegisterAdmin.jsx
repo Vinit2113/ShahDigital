@@ -7,7 +7,6 @@ import {
   ShieldCheck,
   Eye,
   EyeOff,
-  AlertTriangle,
 } from "lucide-react";
 
 import logo from "../../assets/Logo_shahdigital_no_bg.png";
@@ -26,16 +25,12 @@ const RegisterAdmin = () => {
 
   const navigate = useNavigate();
 
-  // The backend only requires an existing admin/owner session once an
-  // admin account already exists (bootstrap: the very first admin can
-  // register without being logged in). We can't know that state here
-  // without an extra API call, so keep this as an informational note
-  // rather than a hard blocker.
-  const isAdminLoggedIn = !!localStorage.getItem("admin");
-
   return (
-    <div className="h-screen bg-gray-50 flex items-center justify-center px-4 overflow-hidden">
-      <div className="w-full max-w-5xl bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden grid md:grid-cols-2 max-h-[90vh]">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-6 sm:py-10">
+      {/* FIX: same clipped-viewport bug as LoginAdmin.jsx - "h-screen
+          overflow-hidden" + "max-h-[90vh]" cut off the actual register form
+          on mobile, where the grid stacks to a single column. */}
+      <div className="w-full max-w-5xl bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden grid md:grid-cols-2 md:max-h-[90vh]">
         {/* ================= LEFT COMPANY SECTION ================= */}
 
         <div className="bg-gray-900 text-white p-6 flex flex-col justify-center">
@@ -151,17 +146,6 @@ const RegisterAdmin = () => {
                 Register
               </button>
             </div>
-
-            {!isAdminLoggedIn && (
-              <div className="mb-4 flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800">
-                <AlertTriangle size={16} className="mt-0.5 shrink-0" />
-                <span>
-                  If this is the first admin account, you can register
-                  directly. If an admin already exists, you'll need to log in
-                  first before creating another one.
-                </span>
-              </div>
-            )}
 
             {/* REGISTER CARD */}
 
@@ -284,13 +268,23 @@ const RegisterAdmin = () => {
 
                   <label className="text-sm text-gray-600">
                     I agree to the{" "}
-                    <span className="font-medium text-gray-900 hover:underline cursor-pointer">
+                    <a
+                      href="/terms"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-medium text-gray-900 hover:underline"
+                    >
                       Terms & Conditions
-                    </span>{" "}
+                    </a>{" "}
                     and{" "}
-                    <span className="font-medium text-gray-900 hover:underline cursor-pointer">
+                    <a
+                      href="/privacy-policy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-medium text-gray-900 hover:underline"
+                    >
                       Privacy Policy
-                    </span>
+                    </a>
                   </label>
                 </div>
 

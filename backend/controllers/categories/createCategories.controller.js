@@ -27,7 +27,7 @@ const createCategory = async (req, res) => {
     const catImage = req.file ? req.file.filename : null;
 
     // 3. INSERT CATEGORY
-    const [newCategory] = await dbConn("shahDigital.categories").insert({
+    const [newCategoryId] = await dbConn("shahDigital.categories").insert({
       cat_name: normalizedName, // for logic/search
       cat_display_name: trimmedName, // for display
       cat_description: cat_description?.trim() || null,
@@ -37,12 +37,20 @@ const createCategory = async (req, res) => {
       updated_at: new Date(),
     });
 
+    const newCategory = await dbConn("shahDigital.categories")
+      .where({ cat_id: newCategoryId })
+      .first();
+
     return res.status(201).json({
       message: "Category created successfully",
       category: newCategory,
     });
   } catch (error) {
     console.log(error);
+
+    if (error.code === "ER_DUP_ENTRY") {
+      return res.status(409).json({ message: "Category already exists" });
+    }
 
     return res
       .status(error.statusCode || 500)

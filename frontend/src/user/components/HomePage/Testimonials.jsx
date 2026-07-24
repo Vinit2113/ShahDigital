@@ -33,14 +33,14 @@ const Testimonials = () => {
   ];
 
   return (
-    <section className="py-20 bg-blue-50 overflow-hidden">
-      <div className="max-w-6xl mx-auto px-8">
+    <section className="py-12 sm:py-16 lg:py-20 bg-blue-50 overflow-hidden">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-14">
-          <h2 className="text-4xl font-bold text-blue-950">
+        <div className="text-center mb-10 sm:mb-14">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-blue-950">
             What Our Clients Say
           </h2>
-          <p className="text-gray-600 mt-3 max-w-2xl mx-auto">
+          <p className="text-gray-600 mt-3 max-w-2xl mx-auto text-sm sm:text-base">
             Trusted by businesses for reliable IT hardware supply, fast service,
             and genuine products.
           </p>
@@ -48,11 +48,11 @@ const Testimonials = () => {
 
         {/* Marquee Testimonials */}
         <div className="relative overflow-hidden">
-          <div className="flex w-max animate-marquee gap-6">
+          <div className="flex w-max animate-marquee gap-4 sm:gap-6">
             {[...testimonials, ...testimonials].map((t, index) => (
               <div
                 key={index}
-                className="min-w-[320px] max-w-[320px] bg-white border border-blue-100 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all"
+                className="min-w-[260px] max-w-[260px] sm:min-w-[320px] sm:max-w-[320px] bg-white border border-blue-100 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-xl transition-all"
               >
                 {/* Quote Icon */}
                 <FaQuoteLeft className="text-blue-200 text-2xl mb-3" />

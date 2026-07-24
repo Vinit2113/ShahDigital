@@ -114,6 +114,9 @@ const useBrandList = () => {
     }
   };
 
+  // FIX: no more window.confirm() here - ListBrand.jsx now arms an inline
+  // tick/cross toggle on the row before calling this, same as
+  // commontCatHooks.js/handleDelete.
   const handleDelete = async (brandId) => {
     try {
       await brandsServices.deleteBrandApi(brandId);

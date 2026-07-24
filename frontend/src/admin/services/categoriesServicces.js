@@ -31,9 +31,13 @@ const insertCatApi = (data) => {
 };
 
 const getCatByIdApi = (cat_id) => {
-  return api.get(`category/cat-detail/${cat_id}`, {
-    withCredentials: true,
-  });
+  return api.post(
+    `category/cat-list-id/${cat_id}`,
+    {},
+    {
+      withCredentials: true,
+    },
+  );
 };
 
 // CHANGED: also sends FormData now, same reasoning as insertCatApi -

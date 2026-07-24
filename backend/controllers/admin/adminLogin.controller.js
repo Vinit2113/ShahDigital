@@ -51,6 +51,10 @@ const loginAdmin = async (req, res) => {
 
     const roleName = role?.name || "customer";
 
+    if (roleName !== "admin" && roleName !== "owner") {
+      throwError("You are not authorized as admin", 403);
+    }
+
     // console.log("Here is rolename for token :",roleName);
 
     // Generate JWT

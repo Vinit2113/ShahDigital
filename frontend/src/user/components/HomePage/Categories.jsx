@@ -156,21 +156,23 @@ const Categories = () => {
               return (
                 <div
                   key={item.name}
-                  className="sm:grid sm:grid-cols-[1fr_3rem_1fr] sm:items-center"
+                  className="relative sm:grid sm:grid-cols-[1fr_3rem_1fr] sm:items-center"
                 >
-                  {/* Center: trunk dot + stub connector (desktop only) */}
-                  <div className="hidden sm:block sm:col-start-2 relative h-full">
-                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-[#0a54ff] ring-4 ring-blue-50 z-10" />
-                    <div
-                      className={
-                        isLeft
-                          ? "absolute right-1/2 top-1/2 -translate-y-1/2 h-0.5 w-6 bg-blue-300"
-                          : "absolute left-1/2 top-1/2 -translate-y-1/2 h-0.5 w-6 bg-blue-300"
-                      }
-                    />
-                  </div>
 
-                  <div className={isLeft ? "sm:col-start-1 sm:flex sm:justify-end" : "sm:col-start-3"}>
+                  <div className="hidden sm:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-[#0a54ff] ring-4 ring-blue-50 z-10" />
+                  <div
+                    className={`hidden sm:block absolute top-1/2 -translate-y-1/2 h-0.5 w-6 bg-blue-300 ${
+                      isLeft ? "right-1/2" : "left-1/2"
+                    }`}
+                  />
+
+                  <div
+                    className={
+                      isLeft
+                        ? "sm:col-start-1 sm:flex sm:items-center sm:justify-end"
+                        : "sm:col-start-3"
+                    }
+                  >
                     <CategoryNode
                       item={item}
                       isLeft={isLeft}

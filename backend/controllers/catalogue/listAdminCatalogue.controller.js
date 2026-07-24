@@ -1,0 +1,109 @@
+const dbConn = require("../../db/knex");
+
+// Admin-only catalogue management list - unlike catalogueList.controller.js
+// (the public feed, active+non-deleted only, used by the public catalogue
+// page), this returns every product regardless of status so the admin can
+// see and restore soft-deleted/inactive ones from the Catalogue section
+// itself. Still no pricing/stock fields - those stay exclusive to
+// listAllProductsAdmin.controller.js (Products section).
+const listAdminCatalogue = async (req, res) => {
+  try {
+    const products = await dbConn("shahDigital.products as p")
+      .select(
+        "p.product_id",
+        "p.product_name",
+        "p.product_display_name",
+        "p.short_description",
+        "p.full_description",
+        "p.is_active",
+        "p.deleted_at",
+        "p.created_at",
+
+        "c.cat_id",
+        "c.cat_name",
+        "c.cat_display_name",
+
+        "b.brand_id",
+        "b.brand_name",
+        "b.brand_display_name",
+
+        "pf.feature_name",
+      )
+      .leftJoin("shahDigital.categories as c", "c.cat_id", "p.cat_id")
+      .leftJoin("shahDigital.brands as b", "b.brand_id", "p.brand_id")
+      .leftJoin(
+        "shahDigital.product_features as pf",
+        "pf.product_id",
+        "p.product_id",
+      )
+      .orderBy("p.product_id", "desc");
+
+    const productIds = [...new Set(products.map((p) => p.product_id))];
+
+    const images = await dbConn("shahDigital.product_media")
+      .select("product_id", "media_url")
+      .whereIn("product_id", productIds)
+      .where("media_type", "image")
+      .whereNull("deleted_at")
+      .orderBy("media_id", "asc");
+
+    const groupedProducts = Object.values(
+      products.reduce((acc, item) => {
+        if (!acc[item.product_id]) {
+          const productImage = images.find(
+            (img) => img.product_id === item.product_id,
+          );
+
+          acc[item.product_id] = {
+            product_id: item.product_id,
+            product_name: item.product_name,
+            product_display_name: item.product_display_name,
+            short_description: item.short_description,
+            full_description: item.full_description,
+            is_active: Boolean(item.is_active),
+            deleted_at: item.deleted_at,
+            created_at: item.created_at,
+
+            category: {
+              cat_id: item.cat_id,
+              cat_name: item.cat_name,
+              cat_display_name: item.cat_display_name,
+            },
+
+            brand: {
+              brand_id: item.brand_id,
+              brand_name: item.brand_name,
+              brand_display_name: item.brand_display_name,
+            },
+
+            image: productImage ? productImage.media_url : null,
+
+            features: [],
+          };
+        }
+
+        if (
+          item.feature_name &&
+          !acc[item.product_id].features.includes(item.feature_name)
+        ) {
+          acc[item.product_id].features.push(item.feature_name);
+        }
+
+        return acc;
+      }, {}),
+    );
+
+    return res.status(200).json({
+      message: "Catalogue fetched successfully",
+      count: groupedProducts.length,
+      data: groupedProducts,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(error.statusCode || 500).json({
+      message: error.statusCode ? error.message : "INTERNAL SERVER ERROR",
+    });
+  }
+};
+
+module.exports = listAdminCatalogue;

@@ -13,6 +13,7 @@ const listProductsAdmin = async (req, res) => {
         "p.product_current_price",
         "p.product_discounted_price",
         "p.product_stock_quantity",
+        "p.is_active",
         "p.created_at",
 
         "c.cat_id",
@@ -64,6 +65,7 @@ const listProductsAdmin = async (req, res) => {
             product_current_price: item.product_current_price,
             product_discounted_price: item.product_discounted_price,
             product_stock_quantity: item.product_stock_quantity,
+            is_active: Boolean(item.is_active),
             created_at: item.created_at,
 
             category: {

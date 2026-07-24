@@ -4,23 +4,26 @@ import CatalogueFilter from "./CatalogueFilter";
 import { FaCheckCircle, FaWhatsapp } from "react-icons/fa";
 import baseURL, { fetchCatalogue } from "./CatalogueAPI";
 import ContactModal from "./ContactModel";
+import CataloguePagination from "./CataloguePagination";
 
 // const backendURL = import.meta.env.VITE_BACKEND_URL;
 const backendImgURL = import.meta.env.VITE_BACKEND_IMG_URL;
 const whatsappNumber = import.meta.env.VITE_WHATSAPP_NUMBER;
 
+// Client-side pagination - the backend still returns the full catalogue in
+// one request, so this just slices the already-filtered/sorted list.
+const PAGE_SIZE = 12;
+
 const CatalogueCard = () => {
   const [catalogues, setCatalogues] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  // NEW: category/brand/sort are now owned here and passed down to
-  // CatalogueFilter as controlled props, and search drives the (until now
-  // decorative) search box below - all four actually filter/sort the
-  // product grid now instead of just sitting in local state unused.
+
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
   const [sort, setSort] = useState("");
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const getCatalogues = async () => {
@@ -34,6 +37,26 @@ const CatalogueCard = () => {
 
     getCatalogues();
   }, []);
+
+  const handleCategoryChange = (value) => {
+    setCategory(value);
+    setCurrentPage(1);
+  };
+
+  const handleBrandChange = (value) => {
+    setBrand(value);
+    setCurrentPage(1);
+  };
+
+  const handleSortChange = (value) => {
+    setSort(value);
+    setCurrentPage(1);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+    setCurrentPage(1);
+  };
 
   // WHATSAPP ONCLICK MSG SENIDNG
   const handleWhatsApp = async (product) => {
@@ -58,10 +81,6 @@ Looking forward to your response.
     window.open(whatsappURL, "_blank");
   };
 
-  // NEW: client-side filter + sort. The catalogue is fetched in one shot
-  // already (no pagination), so there's no need for backend query params -
-  // filtering the already-fetched list is simplest and matches the data
-  // scale here.
   const searchText = search.trim().toLowerCase();
 
   const filteredCatalogues = catalogues
@@ -84,6 +103,21 @@ Looking forward to your response.
       return 0;
     });
 
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredCatalogues.length / PAGE_SIZE),
+  );
+
+  const paginatedCatalogues = filteredCatalogues.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE,
+  );
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <section className="bg-slate-50 py-10">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -94,11 +128,11 @@ Looking forward to your response.
 
         <CatalogueFilter
           category={category}
-          setCategory={setCategory}
+          setCategory={handleCategoryChange}
           brand={brand}
-          setBrand={setBrand}
+          setBrand={handleBrandChange}
           sort={sort}
-          setSort={setSort}
+          setSort={handleSortChange}
         />
 
         {/* HEADER */}
@@ -116,7 +150,7 @@ Looking forward to your response.
             <input
               type="text"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={handleSearchChange}
               placeholder="Search products, SKU, category..."
               className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm shadow-sm outline-none focus:border-blue-950 focus:ring-2 focus:ring-blue-100"
             />
@@ -129,7 +163,7 @@ Looking forward to your response.
           </p>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {filteredCatalogues.map((catProduct) => (
+            {paginatedCatalogues.map((catProduct) => (
               <div
                 key={catProduct.product_id}
                 className="group rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
@@ -203,10 +237,12 @@ Looking forward to your response.
           </div>
         )}
 
-        {/* PRODUCT GRID */}
-
         {/* PAGINATION */}
-        {/* <CataloguePagination /> */}
+        <CataloguePagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       </div>
 
       {/* CONTACT MODAL */}

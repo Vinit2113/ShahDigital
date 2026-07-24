@@ -20,6 +20,14 @@ import AttributeEditModal from "./ListAttribute/AttributeEditModal";
 const ListAttribute = () => {
   const navigate = useNavigate();
 
+  // FIX: replaces window.confirm() for deactivating/deleting an attribute -
+  // clicking the status pill or trash icon on an active row now arms this
+  // row's id, swapping the trash icon for an inline tick/cross instead of a
+  // native browser alert. Restoring an inactive attribute stays instant
+  // (non-destructive, no confirmation needed). Same pattern as
+  // ListCategory.jsx.
+  const [confirmingId, setConfirmingId] = useState(null);
+
   const {
     activeCount,
     attributes,
@@ -210,7 +218,11 @@ const ListAttribute = () => {
 
                       <td className="px-6">
                         <button
-                          onClick={() => handleToggleStatus(item)}
+                          onClick={() =>
+                            item.attribute_is_active
+                              ? setConfirmingId(item.attribute_id)
+                              : handleToggleStatus(item)
+                          }
                           className={`px-3 py-1 rounded-full text-sm ${
                             item.attribute_is_active
                               ? "bg-green-100 text-green-700"
@@ -237,12 +249,40 @@ const ListAttribute = () => {
                             <Pencil size={18} />
                           </button>
 
-                          <button
-                            onClick={() => handleDelete(item.attribute_id)}
-                            className="w-10 h-10 rounded-lg border border-red-200 text-red-500 hover:bg-red-50 flex items-center justify-center"
-                          >
-                            <Trash2 size={18} />
-                          </button>
+                          {confirmingId === item.attribute_id ? (
+                            <>
+                              <button
+                                onClick={() => {
+                                  handleDelete(item.attribute_id);
+                                  setConfirmingId(null);
+                                }}
+                                className="w-10 h-10 rounded-lg border border-green-200 text-green-600 hover:bg-green-50 flex items-center justify-center"
+                                title="Confirm delete"
+                              >
+                                <Check size={18} />
+                              </button>
+
+                              <button
+                                onClick={() => setConfirmingId(null)}
+                                className="w-10 h-10 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 flex items-center justify-center"
+                                title="Cancel"
+                              >
+                                <X size={18} />
+                              </button>
+                            </>
+                          ) : (
+                            <button
+                              onClick={() =>
+                                item.attribute_is_active
+                                  ? setConfirmingId(item.attribute_id)
+                                  : handleToggleStatus(item)
+                              }
+                              className="w-10 h-10 rounded-lg border border-red-200 text-red-500 hover:bg-red-50 flex items-center justify-center"
+                              title={item.attribute_is_active ? "Delete" : "Restore"}
+                            >
+                              <Trash2 size={18} />
+                            </button>
+                          )}
                         </div>
                       </td>
                     </tr>

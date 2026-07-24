@@ -80,6 +80,9 @@ const useCategory = () => {
   };
 
   // TOGGLE STATUS
+  // FIX: no more window.confirm() here - ListCategory.jsx now arms an
+  // inline tick/cross toggle on the row before calling this for a
+  // deactivate, so by the time this runs the admin has already confirmed.
   const handleStatusToggle = async (category) => {
     try {
       if (category.cat_is_active === 1) {
@@ -108,6 +111,8 @@ const useCategory = () => {
     }
   };
 
+  // FIX: no more window.confirm() here either - same reasoning as
+  // handleStatusToggle above.
   const handleDelete = async (catId) => {
     await deleteCategory(catId);
 

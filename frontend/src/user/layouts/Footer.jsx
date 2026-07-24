@@ -85,7 +85,8 @@ const Footer = () => {
               <div className="flex items-start justify-center sm:justify-start gap-2">
                 <FaMapMarkerAlt className="mt-1" />
                 <span className="wrap-break-word">
-                  Ahmedabad, Gujarat, India
+                  201, Sardar Patel Stadium Rd, nr. Sardar Patel Statue
+                  Circle, Naranpura, Ahmedabad, Gujarat 380009
                 </span>
               </div>
             </div>

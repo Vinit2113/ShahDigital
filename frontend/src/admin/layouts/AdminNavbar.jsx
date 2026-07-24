@@ -1,18 +1,29 @@
 import React from "react";
+import { Menu } from "lucide-react";
 import logo from "../../assets/Logo_shahdigital_no_bg.png";
 import adminNavbarHook from "../hooks/adminNavbarHooks";
 import { useNavigate } from "react-router";
 
-const AdminNavbar = () => {
+const AdminNavbar = ({ onMenuClick }) => {
   const admin = adminNavbarHook();
   const navigate = useNavigate();
   return (
     <header className="fixed top-0 left-0 right-0 z-50 h-16 bg-white border-b border-gray-200">
-      <div className="h-full px-4 sm:px-8 flex items-center justify-between">
+      <div className="h-full px-3 sm:px-8 flex items-center justify-between">
         {/* LEFT - Logo + Brand */}
-        <div className="flex items-center gap-4">
-          <div className="pr-4 border-r border-gray-200">
-            <img src={logo} alt="Logo" className="h-9 w-auto object-contain" />
+        <div className="flex items-center gap-2 sm:gap-4">
+          {/* Sidebar toggle - mobile/tablet only, sidebar is always visible at md+ */}
+          <button
+            type="button"
+            onClick={onMenuClick}
+            className="md:hidden p-2 -ml-1 rounded-md hover:bg-gray-100 transition text-gray-700"
+            aria-label="Open menu"
+          >
+            <Menu size={22} />
+          </button>
+
+          <div className="pr-2 sm:pr-4 border-r border-gray-200">
+            <img src={logo} alt="Logo" className="h-8 sm:h-9 w-auto object-contain" />
           </div>
 
           <div className="hidden sm:block leading-tight">

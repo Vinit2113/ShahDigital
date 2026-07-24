@@ -5,7 +5,8 @@
 // Routed at /admin/brands (see App.jsx) - the sidebar's "All Brands" link
 // already pointed here with no page behind it until now.
 
-import { Tag, Plus, Search, Pencil, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { Tag, Plus, Search, Pencil, Trash2, Check, X } from "lucide-react";
 import { useNavigate } from "react-router";
 import useBrandList from "../../hooks/BrandHooks/listBrandHooks";
 import BrandEditModal from "./BrandEditModal";
@@ -22,6 +23,14 @@ const BRAND_IMAGE_BASE = `${import.meta.env.VITE_BACKEND_IMG_URL}/uploads/brands
 
 const ListBrand = () => {
   const navigate = useNavigate();
+
+  // FIX: replaces window.confirm() for deactivating/deleting a brand -
+  // clicking the status pill or trash icon on an active row now arms this
+  // row's id, swapping the trash icon for an inline tick/cross instead of a
+  // native browser alert. Restoring an inactive brand stays instant
+  // (non-destructive, no confirmation needed). Same pattern as
+  // ListCategory.jsx.
+  const [confirmingId, setConfirmingId] = useState(null);
 
   const {
     brands,
@@ -215,7 +224,11 @@ const ListBrand = () => {
 
                       <td className="px-6">
                         <button
-                          onClick={() => handleStatusToggle(brand)}
+                          onClick={() =>
+                            brand.brand_is_active
+                              ? setConfirmingId(brand.brand_id)
+                              : handleStatusToggle(brand)
+                          }
                           className={`px-3 py-1 rounded-full text-sm ${
                             brand.brand_is_active
                               ? "bg-green-100 text-green-700"
@@ -237,12 +250,40 @@ const ListBrand = () => {
                             <Pencil size={18} />
                           </button>
 
-                          <button
-                            onClick={() => handleDelete(brand.brand_id)}
-                            className="w-10 h-10 rounded-lg border border-red-200 text-red-500 hover:bg-red-50 flex items-center justify-center"
-                          >
-                            <Trash2 size={18} />
-                          </button>
+                          {confirmingId === brand.brand_id ? (
+                            <>
+                              <button
+                                onClick={() => {
+                                  handleDelete(brand.brand_id);
+                                  setConfirmingId(null);
+                                }}
+                                className="w-10 h-10 rounded-lg border border-green-200 text-green-600 hover:bg-green-50 flex items-center justify-center"
+                                title="Confirm delete"
+                              >
+                                <Check size={18} />
+                              </button>
+
+                              <button
+                                onClick={() => setConfirmingId(null)}
+                                className="w-10 h-10 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 flex items-center justify-center"
+                                title="Cancel"
+                              >
+                                <X size={18} />
+                              </button>
+                            </>
+                          ) : (
+                            <button
+                              onClick={() =>
+                                brand.brand_is_active
+                                  ? setConfirmingId(brand.brand_id)
+                                  : handleStatusToggle(brand)
+                              }
+                              className="w-10 h-10 rounded-lg border border-red-200 text-red-500 hover:bg-red-50 flex items-center justify-center"
+                              title={brand.brand_is_active ? "Delete" : "Restore"}
+                            >
+                              <Trash2 size={18} />
+                            </button>
+                          )}
                         </div>
                       </td>
                     </tr>

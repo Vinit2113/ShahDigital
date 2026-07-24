@@ -66,6 +66,31 @@ const getProductById = async (req, res) => {
       });
     }
 
+    // Get condition (New / Refurbished / Used / Open Box) via the existing
+    // attributes system - fetched separately so it doesn't multiply rows
+    // against the product_features left join above
+    const conditionAttribute = await dbConn("shahDigital.attributes")
+      .where({ attribute_name: "condition", attribute_is_active: 1 })
+      .first();
+
+    let condition = null;
+    if (conditionAttribute) {
+      const conditionRow = await dbConn("shahDigital.product_attributes")
+        .select("attribute_value", "display_product_attribute")
+        .where({
+          product_id: productId,
+          attribute_id: conditionAttribute.attribute_id,
+        })
+        .whereNull("deleted_at")
+        .first();
+
+      if (conditionRow) {
+        condition =
+          conditionRow.display_product_attribute ||
+          conditionRow.attribute_value;
+      }
+    }
+
     // Get product media
     const media = await dbConn("shahDigital.product_media")
       .select(
@@ -100,6 +125,8 @@ const getProductById = async (req, res) => {
       },
 
       stock_quantity: item.product_stock_quantity,
+
+      condition,
 
       is_active: Boolean(item.is_active),
 

@@ -10,7 +10,7 @@ const restoreDeletedBrandById = async (req, res) => {
     }
 
     //   CHECK IF BRAND IS EXISTS AND IS DELETED
-    const brand = dbConn("shahDigital.brands")
+    const brand = await dbConn("shahDigital.brands")
       .where({
         brand_id: brandId,
       })

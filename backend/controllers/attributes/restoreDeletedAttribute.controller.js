@@ -7,7 +7,7 @@ const restoreAttributeById = async (req, res) => {
     if (!attributeId) {
       throwError("Attribute id is required", 400);
     }
-    const attribute = dbConn("shahDigital.attributes")
+    const attribute = await dbConn("shahDigital.attributes")
       .where({ attribute_id: attributeId })
       .andWhereNot({ attribute_is_active: 1 })
       .first();

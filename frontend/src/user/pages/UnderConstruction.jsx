@@ -112,7 +112,8 @@ const bits = [
   {
     emoji: "🌧️",
     headline: "we're not okay, but the coffee's helping",
-    subtext: "this page is basically our to-do list: long, ignored, still there.",
+    subtext:
+      "this page is basically our to-do list: long, ignored, still there.",
   },
   {
     emoji: "🕯️",
@@ -156,19 +157,10 @@ const pickRandom = () => bits[Math.floor(Math.random() * bits.length)];
 const UnderConstruction = () => {
   const rootRef = useRef(null);
   const location = useLocation();
-  // location.key (not pathname) so every navigation re-rolls, including
-  // hopping between two different under-construction routes or revisiting
-  // the same one - React Router reuses this component instance across
-  // sibling routes instead of remounting it, so a plain useState(() => ...)
-  // would only pick once and then freeze until a hard refresh.
+
   const [content, setContent] = useState(pickRandom);
   const isFirstRender = useRef(true);
 
-  // FIX: re-rolling belongs in an effect, not a useMemo - Math.random()
-  // inside useMemo's calculation was flagged as impure by the React
-  // Compiler/hooks linter (a memo is supposed to be a pure function of its
-  // deps). The ref guard skips the first run so the initial useState pick
-  // above isn't immediately overwritten a second time on mount.
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
@@ -179,7 +171,8 @@ const UnderConstruction = () => {
 
   useGSAP(
     () => {
-      gsap.timeline()
+      gsap
+        .timeline()
         .from(".uc-emoji", {
           scale: 0,
           rotate: -25,
@@ -189,8 +182,16 @@ const UnderConstruction = () => {
         })
         .from(".uc-headline", { y: 20, opacity: 0, duration: 0.5 }, "-=0.2")
         .from(".uc-subtext", { y: 16, opacity: 0, duration: 0.5 }, "-=0.3")
-        .from(".uc-progress", { scaleX: 0, transformOrigin: "left", duration: 0.6 }, "-=0.2")
-        .from(".uc-cta", { y: 16, opacity: 0, duration: 0.4, stagger: 0.1 }, "-=0.3");
+        .from(
+          ".uc-progress",
+          { scaleX: 0, transformOrigin: "left", duration: 0.6 },
+          "-=0.2",
+        )
+        .from(
+          ".uc-cta",
+          { y: 16, opacity: 0, duration: 0.4, stagger: 0.1 },
+          "-=0.3",
+        );
 
       gsap.to(".uc-emoji", {
         rotate: 8,
@@ -254,6 +255,13 @@ const UnderConstruction = () => {
             className="uc-cta px-6 py-3 border border-blue-200 text-blue-900 rounded-xl font-semibold hover:bg-blue-50 transition"
           >
             Browse stuff that works
+          </Link>
+
+          <Link
+            to="/contact-us"
+            className="uc-cta px-6 py-3 border border-blue-200 text-blue-900 rounded-xl font-semibold hover:bg-blue-50 transition"
+          >
+            Contact us instead
           </Link>
         </div>
 

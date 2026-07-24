@@ -1,6 +1,5 @@
-
 const express = require("express");
-const verifyToken = require("../utils/verifyToken").verifyAdminToken;
+const verifyToken = require("../utils/verifyToken");
 const onlyAdmins = require("../middleware/requireAdmin.middleware");
 const cat_by_id = require("../controllers/categories/categoryById.controller");
 const createCategory = require("../controllers/categories/createCategories.controller");
@@ -11,6 +10,7 @@ const restoreCatById = require("../controllers/categories/restoreCatById.control
 const listCatAdmin = require("../controllers/categories/listForAdminCategory.controller");
 const listActiveCategories = require("../controllers/categories/catActiveList.controller");
 const { catStorage } = require("../middleware/uploads");
+const { adminWriteLimiter } = require("../middleware/rateLimit.middleware");
 
 const router = express.Router();
 
@@ -18,6 +18,7 @@ const router = express.Router();
 
 router.post(
   "/cat-insert",
+  adminWriteLimiter,
   verifyToken,
   onlyAdmins,
   catStorage.single("cat_image"),
@@ -32,6 +33,7 @@ router.post("/cat-list-id/:cat_id", cat_by_id);
 
 router.post(
   "/cat-update-id/:cat_id",
+  adminWriteLimiter,
   verifyToken,
   onlyAdmins,
   catStorage.single("cat_image"),
@@ -39,10 +41,22 @@ router.post(
 );
 
 // DELETE
-router.post("/cat-delete-id/:cat_id", verifyToken, onlyAdmins, deleteCatById);
+router.post(
+  "/cat-delete-id/:cat_id",
+  adminWriteLimiter,
+  verifyToken,
+  onlyAdmins,
+  deleteCatById,
+);
 
 // RESTORE
-router.post("/cat-restore-id/:cat_id", verifyToken, onlyAdmins, restoreCatById);
+router.post(
+  "/cat-restore-id/:cat_id",
+  adminWriteLimiter,
+  verifyToken,
+  onlyAdmins,
+  restoreCatById,
+);
 
 // LIST FOR ADMIN
 router.post("/cat-list-admin/", verifyToken, onlyAdmins, listCatAdmin);

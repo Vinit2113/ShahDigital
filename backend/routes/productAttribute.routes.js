@@ -1,16 +1,23 @@
 const express = require("express");
-const verifyToken = require("../utils/verifyToken").verifyAdminToken;
+const verifyToken = require("../utils/verifyToken");
 const onlyAdmins = require("../middleware/requireAdmin.middleware");
 const createProductAttribute = require("../controllers/product_attributes/createProductAttribute.controller");
 const listProductAttributes = require("../controllers/product_attributes/listProductAttribute.controller");
 const getProductAttributeById = require("../controllers/product_attributes/getProductAttribute.controller");
 const updateProductAttribute = require("../controllers/product_attributes/updateProductAttribute.controller");
 const deleteProductAttribute = require("../controllers/product_attributes/softDeleteProductAttribute.controller");
+const { adminWriteLimiter } = require("../middleware/rateLimit.middleware");
 
 const router = express.Router();
 
 // CREATE
-router.post("/insert/", verifyToken, onlyAdmins, createProductAttribute);
+router.post(
+  "/insert/",
+  adminWriteLimiter,
+  verifyToken,
+  onlyAdmins,
+  createProductAttribute,
+);
 router.post("/list/", verifyToken, onlyAdmins, listProductAttributes);
 
 router.post(
@@ -22,6 +29,7 @@ router.post(
 
 router.post(
   "/update/:product_attribute_id",
+  adminWriteLimiter,
   verifyToken,
   onlyAdmins,
   updateProductAttribute,
@@ -29,6 +37,7 @@ router.post(
 
 router.post(
   "/delete/:product_attribute_id",
+  adminWriteLimiter,
   verifyToken,
   onlyAdmins,
   deleteProductAttribute,

@@ -2,20 +2,20 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import kingston from "../../../assets/Brand_logos/DellLogo.png";
-import sandisk from "../../../assets/Brand_logos/HPLogo.png";
-import zebronics from "../../../assets/Brand_logos/lenovoLogo.jpg";
-import brother from "../../../assets/Brand_logos/Nvidia_logo.png";
-import corprix from "../../../assets/Brand_logos/Samsung_logo.jpeg";
+import dell from "../../../assets/Brand_logos/DellLogo.png";
+import hp from "../../../assets/Brand_logos/HPLogo.png";
+import lenovo from "../../../assets/Brand_logos/lenovoLogo.jpg";
+import nvidia from "../../../assets/Brand_logos/Nvidia_logo.png";
+import samsung from "../../../assets/Brand_logos/Samsung_logo.jpeg";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const brands = [
-  { id: 1, name: "Kingston", logo: kingston },
-  { id: 2, name: "SanDisk", logo: sandisk },
-  { id: 3, name: "Zebronics", logo: zebronics },
-  { id: 4, name: "Brother", logo: brother },
-  { id: 5, name: "CorpRix", logo: corprix },
+  { id: 1, name: "Dell", logo: dell },
+  { id: 2, name: "HP", logo: hp },
+  { id: 3, name: "Lenovo", logo: lenovo },
+  { id: 4, name: "Nvidia", logo: nvidia },
+  { id: 5, name: "Samsung", logo: samsung },
 ];
 
 const BrandLogos = () => {
@@ -39,11 +39,11 @@ const BrandLogos = () => {
   );
 
   return (
-    <section ref={sectionRef} className="py-16 bg-white overflow-hidden">
-      <div className="max-w-6xl mx-auto px-6">
+    <section ref={sectionRef} className="py-10 sm:py-16 bg-white overflow-hidden">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Header */}
-        <div className="brand-logos-heading text-center mb-10">
-          <h2 className="text-3xl font-bold text-blue-950">
+        <div className="brand-logos-heading text-center mb-8 sm:mb-10">
+          <h2 className="text-2xl sm:text-3xl font-bold text-blue-950">
             All Leading IT Brands Available
           </h2>
           <p className="text-gray-600 mt-3 max-w-2xl mx-auto text-sm">

@@ -48,6 +48,28 @@ const listProductsAdmin = async (req, res) => {
       .whereNull("deleted_at")
       .orderBy("media_id", "asc");
 
+    // Fetch condition (New / Refurbished / Used / Open Box) via the existing
+    // attributes system - kept separate so it doesn't multiply rows against
+    // the product_features left join above
+    const conditionAttribute = await dbConn("shahDigital.attributes")
+      .where({ attribute_name: "condition", attribute_is_active: 1 })
+      .first();
+
+    let conditionByProductId = {};
+    if (conditionAttribute) {
+      const conditions = await dbConn("shahDigital.product_attributes")
+        .select("product_id", "attribute_value", "display_product_attribute")
+        .where("attribute_id", conditionAttribute.attribute_id)
+        .whereIn("product_id", productIds)
+        .whereNull("deleted_at");
+
+      conditionByProductId = conditions.reduce((acc, item) => {
+        acc[item.product_id] =
+          item.display_product_attribute || item.attribute_value;
+        return acc;
+      }, {});
+    }
+
     // Group products
     const groupedProducts = Object.values(
       products.reduce((acc, item) => {
@@ -82,6 +104,8 @@ const listProductsAdmin = async (req, res) => {
             },
 
             image: productImage ? productImage.media_url : null,
+
+            condition: conditionByProductId[item.product_id] || null,
 
             features: [],
           };

@@ -2,7 +2,17 @@
 // + restore, with active/inactive stats, and an image thumbnail column).
 // Companion page: AddCategory.jsx (create). Category Tree was removed
 // entirely - it showed fake data and served no real purpose.
-import { Layers, Boxes, Plus, Search, Pencil, Trash2 } from "lucide-react";
+import { useState } from "react";
+import {
+  Layers,
+  Boxes,
+  Plus,
+  Search,
+  Pencil,
+  Trash2,
+  Check,
+  X,
+} from "lucide-react";
 import { useNavigate } from "react-router";
 import useCategory from "../../hooks/CategoryHooks/commontCatHooks";
 import CategoryEditModal from "./CategoryEditModal";
@@ -14,6 +24,13 @@ const CATEGORY_IMAGE_BASE = `${import.meta.env.VITE_BACKEND_IMG_URL}/uploads/cat
 
 const ListCategory = () => {
   const navigate = useNavigate();
+
+  // FIX: replaces window.confirm() for deactivating/deleting a category -
+  // clicking the status pill or trash icon on an active row now arms this
+  // row's id, swapping the trash icon for an inline tick/cross instead of a
+  // native browser alert. Restoring an inactive category stays instant
+  // (non-destructive, no confirmation needed).
+  const [confirmingId, setConfirmingId] = useState(null);
 
   const {
     categories,
@@ -205,7 +222,11 @@ const ListCategory = () => {
 
                       <td className="px-6">
                         <button
-                          onClick={() => handleStatusToggle(category)}
+                          onClick={() =>
+                            category.cat_is_active
+                              ? setConfirmingId(category.cat_id)
+                              : handleStatusToggle(category)
+                          }
                           className={`px-3 py-1 rounded-full text-sm ${
                             category.cat_is_active
                               ? "bg-green-100 text-green-700"
@@ -227,12 +248,42 @@ const ListCategory = () => {
                             <Pencil size={18} />
                           </button>
 
-                          <button
-                            onClick={() => handleDelete(category.cat_id)}
-                            className="w-10 h-10 rounded-lg border border-red-200 text-red-500 hover:bg-red-50 flex items-center justify-center"
-                          >
-                            <Trash2 size={18} />
-                          </button>
+                          {confirmingId === category.cat_id ? (
+                            <>
+                              <button
+                                onClick={() => {
+                                  handleDelete(category.cat_id);
+                                  setConfirmingId(null);
+                                }}
+                                className="w-10 h-10 rounded-lg border border-green-200 text-green-600 hover:bg-green-50 flex items-center justify-center"
+                                title="Confirm delete"
+                              >
+                                <Check size={18} />
+                              </button>
+
+                              <button
+                                onClick={() => setConfirmingId(null)}
+                                className="w-10 h-10 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 flex items-center justify-center"
+                                title="Cancel"
+                              >
+                                <X size={18} />
+                              </button>
+                            </>
+                          ) : (
+                            <button
+                              onClick={() =>
+                                category.cat_is_active
+                                  ? setConfirmingId(category.cat_id)
+                                  : handleStatusToggle(category)
+                              }
+                              className="w-10 h-10 rounded-lg border border-red-200 text-red-500 hover:bg-red-50 flex items-center justify-center"
+                              title={
+                                category.cat_is_active ? "Delete" : "Restore"
+                              }
+                            >
+                              <Trash2 size={18} />
+                            </button>
+                          )}
                         </div>
                       </td>
                     </tr>

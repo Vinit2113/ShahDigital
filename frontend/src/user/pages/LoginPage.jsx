@@ -31,8 +31,12 @@ const LoginPage = () => {
       // FIX: was pointing at a URL ("localhost:5000/api/customers/login")
       // that doesn't match this backend at all - the real endpoint is
       // ${VITE_BACKEND_URL}auth/login (see backend/routes/auth.routes.js).
+      // credentials: "include" so the browser stores the access_token
+      // cookie the backend now sets on login (see authLogin.controller.js) -
+      // without it, a cross-origin fetch neither sends nor receives cookies.
       const res = await fetch(`${baseURL}auth/login`, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },

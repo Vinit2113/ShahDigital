@@ -88,6 +88,14 @@ const authLogin = async (req, res) => {
       role: existingUser.role,
     });
 
+
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // HTTPS only in production
+      sameSite: "strict",
+      maxAge: 24 * 60 * 60 * 1000, // 1 day - keep in sync with utils/jwt.js expiresIn
+    });
+
     return res.status(200).json({
       message: "Login successful",
       token,
